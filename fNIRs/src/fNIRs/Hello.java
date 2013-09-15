@@ -55,11 +55,13 @@ public class Hello {
 			}
 		});
 		btnPressMe.setBounds(164, 114, 75, 25);
-		btnPressMe.setText("Press Me!");
+		btnPressMe.setText("Hey Sarah!");
 		
 		Label lblHelloWorld = new Label(shell, SWT.NONE);
 		lblHelloWorld.setBounds(184, 63, 55, 15);
 		lblHelloWorld.setText("Hello, World!!");
+
+
 
 	}
 }
