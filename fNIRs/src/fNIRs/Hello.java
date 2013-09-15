@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Label;
 
 public class Hello {
 
@@ -55,6 +56,10 @@ public class Hello {
 		});
 		btnPressMe.setBounds(164, 114, 75, 25);
 		btnPressMe.setText("Press Me!");
+		
+		Label lblHelloWorld = new Label(shell, SWT.NONE);
+		lblHelloWorld.setBounds(184, 63, 55, 15);
+		lblHelloWorld.setText("Hello, World!!");
 
 	}
 }
