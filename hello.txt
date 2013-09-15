@@ -1,1 +1,9 @@
+<<<<<<< HEAD
 Hello. Duo was here.
+=======
+Hello
+
+CHANGES TO THE DEV BRANCH
+
+More changes from Eclipse
+>>>>>>> 49b371c907beb50dc2f26b7d02d68415a983786f
