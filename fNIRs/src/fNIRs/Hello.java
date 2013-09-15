@@ -54,7 +54,7 @@ public class Hello {
 			}
 		});
 		btnPressMe.setBounds(164, 114, 75, 25);
-		btnPressMe.setText("Press Me!");
+		btnPressMe.setText("Hey Sarah!");
 
 	}
 }
