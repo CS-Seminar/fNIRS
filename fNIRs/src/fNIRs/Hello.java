@@ -66,7 +66,7 @@ public class Hello {
 			}
 		});
 		btnPressMe.setBounds(164, 114, 75, 25);
-		btnPressMe.setText("Hey Sarah!");
+		btnPressMe.setText("Hey Justin!");
 		
 		Button btnExit = new Button(shell, SWT.NONE);
 		btnExit.addSelectionListener(new SelectionAdapter() {
