@@ -160,7 +160,7 @@ public class Hello {
 		btnClear.setText("Clear");
 		
 		TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
-		tabFolder.setBounds(99, 167, 338, 149);
+		tabFolder.setBounds(118, 162, 338, 149);
 		
 		TabItem tbtmNewItem = new TabItem(tabFolder, SWT.NONE);
 		tbtmNewItem.setText("File Selection");
