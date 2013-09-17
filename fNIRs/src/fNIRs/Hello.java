@@ -1,5 +1,7 @@
 package fNIRs;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.swt.widgets.Display;
@@ -19,6 +21,8 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 
 public class Hello {
 
@@ -120,11 +124,20 @@ public class Hello {
 		btnBrowse.setBounds(100, 42, 75, 25);
 		btnBrowse.setText("Browse");
 		
+		final Label lblFileDoesNot = new Label(shlFnirsDataProcessing, SWT.NONE);
+		lblFileDoesNot.setBounds(10, 71, 100, 15);
+		lblFileDoesNot.setText("File does not exist");
+		lblFileDoesNot.setVisible(false);
 		
 		Button btnEnter = new Button(shlFnirsDataProcessing, SWT.NONE);
 		btnEnter.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(SelectionEvent e) {
+				File file = new File(text.getText());
+				if (!file.exists()) {
+					lblFileDoesNot.setVisible(true);
+				}
+				else
+					lblFileDoesNot.setVisible(false);
 				list.add(text.getText());
 				text.setText("");
 			}
@@ -154,6 +167,16 @@ public class Hello {
 		});
 		btnClear.setBounds(11, 162, 75, 25);
 		btnClear.setText("Clear");
+		
+		TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
+		tabFolder.setBounds(143, 162, 122, 43);
+		
+		TabItem tbtmProcessing = new TabItem(tabFolder, SWT.NONE);
+		tbtmProcessing.setText("Processing");
+		
+		TabItem tbtmStats = new TabItem(tabFolder, SWT.NONE);
+		tbtmStats.setText("Stats");
+		
 		
 
 		
