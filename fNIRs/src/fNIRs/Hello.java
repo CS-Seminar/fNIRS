@@ -19,6 +19,9 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.widgets.TabFolder;
+import org.eclipse.swt.widgets.TabItem;
 
 public class Hello {
 
@@ -60,6 +63,7 @@ public class Hello {
 	 */
 	protected void createContents() {
 		shlFnirsDataProcessing = new Shell();
+		shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		shlFnirsDataProcessing.setSize(648, 411);
 		shlFnirsDataProcessing.setText("fNIRs Data Processing and Analysis");
 		
@@ -154,6 +158,18 @@ public class Hello {
 		});
 		btnClear.setBounds(11, 162, 75, 25);
 		btnClear.setText("Clear");
+		
+		TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
+		tabFolder.setBounds(99, 167, 338, 149);
+		
+		TabItem tbtmNewItem = new TabItem(tabFolder, SWT.NONE);
+		tbtmNewItem.setText("File Selection");
+		
+		TabItem tbtmNewItem_1 = new TabItem(tabFolder, SWT.NONE);
+		tbtmNewItem_1.setText("Statistics");
+		
+		TabItem tbtmNewItem_2 = new TabItem(tabFolder, SWT.NONE);
+		tbtmNewItem_2.setText("Machine Learning");
 		
 
 		
