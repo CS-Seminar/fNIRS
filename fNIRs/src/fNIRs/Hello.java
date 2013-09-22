@@ -25,6 +25,8 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
+import com.jamal.*;
+import com.jamal.client.MatlabClient;
 
 public class Hello {
 
@@ -85,6 +87,23 @@ public class Hello {
 			public void widgetSelected(SelectionEvent e) {
 				lblHelloWorld.setVisible(true);
 				lblHelloWorld.setText(spinner.getText());
+				try {
+					MatlabClient matlabClient = new MatlabClient(MatlabCaller.HOST_ADDRESS,"C:\\Program Files\\MATLAB\\R2013b\\bin\\matlab.exe");
+					
+					// First we pass an array of integers and calculate sum in Matlab
+		            Object[] inArgs = new Object[1];
+		            inArgs[0] = new int[] { 1, 2, 3, 4 };
+		 
+		            Object[] outputArgs = matlabClient.executeMatlabFunction("sum",
+		                    inArgs, 1);
+		            double[] result = (double[]) outputArgs[0];
+		            System.out.println("The sum 1+2+3+4=" + result[0]);
+		 
+		            matlabClient.shutDownServer();
+				}
+				catch (JamalException je) {
+					je.printStackTrace();
+				}
 			}
 		});
 		btnPressMe.setBounds(725, 42, 75, 25);
@@ -212,7 +231,7 @@ public class Hello {
 		btnRemove.setBounds(151, 469, 75, 25);
 		btnRemove.setText("Remove");
 		
-
+		
 		
 	
 		
