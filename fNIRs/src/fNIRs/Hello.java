@@ -1,5 +1,7 @@
 package fNIRs;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.eclipse.swt.widgets.Display;
@@ -19,9 +21,9 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Combo;
-import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
 
 public class Hello {
@@ -29,6 +31,7 @@ public class Hello {
 	protected Shell shlFnirsDataProcessing;
 	private Text text;
 	private static ArrayList<Integer> fileList;
+	String fileName;
 
 	/**
 	 * Launch the application.
@@ -65,16 +68,16 @@ public class Hello {
 	protected void createContents() {
 		shlFnirsDataProcessing = new Shell();
 		shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		shlFnirsDataProcessing.setSize(648, 411);
+		shlFnirsDataProcessing.setSize(1095, 589);
 		shlFnirsDataProcessing.setText("fNIRs Data Processing and Analysis");
 		
 		final Label lblHelloWorld = new Label(shlFnirsDataProcessing, SWT.NONE);
-		lblHelloWorld.setBounds(326, 110, 75, 15);
+		lblHelloWorld.setBounds(838, 47, 75, 15);
 		lblHelloWorld.setText("Hello, World!!");
-		lblHelloWorld.setVisible(false);
+		//lblHelloWorld.setVisible(false);
 	
 		final Spinner spinner = new Spinner(shlFnirsDataProcessing, SWT.BORDER);
-		spinner.setBounds(354, 57, 47, 22);
+		spinner.setBounds(620, 44, 47, 22);
 		
 		Button btnPressMe = new Button(shlFnirsDataProcessing, SWT.NONE);
 		btnPressMe.addSelectionListener(new SelectionAdapter() {
@@ -84,7 +87,7 @@ public class Hello {
 				lblHelloWorld.setText(spinner.getText());
 			}
 		});
-		btnPressMe.setBounds(351, 105, 75, 25);
+		btnPressMe.setBounds(725, 42, 75, 25);
 		btnPressMe.setText("Hey Justin!");
 		
 		Button btnExit = new Button(shlFnirsDataProcessing, SWT.NONE);
@@ -94,18 +97,22 @@ public class Hello {
 				shlFnirsDataProcessing.close();
 			}
 		});
-		btnExit.setBounds(233, 322, 75, 25);
+		btnExit.setBounds(994, 496, 75, 25);
 		btnExit.setText("Exit");
 		
-		text = new Text(shlFnirsDataProcessing, SWT.BORDER);
-		text.setBounds(10, 44, 76, 21);
-		
-		final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
-		list.setBounds(10, 88, 76, 68);
+		final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		list.setBounds(35, 81, 213, 382);
 		list.addSelectionListener(new SelectionAdapter(){
 			public void widgetSelected(SelectionEvent e) {
-				for (Integer item: list.getSelectionIndices())
-					fileList.add(item);
+				//lblHelloWorld.setText(list.getFocusIndex() + fileList.toString());
+				if (fileList.contains(list.getFocusIndex())) {
+					fileList.remove((Object)list.getFocusIndex());
+					list.deselect(list.getFocusIndex());
+				}
+				else {
+					for (Integer item: list.getSelectionIndices())
+						fileList.add(item);
+				}
 				int[] indices = new int[fileList.size()];
 				for (int i=0; i<fileList.size();i++)
 					indices[i] = fileList.get(i);
@@ -113,29 +120,43 @@ public class Hello {
 			}
 		});
 		
+		final Label lblFileDoesNot = new Label(shlFnirsDataProcessing, SWT.NONE);
+		lblFileDoesNot.setBounds(10, 60, 100, 15);
+		lblFileDoesNot.setText("File does not exist");
+		lblFileDoesNot.setVisible(false);
+		
+		
 		Button btnBrowse = new Button(shlFnirsDataProcessing, SWT.NONE);
 		btnBrowse.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing);
-				fileDialog.open();
-				text.setText(fileDialog.getFileName());
+				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
+				fileName = fileDialog.open();
+				text.setText(fileName);
 			}
 		});
-		btnBrowse.setBounds(100, 42, 75, 25);
+		btnBrowse.setBounds(92, 24, 75, 25);
 		btnBrowse.setText("Browse");
 		
 		
 		Button btnEnter = new Button(shlFnirsDataProcessing, SWT.NONE);
 		btnEnter.addSelectionListener(new SelectionAdapter() {
-			@Override
 			public void widgetSelected(SelectionEvent e) {
-				list.add(text.getText());
-				text.setText("");
+				
+				File file = new File(text.getText());
+				if (!file.exists()) {
+					lblFileDoesNot.setVisible(true);
+				}
+				else {
+					list.add(text.getText());
+					lblFileDoesNot.setVisible(false);
+					text.setText("");
+				}
+				
 			}
 		});
-		btnEnter.setBounds(188, 42, 75, 25);
-		btnEnter.setText("Enter");
+		btnEnter.setBounds(173, 24, 75, 25);
+		btnEnter.setText("Add");
 		
 		Menu menu = new Menu(shlFnirsDataProcessing, SWT.BAR);
 		shlFnirsDataProcessing.setMenuBar(menu);
@@ -157,11 +178,11 @@ public class Hello {
 				fileList.clear();
 			}
 		});
-		btnClear.setBounds(11, 162, 75, 25);
-		btnClear.setText("Clear");
+		btnClear.setBounds(45, 469, 100, 25);
+		btnClear.setText("Clear Selections");
 		
 		TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
-		tabFolder.setBounds(118, 162, 338, 149);
+		tabFolder.setBounds(301, 81, 722, 386);
 		
 		TabItem tbtmFiles = new TabItem(tabFolder, SWT.NONE);
 		tbtmFiles.setText("Files");
@@ -180,6 +201,25 @@ public class Hello {
 		
 		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 		tbtmMachineLearning.setControl(composite_2);
+		
+		text = new Text(shlFnirsDataProcessing, SWT.BORDER);
+		text.setBounds(10, 26, 76, 21);
+		
+		Button btnRemove = new Button(shlFnirsDataProcessing, SWT.NONE);
+		btnRemove.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				for (Integer item: list.getSelectionIndices())
+					fileList.add(item);
+				int[] indices = new int[fileList.size()];
+				for (int i=0; i<fileList.size();i++)
+					indices[i] = fileList.get(i);
+				list.remove(indices);
+				fileList.clear();
+			}
+		});
+		btnRemove.setBounds(151, 469, 75, 25);
+		btnRemove.setText("Remove");
 		
 
 		
