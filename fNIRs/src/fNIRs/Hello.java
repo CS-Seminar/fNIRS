@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.Composite;
 
 public class Hello {
 
@@ -83,7 +84,7 @@ public class Hello {
 				lblHelloWorld.setText(spinner.getText());
 			}
 		});
-		btnPressMe.setBounds(326, 131, 75, 25);
+		btnPressMe.setBounds(351, 105, 75, 25);
 		btnPressMe.setText("Hey Justin!");
 		
 		Button btnExit = new Button(shlFnirsDataProcessing, SWT.NONE);
@@ -162,14 +163,23 @@ public class Hello {
 		TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
 		tabFolder.setBounds(118, 162, 338, 149);
 		
-		TabItem tbtmNewItem = new TabItem(tabFolder, SWT.NONE);
-		tbtmNewItem.setText("File Selection");
+		TabItem tbtmFiles = new TabItem(tabFolder, SWT.NONE);
+		tbtmFiles.setText("Files");
 		
-		TabItem tbtmNewItem_1 = new TabItem(tabFolder, SWT.NONE);
-		tbtmNewItem_1.setText("Statistics");
+		Composite composite = new Composite(tabFolder, SWT.NONE);
+		tbtmFiles.setControl(composite);
 		
-		TabItem tbtmNewItem_2 = new TabItem(tabFolder, SWT.NONE);
-		tbtmNewItem_2.setText("Machine Learning");
+		TabItem tbtmStats = new TabItem(tabFolder, SWT.NONE);
+		tbtmStats.setText("Stats");
+		
+		Composite composite_1 = new Composite(tabFolder, SWT.NONE);
+		tbtmStats.setControl(composite_1);
+		
+		TabItem tbtmMachineLearning = new TabItem(tabFolder, SWT.NONE);
+		tbtmMachineLearning.setText("Machine Learning");
+		
+		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
+		tbtmMachineLearning.setControl(composite_2);
 		
 
 		
