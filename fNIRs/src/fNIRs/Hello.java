@@ -87,7 +87,7 @@ public class Hello {
 			public void widgetSelected(SelectionEvent e) {
 				lblHelloWorld.setVisible(true);
 				lblHelloWorld.setText(spinner.getText());
-				try {
+				/*try {
 					MatlabClient matlabClient = new MatlabClient(MatlabCaller.HOST_ADDRESS,"C:\\Program Files\\MATLAB\\R2013b\\bin\\matlab.exe");
 					
 					// First we pass an array of integers and calculate sum in Matlab
@@ -103,7 +103,8 @@ public class Hello {
 				}
 				catch (JamalException je) {
 					je.printStackTrace();
-				}
+				} */
+				
 			}
 		});
 		btnPressMe.setBounds(725, 42, 75, 25);
