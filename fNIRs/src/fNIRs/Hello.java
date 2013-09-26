@@ -68,27 +68,8 @@ public class Hello {
 	protected void createContents() {
 		shlFnirsDataProcessing = new Shell();
 		shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		shlFnirsDataProcessing.setSize(1095, 589);
+		shlFnirsDataProcessing.setSize(1000, 600);
 		shlFnirsDataProcessing.setText("fNIRs Data Processing and Analysis");
-		
-		final Label lblHelloWorld = new Label(shlFnirsDataProcessing, SWT.NONE);
-		lblHelloWorld.setBounds(838, 47, 75, 15);
-		lblHelloWorld.setText("Hello, World!!");
-		//lblHelloWorld.setVisible(false);
-	
-		final Spinner spinner = new Spinner(shlFnirsDataProcessing, SWT.BORDER);
-		spinner.setBounds(620, 44, 47, 22);
-		
-		Button btnPressMe = new Button(shlFnirsDataProcessing, SWT.NONE);
-		btnPressMe.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				lblHelloWorld.setVisible(true);
-				lblHelloWorld.setText(spinner.getText());
-			}
-		});
-		btnPressMe.setBounds(725, 42, 75, 25);
-		btnPressMe.setText("Hey Justin!");
 		
 		Button btnExit = new Button(shlFnirsDataProcessing, SWT.NONE);
 		btnExit.addSelectionListener(new SelectionAdapter() {
@@ -101,7 +82,7 @@ public class Hello {
 		btnExit.setText("Exit");
 		
 		final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-		list.setBounds(35, 81, 213, 382);
+		list.setBounds(10, 10, 226, 491);
 		list.addSelectionListener(new SelectionAdapter(){
 			public void widgetSelected(SelectionEvent e) {
 				//lblHelloWorld.setText(list.getFocusIndex() + fileList.toString());
@@ -119,44 +100,6 @@ public class Hello {
 				list.select(indices);
 			}
 		});
-		
-		final Label lblFileDoesNot = new Label(shlFnirsDataProcessing, SWT.NONE);
-		lblFileDoesNot.setBounds(10, 60, 100, 15);
-		lblFileDoesNot.setText("File does not exist");
-		lblFileDoesNot.setVisible(false);
-		
-		
-		Button btnBrowse = new Button(shlFnirsDataProcessing, SWT.NONE);
-		btnBrowse.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
-				fileName = fileDialog.open();
-				text.setText(fileName);
-			}
-		});
-		btnBrowse.setBounds(92, 24, 75, 25);
-		btnBrowse.setText("Browse");
-		
-		
-		Button btnEnter = new Button(shlFnirsDataProcessing, SWT.NONE);
-		btnEnter.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				
-				File file = new File(text.getText());
-				if (!file.exists()) {
-					lblFileDoesNot.setVisible(true);
-				}
-				else {
-					list.add(text.getText());
-					lblFileDoesNot.setVisible(false);
-					text.setText("");
-				}
-				
-			}
-		});
-		btnEnter.setBounds(173, 24, 75, 25);
-		btnEnter.setText("Add");
 		
 		Menu menu = new Menu(shlFnirsDataProcessing, SWT.BAR);
 		shlFnirsDataProcessing.setMenuBar(menu);
@@ -178,20 +121,70 @@ public class Hello {
 				fileList.clear();
 			}
 		});
-		btnClear.setBounds(45, 469, 100, 25);
+		btnClear.setBounds(10, 507, 110, 25);
 		btnClear.setText("Clear Selections");
 		
 		TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
-		tabFolder.setBounds(301, 81, 722, 386);
+		tabFolder.setBounds(256, 10, 732, 522);
 		
-		TabItem tbtmFiles = new TabItem(tabFolder, SWT.NONE);
-		tbtmFiles.setText("Files");
+		TabItem tbtmLoadFiles = new TabItem(tabFolder, SWT.NONE);
+		tbtmLoadFiles.setText("Load File(s)");
 		
 		Composite composite = new Composite(tabFolder, SWT.NONE);
-		tbtmFiles.setControl(composite);
+		tbtmLoadFiles.setControl(composite);
+		
+		Composite composite_3 = new Composite(composite, SWT.NONE);
+		composite_3.setBounds(10, 10, 694, 338);
+		
+		
+		Button btnBrowse = new Button(composite_3, SWT.NONE);
+		btnBrowse.setBounds(528, 8, 75, 21);
+		btnBrowse.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
+				fileName = fileDialog.open();
+				text.setText(fileName);
+			}
+		});
+		btnBrowse.setText("Browse");
+		
+		final Label lblFileDoesNot = new Label(composite_3, SWT.NONE);
+		lblFileDoesNot.setBounds(10, 35, 100, 15);
+		lblFileDoesNot.setText("File does not exist");
+		lblFileDoesNot.setVisible(false);
+		
+		
+		Button btnEnter = new Button(composite_3, SWT.NONE);
+		btnEnter.setBounds(609, 8, 75, 21);
+		btnEnter.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				
+				
+				File file = new File(text.getText());
+				if (!file.exists()) {
+					lblFileDoesNot.setVisible(true);
+				}
+				else {
+					list.add(text.getText());
+					lblFileDoesNot.setVisible(false);
+					text.setText("");
+				}
+				
+			}
+		});
+		btnEnter.setText("Add");
+		
+		text = new Text(composite_3, SWT.BORDER);
+		text.setBounds(10, 8, 512, 21);
+		
+		TabItem tbtmNewItem = new TabItem(tabFolder, SWT.NONE);
+		tbtmNewItem.setText("Preprocessing");
+		
+		
 		
 		TabItem tbtmStats = new TabItem(tabFolder, SWT.NONE);
-		tbtmStats.setText("Stats");
+		tbtmStats.setText("Statistical Analysis");
 		
 		Composite composite_1 = new Composite(tabFolder, SWT.NONE);
 		tbtmStats.setControl(composite_1);
@@ -201,9 +194,6 @@ public class Hello {
 		
 		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 		tbtmMachineLearning.setControl(composite_2);
-		
-		text = new Text(shlFnirsDataProcessing, SWT.BORDER);
-		text.setBounds(10, 26, 76, 21);
 		
 		Button btnRemove = new Button(shlFnirsDataProcessing, SWT.NONE);
 		btnRemove.addSelectionListener(new SelectionAdapter() {
@@ -218,8 +208,8 @@ public class Hello {
 				fileList.clear();
 			}
 		});
-		btnRemove.setBounds(151, 469, 75, 25);
-		btnRemove.setText("Remove");
+		btnRemove.setBounds(126, 507, 110, 25);
+		btnRemove.setText("Remove Files");
 		
 
 		
