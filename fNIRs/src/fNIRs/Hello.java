@@ -37,6 +37,8 @@ public class Hello {
 	private Text text_1;
 	private Text text_2;
 	private Text text_3;
+	private Text text_4;
+	private Text text_5;
 
 	/**
 	 * Launch the application.
@@ -202,15 +204,15 @@ public class Hello {
 		lblPreprocessingOptions.setText("Preprocessing Options:");
 		
 		Label lblSamplingFrequency = new Label(composite_3, SWT.NONE);
-		lblSamplingFrequency.setBounds(126, 140, 177, 15);
+		lblSamplingFrequency.setBounds(108, 140, 129, 15);
 		lblSamplingFrequency.setText("Sampling Frequency:");
 		
 		Label lblHighPassFilter = new Label(composite_3, SWT.NONE);
-		lblHighPassFilter.setBounds(113, 176, 190, 15);
+		lblHighPassFilter.setBounds(113, 176, 146, 15);
 		lblHighPassFilter.setText("High Pass Filter Frequency:");
 		
 		Label lblLowPassFilter = new Label(composite_3, SWT.NONE);
-		lblLowPassFilter.setBounds(108, 225, 174, 15);
+		lblLowPassFilter.setBounds(96, 213, 146, 15);
 		lblLowPassFilter.setText("Low Pass Filter Frequency:");
 		
 		Button btnAdd = new Button(composite_3, SWT.NONE);
@@ -277,7 +279,7 @@ public class Hello {
 		text_3.setBounds(253, 219, 76, 21);
 		
 		Button btnSlidingAverage = new Button(composite_3, SWT.CHECK);
-		btnSlidingAverage.setBounds(426, 140, 149, 16);
+		btnSlidingAverage.setBounds(426, 140, 106, 16);
 		btnSlidingAverage.setText("Sliding Average:");
 		
 		Spinner spinner = new Spinner(composite_3, SWT.BORDER);
@@ -285,6 +287,39 @@ public class Hello {
 		
 		TabItem tbtmNewItem_2 = new TabItem(tabFolder_1, SWT.NONE);
 		tbtmNewItem_2.setText("Hatachi");
+		
+		Composite composite_4 = new Composite(tabFolder_1, SWT.NONE);
+		tbtmNewItem_2.setControl(composite_4);
+		
+		Label lblNewLabel_1 = new Label(composite_4, SWT.NONE);
+		lblNewLabel_1.setBounds(61, 158, 55, 15);
+		lblNewLabel_1.setText("HBO Data");
+		
+		Label lblNewLabel_2 = new Label(composite_4, SWT.NONE);
+		lblNewLabel_2.setBounds(90, 227, 55, 15);
+		lblNewLabel_2.setText("HB Data");
+		
+		text_4 = new Text(composite_4, SWT.BORDER);
+		text_4.setBounds(174, 152, 271, 21);
+		
+		text_5 = new Text(composite_4, SWT.BORDER);
+		text_5.setBounds(202, 227, 264, 21);
+		
+		Button btnNewButton_1 = new Button(composite_4, SWT.NONE);
+		btnNewButton_1.setBounds(284, 299, 75, 25);
+		btnNewButton_1.setText("Add");
+		
+		Label lblHitachi = new Label(composite_4, SWT.NONE);
+		lblHitachi.setBounds(72, 85, 93, 15);
+		lblHitachi.setText("Hitachi");
+		
+		Button btnNewButton_2 = new Button(composite_4, SWT.NONE);
+		btnNewButton_2.setBounds(451, 150, 75, 25);
+		btnNewButton_2.setText("Browse");
+		
+		Button btnNewButton_3 = new Button(composite_4, SWT.NONE);
+		btnNewButton_3.setBounds(476, 225, 75, 25);
+		btnNewButton_3.setText("Browse");
 		
 		TabItem tbtmNewItem_1 = new TabItem(tabFolder_1, SWT.NONE);
 		tbtmNewItem_1.setText("Other");
