@@ -125,16 +125,16 @@ public class Hello {
 		btnClear.setText("Clear Selections");
 		
 		TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
-		tabFolder.setBounds(256, 10, 732, 522);
+		tabFolder.setBounds(242, 10, 746, 522);
 		
 		TabItem tbtmLoadFiles = new TabItem(tabFolder, SWT.NONE);
-		tbtmLoadFiles.setText("Load File(s)");
+		tbtmLoadFiles.setText("Load File(s) / Preprocessing");
 		
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		tbtmLoadFiles.setControl(composite);
 		
 		Composite composite_3 = new Composite(composite, SWT.NONE);
-		composite_3.setBounds(10, 10, 694, 338);
+		composite_3.setBounds(10, 10, 718, 474);
 		
 		
 		Button btnBrowse = new Button(composite_3, SWT.NONE);
@@ -177,9 +177,6 @@ public class Hello {
 		
 		text = new Text(composite_3, SWT.BORDER);
 		text.setBounds(10, 8, 512, 21);
-		
-		TabItem tbtmNewItem = new TabItem(tabFolder, SWT.NONE);
-		tbtmNewItem.setText("Preprocessing");
 		
 		
 		
