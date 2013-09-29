@@ -174,7 +174,7 @@ public class Hello {
 		text.setBounds(169, 26, 296, 21);
 		
 		Button btnNewButton = new Button(composite_3, SWT.NONE);
-		btnNewButton.setBounds(471, 26, 75, 25);
+		btnNewButton.setBounds(486, 24, 75, 25);
 		btnNewButton.setText("Browse");
 		
 		Label lblPreprocessingOptions = new Label(composite_3, SWT.NONE);
