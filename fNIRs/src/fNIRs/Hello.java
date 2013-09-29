@@ -351,10 +351,6 @@ public class Hello {
 		});
 		btnRemove.setBounds(126, 507, 110, 25);
 		btnRemove.setText("Remove Files");
-		
-		
-		
-		
 
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -394,10 +390,11 @@ public class Hello {
 			}
 		});
 		
-
 		TabItem tbtmNewItem_2 = new TabItem(tabFolder_1, SWT.NONE);
 		tbtmNewItem_2.setText("Hatachi");
 		tbtmNewItem_2.setControl(composite_4);
+		
+
 		
 		TabItem tbtmNewItem_1 = new TabItem(tabFolder_1, SWT.NONE);
 		tbtmNewItem_1.setText("Other");
