@@ -19,8 +19,8 @@ public class Subject {
 	
 	Subject(File Hb, File HbO) {
 		origFile = null;
-		 HbFile = Hb;
-		 HbOFile = HbO;
+		HbFile = Hb;	
+		HbOFile = HbO;
 	}
 	
 	void setName(String name) {

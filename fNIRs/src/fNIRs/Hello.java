@@ -3,6 +3,7 @@ package fNIRs;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -25,6 +26,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
+
 import com.jamal.*;
 import com.jamal.client.MatlabClient;
 
@@ -32,8 +34,13 @@ public class Hello {
 
 	protected Shell shlFnirsDataProcessing;
 	private Text text;
-	private static ArrayList<Integer> fileList;
-	String fileName;
+	private static ArrayList<Integer> indexList;
+	private static HashMap<String,Subject> subjectMap;
+	private Text text_1;
+	private Text text_2;
+	private Text text_3;
+	private Text text_4;
+	private Text text_5;
 
 	/**
 	 * Launch the application.
@@ -42,7 +49,8 @@ public class Hello {
 	public static void main(String[] args) {
 		try {
 			Hello window = new Hello();
-			fileList = new ArrayList<Integer>();
+			indexList = new ArrayList<Integer>();
+			subjectMap = new HashMap<String,Subject>();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -73,69 +81,21 @@ public class Hello {
 		shlFnirsDataProcessing.setSize(1000, 600);
 		shlFnirsDataProcessing.setText("fNIRs Data Processing and Analysis");
 		
-		final Label lblHelloWorld = new Label(shlFnirsDataProcessing, SWT.NONE);
-		lblHelloWorld.setBounds(838, 47, 75, 15);
-		lblHelloWorld.setText("Hello, World!!");
-		//lblHelloWorld.setVisible(false);
-	
-		final Spinner spinner = new Spinner(shlFnirsDataProcessing, SWT.BORDER);
-		spinner.setBounds(620, 44, 47, 22);
-		
-		Button btnPressMe = new Button(shlFnirsDataProcessing, SWT.NONE);
-		btnPressMe.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				lblHelloWorld.setVisible(true);
-				lblHelloWorld.setText(spinner.getText());
-				/*try {
-					MatlabClient matlabClient = new MatlabClient(MatlabCaller.HOST_ADDRESS,"C:\\Program Files\\MATLAB\\R2013b\\bin\\matlab.exe");
-					
-					// First we pass an array of integers and calculate sum in Matlab
-		            Object[] inArgs = new Object[1];
-		            inArgs[0] = new int[] { 1, 2, 3, 4 };
-		 
-		            Object[] outputArgs = matlabClient.executeMatlabFunction("sum",
-		                    inArgs, 1);
-		            double[] result = (double[]) outputArgs[0];
-		            System.out.println("The sum 1+2+3+4=" + result[0]);
-		 
-		            matlabClient.shutDownServer();
-				}
-				catch (JamalException je) {
-					je.printStackTrace();
-				} */
-				
-			}
-		});
-		btnPressMe.setBounds(725, 42, 75, 25);
-		btnPressMe.setText("Hey Justin!");
-		
-		Button btnExit = new Button(shlFnirsDataProcessing, SWT.NONE);
-		btnExit.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				shlFnirsDataProcessing.close();
-			}
-		});
-		btnExit.setBounds(994, 496, 75, 25);
-		btnExit.setText("Exit");
-		
 		final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		list.setBounds(10, 10, 226, 491);
 		list.addSelectionListener(new SelectionAdapter(){
 			public void widgetSelected(SelectionEvent e) {
-				//lblHelloWorld.setText(list.getFocusIndex() + fileList.toString());
-				if (fileList.contains(list.getFocusIndex())) {
-					fileList.remove((Object)list.getFocusIndex());
+				if (indexList.contains(list.getFocusIndex())) {
+					indexList.remove((Object)list.getFocusIndex());
 					list.deselect(list.getFocusIndex());
 				}
 				else {
 					for (Integer item: list.getSelectionIndices())
-						fileList.add(item);
+						indexList.add(item);
 				}
-				int[] indices = new int[fileList.size()];
-				for (int i=0; i<fileList.size();i++)
-					indices[i] = fileList.get(i);
+				int[] indices = new int[indexList.size()];
+				for (int i=0; i<indexList.size();i++)
+					indices[i] = indexList.get(i);
 				list.select(indices);
 			}
 		});
@@ -157,7 +117,7 @@ public class Hello {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				list.deselectAll();
-				fileList.clear();
+				indexList.clear();
 			}
 		});
 		btnClear.setBounds(10, 507, 110, 25);
@@ -172,8 +132,9 @@ public class Hello {
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		tbtmLoadFiles.setControl(composite);
 		
-		Composite composite_3 = new Composite(composite, SWT.NONE);
-		composite_3.setBounds(10, 10, 694, 338);
+		final Composite composite_3 = new Composite(composite, SWT.NONE);
+		composite_3.setBounds(10, 96, 694, 254);
+		composite_3.setVisible(false);
 		
 		
 		Button btnBrowse = new Button(composite_3, SWT.NONE);
@@ -182,40 +143,163 @@ public class Hello {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
-				fileName = fileDialog.open();
+				String fileName = fileDialog.open();
 				text.setText(fileName);
 			}
 		});
 		btnBrowse.setText("Browse");
 		
 		final Label lblFileDoesNot = new Label(composite_3, SWT.NONE);
-		lblFileDoesNot.setBounds(10, 35, 100, 15);
+		lblFileDoesNot.setBounds(422, 41, 100, 15);
 		lblFileDoesNot.setText("File does not exist");
 		lblFileDoesNot.setVisible(false);
 		
 		
 		Button btnEnter = new Button(composite_3, SWT.NONE);
-		btnEnter.setBounds(609, 8, 75, 21);
+		btnEnter.setBounds(275, 213, 75, 21);
 		btnEnter.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				
 				
-				File file = new File(text.getText());
-				if (!file.exists()) {
-					lblFileDoesNot.setVisible(true);
-				}
-				else {
-					list.add(text.getText());
-					lblFileDoesNot.setVisible(false);
-					text.setText("");
-				}
+
 				
 			}
 		});
 		btnEnter.setText("Add");
 		
 		text = new Text(composite_3, SWT.BORDER);
-		text.setBounds(10, 8, 512, 21);
+		text.setBounds(107, 8, 415, 21);
+		
+		final Spinner spinner = new Spinner(composite_3, SWT.BORDER);
+		spinner.setEnabled(false);
+		spinner.setBounds(462, 92, 47, 22);
+		
+		final Button btnCheckButton = new Button(composite_3, SWT.CHECK);
+		btnCheckButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (btnCheckButton.getSelection())
+					spinner.setEnabled(true);
+				else
+					spinner.setEnabled(false);
+			}
+		});
+		btnCheckButton.setBounds(352, 94, 103, 16);
+		btnCheckButton.setText("Sliding Average");
+		
+		Label lblDataFile = new Label(composite_3, SWT.NONE);
+		lblDataFile.setBounds(46, 11, 55, 15);
+		lblDataFile.setText("Data File:");
+		
+		text_1 = new Text(composite_3, SWT.BORDER);
+		text_1.setBounds(239, 92, 33, 21);
+		
+		Label lblNewLabel = new Label(composite_3, SWT.NONE);
+		lblNewLabel.setBounds(117, 95, 116, 15);
+		lblNewLabel.setText("Sampling Frequency:");
+		
+		Label lblHz = new Label(composite_3, SWT.NONE);
+		lblHz.setBounds(275, 95, 14, 15);
+		lblHz.setText("Hz");
+		
+		Label lblHighPassFilter = new Label(composite_3, SWT.NONE);
+		lblHighPassFilter.setBounds(107, 124, 147, 15);
+		lblHighPassFilter.setText("High Pass Filter Frequency:");
+		
+		text_2 = new Text(composite_3, SWT.BORDER);
+		text_2.setText(".1");
+		text_2.setBounds(260, 121, 29, 21);
+		
+		Label label = new Label(composite_3, SWT.NONE);
+		label.setText("Hz");
+		label.setBounds(295, 124, 14, 15);
+		
+		Label lblLowPassFilter = new Label(composite_3, SWT.NONE);
+		lblLowPassFilter.setBounds(107, 156, 142, 15);
+		lblLowPassFilter.setText("Low Pass Filter Frequency:");
+		
+		text_3 = new Text(composite_3, SWT.BORDER);
+		text_3.setText(".01");
+		text_3.setBounds(260, 153, 29, 21);
+		
+		Label label_1 = new Label(composite_3, SWT.NONE);
+		label_1.setText("Hz");
+		label_1.setBounds(295, 156, 14, 15);
+		
+		Label lblPreprocessingOptions = new Label(composite_3, SWT.NONE);
+		lblPreprocessingOptions.setBounds(60, 74, 130, 15);
+		lblPreprocessingOptions.setText("Preprocessing Options:");
+		
+		final Composite composite_4 = new Composite(composite, SWT.NONE);
+		composite_4.setBounds(10, 96, 694, 254);
+		composite_4.setVisible(false);
+		
+		text_4 = new Text(composite_4, SWT.BORDER);
+		text_4.setBounds(116, 32, 173, 21);
+		
+		text_5 = new Text(composite_4, SWT.BORDER);
+		text_5.setBounds(116, 82, 173, 21);
+		
+		Button btnNewButton = new Button(composite_4, SWT.NONE);
+		btnNewButton.setBounds(295, 32, 75, 25);
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
+				String fileName = fileDialog.open();
+				text_4.setText(fileName);
+			}
+		});
+		btnNewButton.setText("Browse");
+		
+		Button btnBrowse_1 = new Button(composite_4, SWT.NONE);
+		btnBrowse_1.setBounds(295, 78, 75, 25);
+		btnBrowse_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
+				String fileName = fileDialog.open();
+				text_5.setText(fileName);
+			}
+		});
+		btnBrowse_1.setText("Browse");
+		
+		Label lblHboFile = new Label(composite_4, SWT.NONE);
+		lblHboFile.setBounds(55, 35, 55, 15);
+		lblHboFile.setText("HbO File:");
+		
+		Label lblHbFile = new Label(composite_4, SWT.NONE);
+		lblHbFile.setBounds(66, 85, 44, 15);
+		lblHbFile.setText("Hb File:");
+		
+		Button btnAdd = new Button(composite_4, SWT.NONE);
+		btnAdd.setBounds(295, 136, 75, 25);
+		btnAdd.setText("Add");
+		btnAdd.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Subject newSubject = new Subject(new File(text_4.getText()),new File(text_5.getText()));
+				Integer subInd;
+				if (subjectMap.keySet().isEmpty()) {
+					subInd = 1;
+				}
+				else {
+					subInd = subjectMap.keySet().size()+1;
+				}
+				
+				subjectMap.put("Subject "+subInd.toString(), newSubject);
+				
+				//File file = new File(text.getText());
+				//if (!file.exists()) {
+			//		lblFileDoesNot.setVisible(true);
+				//}
+				list.add("Subject "+subInd.toString());
+				lblFileDoesNot.setVisible(false);
+				text_4.setText("");
+				text_5.setText("");
+				
+			}
+		});
 		
 		TabItem tbtmNewItem = new TabItem(tabFolder, SWT.NONE);
 		tbtmNewItem.setText("Preprocessing");
@@ -239,18 +323,49 @@ public class Hello {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				for (Integer item: list.getSelectionIndices())
-					fileList.add(item);
-				int[] indices = new int[fileList.size()];
-				for (int i=0; i<fileList.size();i++)
-					indices[i] = fileList.get(i);
+					indexList.add(item);
+				int[] indices = new int[indexList.size()];
+				for (int i=0; i<indexList.size();i++)
+					indices[i] = indexList.get(i);
 				list.remove(indices);
-				fileList.clear();
+				indexList.clear();
 			}
 		});
 		btnRemove.setBounds(126, 507, 110, 25);
 		btnRemove.setText("Remove Files");
 		
+		Button btnIssOxyplex = new Button(composite, SWT.RADIO);
+		btnIssOxyplex.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				composite_3.setVisible(true);
+				composite_4.setVisible(false);
+			}
+		});
+		btnIssOxyplex.setBounds(53, 10, 90, 16);
+		btnIssOxyplex.setText("ISS Oxyplex");
 		
+		Button btnHatachi = new Button(composite, SWT.RADIO);
+		btnHatachi.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				composite_3.setVisible(false);
+				composite_4.setVisible(true);
+			}
+		});
+		btnHatachi.setBounds(53, 32, 90, 16);
+		btnHatachi.setText("Hatachi");
+		
+		Button btnOther = new Button(composite, SWT.RADIO);
+		btnOther.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				composite_3.setVisible(false);
+				composite_4.setVisible(false);
+			}
+		});
+		btnOther.setBounds(53, 54, 90, 16);
+		btnOther.setText("Other");
 		
 	
 		
