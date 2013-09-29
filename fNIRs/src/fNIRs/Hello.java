@@ -167,7 +167,14 @@ public class Hello {
 		btnEnter.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				
-				
+				File newFile = new File(text.getText());
+				if (!newFile.exists()) {
+					lblFileDoesNot.setVisible(true);
+					return;
+				}
+				else {
+					lblFileDoesNot.setVisible(false);
+				}
 
 				
 			}
@@ -282,27 +289,6 @@ public class Hello {
 		Button btnAdd = new Button(composite_4, SWT.NONE);
 		btnAdd.setBounds(295, 136, 75, 25);
 		btnAdd.setText("Add");
-		btnAdd.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Subject newSubject = new Subject(new File(text_4.getText()),new File(text_5.getText()));
-				
-				subjectMap.put("Subject "+subjectNumber.toString(), newSubject);
-
-				
-				//File file = new File(text.getText());
-				//if (!file.exists()) {
-			//		lblFileDoesNot.setVisible(true);
-				//}
-				list.add("Subject "+subjectNumber.toString());
-				lblFileDoesNot.setVisible(false);
-				text_4.setText("");
-				text_5.setText("");
-				
-				subjectNumber = subjectNumber + 1;
-				
-			}
-		});
 		
 		
 		
@@ -355,7 +341,7 @@ public class Hello {
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				File HbFile = new File(text_1.getText());
+				File HbFile = new File(text_4.getText());
 				if (!HbFile.exists()) {
 					//lblFileDoesNot.setVisible(true);
 					return;
@@ -364,7 +350,7 @@ public class Hello {
 					//lblFileDoesNot.setVisible(false);
 				}
 				
-				File HbOFile = new File(text_2.getText());
+				File HbOFile = new File(text_5.getText());
 				if (!HbOFile.exists()) {
 					//lblFileDoesNot.setVisible(true);
 					return;
@@ -382,8 +368,8 @@ public class Hello {
 
 				list.add("Subject "+subjectNumber.toString());
 		
-				text_1.setText("");
-				text_2.setText("");
+				text_4.setText("");
+				text_5.setText("");
 				
 				subjectNumber = subjectNumber + 1;
 				
