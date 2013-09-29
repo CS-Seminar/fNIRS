@@ -30,14 +30,12 @@ import org.eclipse.swt.widgets.Composite;
 public class Hello {
 
 	protected Shell shlFnirsDataProcessing;
-	private Text text;
 	private static ArrayList<Integer> indexList;
 	private static HashMap<String,Subject> subjectMap;
+	private Text text;
 	private Text text_1;
 	private Text text_2;
 	private Text text_3;
-	private Text text_4;
-	private Text text_5;
 
 	/**
 	 * Launch the application.
@@ -129,174 +127,6 @@ public class Hello {
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		tbtmLoadFiles.setControl(composite);
 		
-		final Composite composite_3 = new Composite(composite, SWT.NONE);
-		composite_3.setBounds(10, 96, 694, 254);
-		composite_3.setVisible(false);
-		
-		Button btnBrowse = new Button(composite_3, SWT.NONE);
-		btnBrowse.setBounds(528, 8, 75, 21);
-		btnBrowse.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
-				String fileName = fileDialog.open();
-				text.setText(fileName);
-			}
-		});
-		btnBrowse.setText("Browse");
-		
-		final Label lblFileDoesNot = new Label(composite_3, SWT.NONE);
-		lblFileDoesNot.setBounds(422, 41, 100, 15);
-		lblFileDoesNot.setText("File does not exist");
-		lblFileDoesNot.setVisible(false);
-		
-		
-		Button btnEnter = new Button(composite_3, SWT.NONE);
-		btnEnter.setBounds(275, 213, 75, 21);
-		btnEnter.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				
-				
-
-				
-			}
-		});
-		btnEnter.setText("Add");
-		
-		text = new Text(composite_3, SWT.BORDER);
-		text.setBounds(107, 8, 415, 21);
-		
-		final Spinner spinner = new Spinner(composite_3, SWT.BORDER);
-		spinner.setEnabled(false);
-		spinner.setBounds(462, 92, 47, 22);
-		
-		final Button btnCheckButton = new Button(composite_3, SWT.CHECK);
-		btnCheckButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if (btnCheckButton.getSelection())
-					spinner.setEnabled(true);
-				else
-					spinner.setEnabled(false);
-			}
-		});
-		btnCheckButton.setBounds(352, 94, 103, 16);
-		btnCheckButton.setText("Sliding Average");
-		
-		Label lblDataFile = new Label(composite_3, SWT.NONE);
-		lblDataFile.setBounds(46, 11, 55, 15);
-		lblDataFile.setText("Data File:");
-		
-		text_1 = new Text(composite_3, SWT.BORDER);
-		text_1.setBounds(239, 92, 33, 21);
-		
-		Label lblNewLabel = new Label(composite_3, SWT.NONE);
-		lblNewLabel.setBounds(117, 95, 116, 15);
-		lblNewLabel.setText("Sampling Frequency:");
-		
-		Label lblHz = new Label(composite_3, SWT.NONE);
-		lblHz.setBounds(275, 95, 14, 15);
-		lblHz.setText("Hz");
-		
-		Label lblHighPassFilter = new Label(composite_3, SWT.NONE);
-		lblHighPassFilter.setBounds(107, 124, 147, 15);
-		lblHighPassFilter.setText("High Pass Filter Frequency:");
-		
-		text_2 = new Text(composite_3, SWT.BORDER);
-		text_2.setText(".1");
-		text_2.setBounds(260, 121, 29, 21);
-		
-		Label label = new Label(composite_3, SWT.NONE);
-		label.setText("Hz");
-		label.setBounds(295, 124, 14, 15);
-		
-		Label lblLowPassFilter = new Label(composite_3, SWT.NONE);
-		lblLowPassFilter.setBounds(107, 156, 142, 15);
-		lblLowPassFilter.setText("Low Pass Filter Frequency:");
-		
-		text_3 = new Text(composite_3, SWT.BORDER);
-		text_3.setText(".01");
-		text_3.setBounds(260, 153, 29, 21);
-		
-		Label label_1 = new Label(composite_3, SWT.NONE);
-		label_1.setText("Hz");
-		label_1.setBounds(295, 156, 14, 15);
-		
-		Label lblPreprocessingOptions = new Label(composite_3, SWT.NONE);
-		lblPreprocessingOptions.setBounds(60, 74, 130, 15);
-		lblPreprocessingOptions.setText("Preprocessing Options:");
-		
-		final Composite composite_4 = new Composite(composite, SWT.NONE);
-		composite_4.setBounds(10, 96, 694, 254);
-		composite_4.setVisible(false);
-		
-		text_4 = new Text(composite_4, SWT.BORDER);
-		text_4.setBounds(116, 32, 173, 21);
-		
-		text_5 = new Text(composite_4, SWT.BORDER);
-		text_5.setBounds(116, 82, 173, 21);
-		
-		Button btnNewButton = new Button(composite_4, SWT.NONE);
-		btnNewButton.setBounds(295, 32, 75, 25);
-		btnNewButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
-				String fileName = fileDialog.open();
-				text_4.setText(fileName);
-			}
-		});
-		btnNewButton.setText("Browse");
-		
-		Button btnBrowse_1 = new Button(composite_4, SWT.NONE);
-		btnBrowse_1.setBounds(295, 78, 75, 25);
-		btnBrowse_1.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
-				String fileName = fileDialog.open();
-				text_5.setText(fileName);
-			}
-		});
-		btnBrowse_1.setText("Browse");
-		
-		Label lblHboFile = new Label(composite_4, SWT.NONE);
-		lblHboFile.setBounds(55, 35, 55, 15);
-		lblHboFile.setText("HbO File:");
-		
-		Label lblHbFile = new Label(composite_4, SWT.NONE);
-		lblHbFile.setBounds(66, 85, 44, 15);
-		lblHbFile.setText("Hb File:");
-		
-		Button btnAdd = new Button(composite_4, SWT.NONE);
-		btnAdd.setBounds(295, 136, 75, 25);
-		btnAdd.setText("Add");
-		btnAdd.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Subject newSubject = new Subject(new File(text_4.getText()),new File(text_5.getText()));
-				Integer subInd;
-				if (subjectMap.keySet().isEmpty()) {
-					subInd = 1;
-				}
-				else {
-					subInd = subjectMap.keySet().size()+1;
-				}
-				
-				subjectMap.put("Subject "+subInd.toString(), newSubject);
-				
-				//File file = new File(text.getText());
-				//if (!file.exists()) {
-			//		lblFileDoesNot.setVisible(true);
-				//}
-				list.add("Subject "+subInd.toString());
-				lblFileDoesNot.setVisible(false);
-				text_4.setText("");
-				text_5.setText("");
-				
-			}
-		});
-		
 		
 		
 		TabItem tbtmStats = new TabItem(tabFolder, SWT.NONE);
@@ -327,38 +157,79 @@ public class Hello {
 		btnRemove.setBounds(126, 507, 110, 25);
 		btnRemove.setText("Remove Files");
 		
-		Button btnIssOxyplex = new Button(composite, SWT.RADIO);
-		btnIssOxyplex.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				composite_3.setVisible(true);
-				composite_4.setVisible(false);
-			}
-		});
-		btnIssOxyplex.setBounds(53, 10, 90, 16);
-		btnIssOxyplex.setText("ISS Oxyplex");
+		TabFolder tabFolder_1 = new TabFolder(composite, SWT.NONE);
+		tabFolder_1.setBounds(10, 10, 718, 474);
 		
-		Button btnHatachi = new Button(composite, SWT.RADIO);
-		btnHatachi.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				composite_3.setVisible(false);
-				composite_4.setVisible(true);
-			}
-		});
-		btnHatachi.setBounds(53, 32, 90, 16);
-		btnHatachi.setText("Hatachi");
+		TabItem tbtmNewItem = new TabItem(tabFolder_1, SWT.NONE);
+		tbtmNewItem.setText("ISS Oxyplex");
 		
-		Button btnOther = new Button(composite, SWT.RADIO);
-		btnOther.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				composite_3.setVisible(false);
-				composite_4.setVisible(false);
-			}
-		});
-		btnOther.setBounds(53, 54, 90, 16);
-		btnOther.setText("Other");
+		Composite composite_3 = new Composite(tabFolder_1, SWT.NONE);
+		tbtmNewItem.setControl(composite_3);
+		
+		Label lblNewLabel = new Label(composite_3, SWT.NONE);
+		lblNewLabel.setBounds(108, 29, 55, 15);
+		lblNewLabel.setText("Data File:");
+		
+		text = new Text(composite_3, SWT.BORDER);
+		text.setBounds(169, 26, 296, 21);
+		
+		Button btnNewButton = new Button(composite_3, SWT.NONE);
+		btnNewButton.setBounds(471, 26, 75, 25);
+		btnNewButton.setText("Browse");
+		
+		Label lblPreprocessingOptions = new Label(composite_3, SWT.NONE);
+		lblPreprocessingOptions.setBounds(113, 90, 169, 15);
+		lblPreprocessingOptions.setText("Preprocessing Options:");
+		
+		Label lblSamplingFrequency = new Label(composite_3, SWT.NONE);
+		lblSamplingFrequency.setBounds(126, 140, 177, 15);
+		lblSamplingFrequency.setText("Sampling Frequency:");
+		
+		Label lblHighPassFilter = new Label(composite_3, SWT.NONE);
+		lblHighPassFilter.setBounds(113, 176, 190, 15);
+		lblHighPassFilter.setText("High Pass Filter Frequency:");
+		
+		Label lblLowPassFilter = new Label(composite_3, SWT.NONE);
+		lblLowPassFilter.setBounds(108, 225, 174, 15);
+		lblLowPassFilter.setText("Low Pass Filter Frequency:");
+		
+		Button btnAdd = new Button(composite_3, SWT.NONE);
+		btnAdd.setBounds(254, 264, 75, 25);
+		btnAdd.setText("Add");
+		
+		text_1 = new Text(composite_3, SWT.BORDER);
+		text_1.setBounds(243, 134, 76, 21);
+		
+		Label lblHz = new Label(composite_3, SWT.NONE);
+		lblHz.setBounds(339, 140, 55, 15);
+		lblHz.setText("Hz");
+		
+		text_2 = new Text(composite_3, SWT.BORDER);
+		text_2.setBounds(265, 170, 76, 21);
+		
+		Label lblHz_1 = new Label(composite_3, SWT.NONE);
+		lblHz_1.setBounds(347, 176, 55, 15);
+		lblHz_1.setText("Hz");
+		
+		Label lblHz_2 = new Label(composite_3, SWT.NONE);
+		lblHz_2.setBounds(339, 213, 55, 15);
+		lblHz_2.setText("Hz");
+		
+		text_3 = new Text(composite_3, SWT.BORDER);
+		text_3.setBounds(253, 219, 76, 21);
+		
+		Button btnSlidingAverage = new Button(composite_3, SWT.CHECK);
+		btnSlidingAverage.setBounds(426, 140, 149, 16);
+		btnSlidingAverage.setText("Sliding Average:");
+		
+		Spinner spinner = new Spinner(composite_3, SWT.BORDER);
+		spinner.setBounds(537, 137, 47, 22);
+		
+		TabItem tbtmNewItem_2 = new TabItem(tabFolder_1, SWT.NONE);
+		tbtmNewItem_2.setText("Hatachi");
+		
+		TabItem tbtmNewItem_1 = new TabItem(tabFolder_1, SWT.NONE);
+		tbtmNewItem_1.setText("Other");
 		
 	
 		
