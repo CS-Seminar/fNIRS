@@ -157,8 +157,14 @@ public class Hello {
 		btnEnter.setBounds(275, 213, 75, 21);
 		btnEnter.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
-				
-				
+				File newFile = new File(text.getText());
+				if (!newFile.exists()) {
+					lblFileDoesNot.setVisible(true);
+					return;
+				}
+				else {
+					lblFileDoesNot.setVisible(false);
+				}
 
 				
 			}
@@ -276,15 +282,31 @@ public class Hello {
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Subject newSubject = new Subject(new File(text_4.getText()),new File(text_5.getText()));
+				File HbFile = new File(text_4.getText());
+				if (!HbFile.exists()) {
+					//lblFileDoesNot.setVisible(true);
+					return;
+				}
+				else {
+					//lblFileDoesNot.setVisible(false);
+				}
+				
+				File HbOFile = new File(text_5.getText());
+				if (!HbOFile.exists()) {
+					//lblFileDoesNot.setVisible(true);
+					return;
+				}
+				else {
+					//lblFileDoesNot.setVisible(false);
+				}
+
+
+				
+				
+				Subject newSubject = new Subject(HbFile,HbOFile);
 				
 				subjectMap.put("Subject "+subjectNumber.toString(), newSubject);
 
-				
-				//File file = new File(text.getText());
-				//if (!file.exists()) {
-			//		lblFileDoesNot.setVisible(true);
-				//}
 				list.add("Subject "+subjectNumber.toString());
 				lblFileDoesNot.setVisible(false);
 				text_4.setText("");
