@@ -33,6 +33,7 @@ public class Hello {
 	private static ArrayList<Integer> indexList;
 	private static HashMap<String,Subject> subjectMap;
 	private Text text;
+	private static Integer subjectNumber;
 	private Text text_1;
 	private Text text_2;
 	private Text text_3;
@@ -46,6 +47,7 @@ public class Hello {
 			Hello window = new Hello();
 			indexList = new ArrayList<Integer>();
 			subjectMap = new HashMap<String,Subject>();
+			subjectNumber = 1;
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -134,6 +136,24 @@ public class Hello {
 		
 		Composite composite_1 = new Composite(tabFolder, SWT.NONE);
 		tbtmStats.setControl(composite_1);
+		Button btnEnter = new Button(composite_1, SWT.NONE);
+		btnEnter.setBounds(275, 213, 75, 21);
+		btnEnter.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				File newFile = new File(text.getText());
+				if (!newFile.exists()) {
+	
+					return;
+				}
+				else {
+		
+				}
+
+				
+			}
+		});
+		btnEnter.setText("Add");
+
 		
 		TabItem tbtmMachineLearning = new TabItem(tabFolder, SWT.NONE);
 		tbtmMachineLearning.setText("Machine Learning");
@@ -196,6 +216,44 @@ public class Hello {
 		Button btnAdd = new Button(composite_3, SWT.NONE);
 		btnAdd.setBounds(254, 264, 75, 25);
 		btnAdd.setText("Add");
+
+		btnAdd.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				File HbFile = new File(text_1.getText());
+				if (!HbFile.exists()) {
+					//lblFileDoesNot.setVisible(true);
+					return;
+				}
+				else {
+					//lblFileDoesNot.setVisible(false);
+				}
+				
+				File HbOFile = new File(text_2.getText());
+				if (!HbOFile.exists()) {
+					//lblFileDoesNot.setVisible(true);
+					return;
+				}
+				else {
+					//lblFileDoesNot.setVisible(false);
+				}
+
+
+				
+				
+				Subject newSubject = new Subject(HbFile,HbOFile);
+				
+				subjectMap.put("Subject "+subjectNumber.toString(), newSubject);
+
+				list.add("Subject "+subjectNumber.toString());
+		
+				text_1.setText("");
+				text_2.setText("");
+				
+				subjectNumber = subjectNumber + 1;
+				
+			}
+		});
 		
 		text_1 = new Text(composite_3, SWT.BORDER);
 		text_1.setBounds(243, 134, 76, 21);
