@@ -27,15 +27,13 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
 
-import com.jamal.*;
-import com.jamal.client.MatlabClient;
-
 public class Hello {
 
 	protected Shell shlFnirsDataProcessing;
 	private Text text;
 	private static ArrayList<Integer> indexList;
 	private static HashMap<String,Subject> subjectMap;
+	private static Integer subjectNumber;
 	private Text text_1;
 	private Text text_2;
 	private Text text_3;
@@ -51,6 +49,7 @@ public class Hello {
 			Hello window = new Hello();
 			indexList = new ArrayList<Integer>();
 			subjectMap = new HashMap<String,Subject>();
+			subjectNumber = 1;
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -279,24 +278,20 @@ public class Hello {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Subject newSubject = new Subject(new File(text_4.getText()),new File(text_5.getText()));
-				Integer subInd;
-				if (subjectMap.keySet().isEmpty()) {
-					subInd = 1;
-				}
-				else {
-					subInd = subjectMap.keySet().size()+1;
-				}
 				
-				subjectMap.put("Subject "+subInd.toString(), newSubject);
+				subjectMap.put("Subject "+subjectNumber.toString(), newSubject);
+
 				
 				//File file = new File(text.getText());
 				//if (!file.exists()) {
 			//		lblFileDoesNot.setVisible(true);
 				//}
-				list.add("Subject "+subInd.toString());
+				list.add("Subject "+subjectNumber.toString());
 				lblFileDoesNot.setVisible(false);
 				text_4.setText("");
 				text_5.setText("");
+				
+				subjectNumber = subjectNumber + 1;
 				
 			}
 		});
