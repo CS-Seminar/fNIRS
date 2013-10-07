@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
@@ -76,6 +78,7 @@ public class Hello {
 	 */
 	protected void createContents() {
 		shlFnirsDataProcessing = new Shell();
+		shlFnirsDataProcessing.setImage(SWTResourceManager.getImage("C:\\Users\\dgong\\Desktop\\CS410\\fNIRs\\resources\\logotest.jpg"));
 		shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		shlFnirsDataProcessing.setSize(1000, 600);
 		shlFnirsDataProcessing.setText("fNIRs Data Processing and Analysis");
@@ -137,112 +140,6 @@ public class Hello {
 
 		TabFolder tabFolder_1 = new TabFolder(composite, SWT.NONE);
 		tabFolder_1.setBounds(10, 10, 718, 474);
-
-		TabItem tbtmNewItem = new TabItem(tabFolder_1, SWT.NONE);
-		tbtmNewItem.setText("ISS Oxyplex");
-
-		Composite composite_3 = new Composite(tabFolder_1, SWT.NONE);
-		tbtmNewItem.setControl(composite_3);
-		
-		Button btnBrowse = new Button(composite_3, SWT.NONE);
-		btnBrowse.setBounds(528, 8, 75, 21);
-		btnBrowse.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
-				String fileName = fileDialog.open();
-				text.setText(fileName);
-			}
-		});
-		btnBrowse.setText("Browse");
-		
-		final Label lblFileDoesNot = new Label(composite_3, SWT.NONE);
-		lblFileDoesNot.setBounds(422, 41, 100, 15);
-		lblFileDoesNot.setText("File does not exist");
-		lblFileDoesNot.setVisible(false);
-		
-		
-		Button btnEnter = new Button(composite_3, SWT.NONE);
-		btnEnter.setBounds(275, 213, 75, 21);
-		btnEnter.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				
-				File newFile = new File(text.getText());
-				if (!newFile.exists()) {
-					lblFileDoesNot.setVisible(true);
-					return;
-				}
-				else {
-					lblFileDoesNot.setVisible(false);
-				}
-
-				
-			}
-		});
-		btnEnter.setText("Add");
-		
-		text = new Text(composite_3, SWT.BORDER);
-		text.setBounds(107, 8, 415, 21);
-		
-		final Spinner spinner = new Spinner(composite_3, SWT.BORDER);
-		spinner.setEnabled(false);
-		spinner.setBounds(462, 92, 47, 22);
-		
-		final Button btnCheckButton = new Button(composite_3, SWT.CHECK);
-		btnCheckButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if (btnCheckButton.getSelection())
-					spinner.setEnabled(true);
-				else
-					spinner.setEnabled(false);
-			}
-		});
-		btnCheckButton.setBounds(352, 94, 103, 16);
-		btnCheckButton.setText("Sliding Average");
-		
-		Label lblDataFile = new Label(composite_3, SWT.NONE);
-		lblDataFile.setBounds(46, 11, 55, 15);
-		lblDataFile.setText("Data File:");
-		
-		text_1 = new Text(composite_3, SWT.BORDER);
-		text_1.setBounds(239, 92, 33, 21);
-		
-		Label lblNewLabel = new Label(composite_3, SWT.NONE);
-		lblNewLabel.setBounds(117, 95, 116, 15);
-		lblNewLabel.setText("Sampling Frequency:");
-		
-		Label lblHz = new Label(composite_3, SWT.NONE);
-		lblHz.setBounds(275, 95, 14, 15);
-		lblHz.setText("Hz");
-		
-		Label lblHighPassFilter = new Label(composite_3, SWT.NONE);
-		lblHighPassFilter.setBounds(107, 124, 147, 15);
-		lblHighPassFilter.setText("High Pass Filter Frequency:");
-		
-		text_2 = new Text(composite_3, SWT.BORDER);
-		text_2.setText(".1");
-		text_2.setBounds(260, 121, 29, 21);
-		
-		Label label = new Label(composite_3, SWT.NONE);
-		label.setText("Hz");
-		label.setBounds(295, 124, 14, 15);
-		
-		Label lblLowPassFilter = new Label(composite_3, SWT.NONE);
-		lblLowPassFilter.setBounds(107, 156, 142, 15);
-		lblLowPassFilter.setText("Low Pass Filter Frequency:");
-		
-		text_3 = new Text(composite_3, SWT.BORDER);
-		text_3.setText(".01");
-		text_3.setBounds(260, 153, 29, 21);
-		
-		Label label_1 = new Label(composite_3, SWT.NONE);
-		label_1.setText("Hz");
-		label_1.setBounds(295, 156, 14, 15);
-		
-		Label lblPreprocessingOptions = new Label(composite_3, SWT.NONE);
-		lblPreprocessingOptions.setBounds(60, 74, 130, 15);
-		lblPreprocessingOptions.setText("Preprocessing Options:");
 		
 		final Composite composite_4 = new Composite(tabFolder_1, SWT.NONE);
 		composite_4.setBounds(10, 96, 694, 254);
@@ -376,14 +273,115 @@ public class Hello {
 			}
 		});
 		
-		TabItem tbtmNewItem_2 = new TabItem(tabFolder_1, SWT.NONE);
-		tbtmNewItem_2.setText("Hatachi");
-		tbtmNewItem_2.setControl(composite_4);
+		TabItem tbtmIssOxyplex = new TabItem(tabFolder_1, SWT.NONE);
+		tbtmIssOxyplex.setText("ISS Oxyplex");
 		
+				Composite composite_3 = new Composite(tabFolder_1, SWT.NONE);
+				tbtmIssOxyplex.setControl(composite_3);
+				
+				Button btnBrowse = new Button(composite_3, SWT.NONE);
+				btnBrowse.setBounds(528, 8, 75, 21);
+				btnBrowse.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
+						String fileName = fileDialog.open();
+						text.setText(fileName);
+					}
+				});
+				btnBrowse.setText("Browse");
+				
+				final Label lblFileDoesNot = new Label(composite_3, SWT.NONE);
+				lblFileDoesNot.setBounds(422, 41, 100, 15);
+				lblFileDoesNot.setText("File does not exist");
+				lblFileDoesNot.setVisible(false);
+				
+				
+				Button btnEnter = new Button(composite_3, SWT.NONE);
+				btnEnter.setBounds(275, 213, 75, 21);
+				btnEnter.addSelectionListener(new SelectionAdapter() {
+					public void widgetSelected(SelectionEvent e) {
+						
+						File newFile = new File(text.getText());
+						if (!newFile.exists()) {
+							lblFileDoesNot.setVisible(true);
+							return;
+						}
+						else {
+							lblFileDoesNot.setVisible(false);
+						}
 
+						
+					}
+				});
+				btnEnter.setText("Add");
+				
+				text = new Text(composite_3, SWT.BORDER);
+				text.setBounds(107, 8, 415, 21);
+				
+				final Spinner spinner = new Spinner(composite_3, SWT.BORDER);
+				spinner.setEnabled(false);
+				spinner.setBounds(462, 92, 47, 22);
+				
+				final Button btnCheckButton = new Button(composite_3, SWT.CHECK);
+				btnCheckButton.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						if (btnCheckButton.getSelection())
+							spinner.setEnabled(true);
+						else
+							spinner.setEnabled(false);
+					}
+				});
+				btnCheckButton.setBounds(352, 94, 103, 16);
+				btnCheckButton.setText("Sliding Average");
+				
+				Label lblDataFile = new Label(composite_3, SWT.NONE);
+				lblDataFile.setBounds(46, 11, 55, 15);
+				lblDataFile.setText("Data File:");
+				
+				text_1 = new Text(composite_3, SWT.BORDER);
+				text_1.setBounds(239, 92, 33, 21);
+				
+				Label lblNewLabel = new Label(composite_3, SWT.NONE);
+				lblNewLabel.setBounds(117, 95, 116, 15);
+				lblNewLabel.setText("Sampling Frequency:");
+				
+				Label lblHz = new Label(composite_3, SWT.NONE);
+				lblHz.setBounds(275, 95, 14, 15);
+				lblHz.setText("Hz");
+				
+				Label lblHighPassFilter = new Label(composite_3, SWT.NONE);
+				lblHighPassFilter.setBounds(107, 124, 147, 15);
+				lblHighPassFilter.setText("High Pass Filter Frequency:");
+				
+				text_2 = new Text(composite_3, SWT.BORDER);
+				text_2.setText(".1");
+				text_2.setBounds(260, 121, 29, 21);
+				
+				Label label = new Label(composite_3, SWT.NONE);
+				label.setText("Hz");
+				label.setBounds(295, 124, 14, 15);
+				
+				Label lblLowPassFilter = new Label(composite_3, SWT.NONE);
+				lblLowPassFilter.setBounds(107, 156, 142, 15);
+				lblLowPassFilter.setText("Low Pass Filter Frequency:");
+				
+				text_3 = new Text(composite_3, SWT.BORDER);
+				text_3.setText(".01");
+				text_3.setBounds(260, 153, 29, 21);
+				
+				Label label_1 = new Label(composite_3, SWT.NONE);
+				label_1.setText("Hz");
+				label_1.setBounds(295, 156, 14, 15);
+				
+				Label lblPreprocessingOptions = new Label(composite_3, SWT.NONE);
+				lblPreprocessingOptions.setBounds(60, 74, 130, 15);
+				lblPreprocessingOptions.setText("Preprocessing Options:");
 		
-		TabItem tbtmNewItem_1 = new TabItem(tabFolder_1, SWT.NONE);
-		tbtmNewItem_1.setText("Other");
+		TabItem tbtmNewItem_2 = new TabItem(tabFolder_1, SWT.NONE);
+		tbtmNewItem_2.setText("Hatachi/Other");
+		tbtmNewItem_2.setControl(composite_4);
 		
 	
 		
