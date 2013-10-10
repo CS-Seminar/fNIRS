@@ -246,7 +246,7 @@ public class Hello {
 
 		
 		TabItem tbtmMachineLearning = new TabItem(tabFolder, SWT.NONE);
-		tbtmMachineLearning.setText("Machine Learning");
+		tbtmMachineLearning.setText("Data Mining");
 		
 		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 		tbtmMachineLearning.setControl(composite_2);
