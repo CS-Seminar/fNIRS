@@ -5,11 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.ImageIcon;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
@@ -31,7 +26,6 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
-import javax.swing.UIManager.*;
 
 public class Hello {
 
@@ -51,34 +45,6 @@ public class Hello {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		/* try {
-            // Set cross-platform Java L&F (also called "Metal")
-        // UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-        UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-            //UIManager.getCrossPlatformLookAndFeelClassName());
-		} 
-	    catch (UnsupportedLookAndFeelException e) {
-	       // handle exception
-	    }
-	    catch (ClassNotFoundException e) {
-	       // handle exception
-	    }
-	    catch (InstantiationException e) {
-	       // handle exception
-	    }
-	    catch (IllegalAccessException e) {
-	       // handle exception
-	    } */
-		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
-		} catch (Exception e) {
-		    // If Nimbus is not available, you can set the GUI to another look and feel.
-		}
 		try {
 			Hello window = new Hello();
 			indexList = new ArrayList<Integer>();
