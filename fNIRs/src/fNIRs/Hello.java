@@ -27,6 +27,10 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
 
+import com.mathworks.toolbox.javabuilder.*;
+
+import preprocess_2013.Preprocess;
+
 public class Hello {
 
 	protected Shell shlFnirsDataProcessing;
@@ -161,29 +165,6 @@ public class Hello {
 		lblFileDoesNot.setText("File does not exist");
 		lblFileDoesNot.setVisible(false);
 		
-		
-		Button btnEnter = new Button(composite_3, SWT.NONE);
-		btnEnter.setBounds(275, 213, 75, 21);
-		btnEnter.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				
-				File newFile = new File(text.getText());
-				if (!newFile.exists()) {
-					lblFileDoesNot.setVisible(true);
-					return;
-				}
-				else {
-					lblFileDoesNot.setVisible(false);
-				}
-
-				
-			}
-		});
-		btnEnter.setText("Add");
-		
-		text = new Text(composite_3, SWT.BORDER);
-		text.setBounds(107, 8, 415, 21);
-		
 		final Spinner spinner = new Spinner(composite_3, SWT.BORDER);
 		spinner.setEnabled(false);
 		spinner.setBounds(462, 92, 47, 22);
@@ -200,6 +181,69 @@ public class Hello {
 		});
 		btnCheckButton.setBounds(352, 94, 103, 16);
 		btnCheckButton.setText("Sliding Average");
+		
+		
+		Button btnEnter = new Button(composite_3, SWT.NONE);
+		btnEnter.setBounds(275, 213, 75, 21);
+		btnEnter.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				
+				File newFile = new File(text.getText());
+				if (!newFile.exists()) {
+					lblFileDoesNot.setVisible(true);
+					return;
+				}
+				lblFileDoesNot.setVisible(false);
+				Preprocess pre = null;
+				
+				//try {
+					float freq = (Float.valueOf(text_1.getText())).floatValue();
+					float hpf = (Float.valueOf(text_2.getText())).floatValue();
+					float lpf = (Float.valueOf(text_3.getText())).floatValue();
+					char slideavg = 'n';
+					int interval = 0;
+				//}
+			
+				
+				try {
+					pre = new Preprocess();
+					
+					if (btnCheckButton.getSelection()) {
+						slideavg = 'y';
+						interval = (Integer.valueOf(spinner.getText())).intValue();
+					}
+					Object[] in = { newFile.getAbsolutePath(), freq, hpf, lpf, slideavg, interval };
+					Object[] result = null;
+					result = pre.preprocess_2013(2,in);
+					MWNumericArray HbInfo = (MWNumericArray)result[0];
+					//System.out.println(HbInfo.getDimensions()[0]);
+					//System.out.println(HbInfo.getDimensions()[1]);
+					File HbFile = new File("Hb");
+					File HbOFile = new File("HbO");
+						
+					Subject newSubject = new Subject(newFile,HbFile,HbOFile);
+					
+					subjectMap.put("Subject "+subjectNumber.toString(), newSubject);
+
+					list.add("Subject "+subjectNumber.toString());
+				
+					text_4.setText("");
+					text_5.setText("");
+						
+					subjectNumber = subjectNumber + 1;
+						
+				} catch (MWException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+					
+			}
+
+		});
+		btnEnter.setText("Add");
+		
+		text = new Text(composite_3, SWT.BORDER);
+		text.setBounds(107, 8, 415, 21);
 		
 		Label lblDataFile = new Label(composite_3, SWT.NONE);
 		lblDataFile.setBounds(46, 11, 55, 15);

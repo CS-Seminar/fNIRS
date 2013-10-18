@@ -17,6 +17,12 @@ public class Subject {
 		origFile = orig;
 	}
 	
+	Subject(File orig, File Hb, File HbO) {
+		origFile = orig;
+		HbFile = Hb;	
+		HbOFile = HbO;
+	}
+	
 	Subject(File Hb, File HbO) {
 		origFile = null;
 		HbFile = Hb;	
