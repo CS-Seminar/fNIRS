@@ -2,6 +2,11 @@ package fNIRs;
 
 import java.io.File;
 
+import com.mathworks.toolbox.javabuilder.MWException;
+import com.mathworks.toolbox.javabuilder.MWNumericArray;
+
+import preprocess_2013.Preprocess;
+
 public class Subject {
 	
 	String name;
@@ -23,7 +28,8 @@ public class Subject {
 		HbOFile = HbO;
 	}
 	
-	Subject(File Hb, File HbO) {
+	Subject(String filename, File Hb, File HbO) {
+		name = filename;
 		origFile = null;
 		HbFile = Hb;	
 		HbOFile = HbO;
@@ -59,6 +65,21 @@ public class Subject {
 	
 	File getHbOFile() {
 		return HbOFile;
+	}
+	
+	void preprocess( Preprocess pre, double freq, double hpf, double lpf, char slideavg, int interval) {
+		
+		try {
+			Object[] in = { origFile.toString(), freq, hpf, lpf, slideavg, interval };
+			Object[] result = null;
+			result = pre.preprocess_2013(2,in);
+			MWNumericArray HbInfo = (MWNumericArray)result[0];
+			this.HbFile = new File("Hb");
+			this.HbOFile = new File("HbO");
+		} catch (MWException e1) {
+			e1.printStackTrace();
+		}
+			
 	}
 
 }

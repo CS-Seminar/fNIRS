@@ -37,12 +37,14 @@ public class Hello {
 	private static ArrayList<Integer> indexList;
 	private static HashMap<String,Subject> subjectMap;
 	private Text text;
-	private static Integer subjectNumber;
 	private Text text_1;
 	private Text text_2;
 	private Text text_3;
 	private Text text_4;
 	private Text text_5;
+	private Text text_subName;
+	private static Preprocess pre;
+	private Text text_subName2;
 
 	/**
 	 * Launch the application.
@@ -53,7 +55,7 @@ public class Hello {
 			Hello window = new Hello();
 			indexList = new ArrayList<Integer>();
 			subjectMap = new HashMap<String,Subject>();
-			subjectNumber = 1;
+			pre = new Preprocess();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -134,10 +136,6 @@ public class Hello {
 		
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		tbtmLoadFiles.setControl(composite);
-		
-	//	final Composite composite_3 = new Composite(composite, SWT.NONE);
-	//	composite_3.setBounds(10, 96, 694, 254);
-	//	composite_3.setVisible(false);
 
 		TabFolder tabFolder_1 = new TabFolder(composite, SWT.NONE);
 		tabFolder_1.setBounds(10, 10, 718, 474);
@@ -182,9 +180,16 @@ public class Hello {
 		btnCheckButton.setBounds(352, 94, 103, 16);
 		btnCheckButton.setText("Sliding Average");
 		
+		Label lblSubjectName = new Label(composite_3, SWT.NONE);
+		lblSubjectName.setBounds(60, 197, 83, 15);
+		lblSubjectName.setText("Subject Name:");
+		
+		text_subName = new Text(composite_3, SWT.BORDER);
+		text_subName.setBounds(162, 197, 110, 21);
+		
 		
 		Button btnEnter = new Button(composite_3, SWT.NONE);
-		btnEnter.setBounds(275, 213, 75, 21);
+		btnEnter.setBounds(275, 247, 75, 21);
 		btnEnter.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				
@@ -194,48 +199,30 @@ public class Hello {
 					return;
 				}
 				lblFileDoesNot.setVisible(false);
-				Preprocess pre = null;
 				
-				//try {
-					float freq = (Float.valueOf(text_1.getText())).floatValue();
-					float hpf = (Float.valueOf(text_2.getText())).floatValue();
-					float lpf = (Float.valueOf(text_3.getText())).floatValue();
-					char slideavg = 'n';
-					int interval = 0;
-				//}
-			
+				double freq = (Double.valueOf(text_1.getText())).doubleValue();
+				double hpf = (Double.valueOf(text_2.getText())).doubleValue();
+				double lpf = (Double.valueOf(text_3.getText())).doubleValue();
+				char slideavg = 'n';
+				int interval = 0;
 				
-				try {
-					pre = new Preprocess();
+				String subjectName = text_subName.getText();
+				
 					
-					if (btnCheckButton.getSelection()) {
-						slideavg = 'y';
-						interval = (Integer.valueOf(spinner.getText())).intValue();
-					}
-					Object[] in = { newFile.getAbsolutePath(), freq, hpf, lpf, slideavg, interval };
-					Object[] result = null;
-					result = pre.preprocess_2013(2,in);
-					MWNumericArray HbInfo = (MWNumericArray)result[0];
-					//System.out.println(HbInfo.getDimensions()[0]);
-					//System.out.println(HbInfo.getDimensions()[1]);
-					File HbFile = new File("Hb");
-					File HbOFile = new File("HbO");
-						
-					Subject newSubject = new Subject(newFile,HbFile,HbOFile);
-					
-					subjectMap.put("Subject "+subjectNumber.toString(), newSubject);
-
-					list.add("Subject "+subjectNumber.toString());
-				
-					text_4.setText("");
-					text_5.setText("");
-						
-					subjectNumber = subjectNumber + 1;
-						
-				} catch (MWException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if (btnCheckButton.getSelection()) {
+					slideavg = 'y';
+					interval = (Integer.valueOf(spinner.getText())).intValue();
 				}
+
+				Subject newSubject = new Subject(subjectName, newFile);
+				newSubject.preprocess(pre, freq, hpf, lpf, slideavg, interval);
+					
+				subjectMap.put(subjectName, newSubject);
+
+				list.add(subjectName.toString());
+				
+				text_4.setText("");
+				text_5.setText("");
 					
 			}
 
@@ -331,34 +318,14 @@ public class Hello {
 		lblHbFile.setText("Hb File:");
 		
 		Button btnAdd = new Button(composite_4, SWT.NONE);
-		btnAdd.setBounds(295, 136, 75, 25);
+		btnAdd.setBounds(295, 184, 75, 25);
 		btnAdd.setText("Add");
-		
-		
 		
 		TabItem tbtmStats = new TabItem(tabFolder, SWT.NONE);
 		tbtmStats.setText("Statistical Analysis");
 		
 		Composite composite_1 = new Composite(tabFolder, SWT.NONE);
 		tbtmStats.setControl(composite_1);
-	//	Button btnEnter = new Button(composite_1, SWT.NONE);
-	//	btnEnter.setBounds(275, 213, 75, 21);
-	//	btnEnter.addSelectionListener(new SelectionAdapter() {
-	//		public void widgetSelected(SelectionEvent e) {
-	//			File newFile = new File(text.getText());
-	//			if (!newFile.exists()) {
-//	
-//					return;
-//				}
-//				else {
-//		
-//				}
-
-				
-	//		}
-	//	});
-	//	btnEnter.setText("Add");
-
 		
 		TabItem tbtmMachineLearning = new TabItem(tabFolder, SWT.NONE);
 		tbtmMachineLearning.setText("Machine Learning");
@@ -381,41 +348,55 @@ public class Hello {
 		});
 		btnRemove.setBounds(126, 507, 110, 25);
 		btnRemove.setText("Remove Files");
+		
+		Label lblSubjectName2 = new Label(composite_4, SWT.NONE);
+		lblSubjectName2.setBounds(55, 133, 84, 15);
+		lblSubjectName2.setText("Subject Name:");
+		
+		text_subName2 = new Text(composite_4, SWT.BORDER);
+		text_subName2.setBounds(145, 133, 144, 21);
+		
+		final Label lblFileDoesNot_1 = new Label(composite_4, SWT.NONE);
+		lblFileDoesNot_1.setBounds(203, 59, 105, 15);
+		lblFileDoesNot_1.setText("File Does Not Exist");
+		lblFileDoesNot_1.setVisible(false);
+		
+		final Label lblFileDoesNot_2 = new Label(composite_4, SWT.NONE);
+		lblFileDoesNot_2.setText("File Does Not Exist");
+		lblFileDoesNot_2.setBounds(203, 109, 105, 15);
+		lblFileDoesNot_2.setVisible(false);
 
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				File HbFile = new File(text_4.getText());
 				if (!HbFile.exists()) {
-					//lblFileDoesNot.setVisible(true);
+					lblFileDoesNot_1.setVisible(true);
 					return;
 				}
 				else {
-					//lblFileDoesNot.setVisible(false);
+					lblFileDoesNot_1.setVisible(false);
 				}
 				
 				File HbOFile = new File(text_5.getText());
 				if (!HbOFile.exists()) {
-					//lblFileDoesNot.setVisible(true);
+					lblFileDoesNot_2.setVisible(true);
 					return;
 				}
 				else {
-					//lblFileDoesNot.setVisible(false);
+					lblFileDoesNot_2.setVisible(false);
 				}
 
+				String subjectName = text_subName2.getText();
 
+				Subject newSubject = new Subject(subjectName, HbFile,HbOFile);
 				
-				
-				Subject newSubject = new Subject(HbFile,HbOFile);
-				
-				subjectMap.put("Subject "+subjectNumber.toString(), newSubject);
+				subjectMap.put(subjectName, newSubject);
 
-				list.add("Subject "+subjectNumber.toString());
+				list.add(subjectName);
 		
 				text_4.setText("");
 				text_5.setText("");
-				
-				subjectNumber = subjectNumber + 1;
 				
 			}
 		});
@@ -424,16 +405,8 @@ public class Hello {
 		tbtmNewItem_2.setText("Hatachi");
 		tbtmNewItem_2.setControl(composite_4);
 		
-
-		
 		TabItem tbtmNewItem_1 = new TabItem(tabFolder_1, SWT.NONE);
 		tbtmNewItem_1.setText("Other");
 		
-	
-		
-
-
-
-
 	}
 }
