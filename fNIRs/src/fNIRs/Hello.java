@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
@@ -30,7 +29,6 @@ import org.eclipse.swt.widgets.Composite;
 import com.mathworks.toolbox.javabuilder.*;
 
 import preprocess_2013.Preprocess;
-
 public class Hello {
 
 	protected Shell shlFnirsDataProcessing;
@@ -82,6 +80,7 @@ public class Hello {
 	 */
 	protected void createContents() {
 		shlFnirsDataProcessing = new Shell();
+		shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/logotest.jpg"));
 		shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		shlFnirsDataProcessing.setSize(1000, 600);
 		shlFnirsDataProcessing.setText("fNIRs Data Processing and Analysis");
@@ -221,8 +220,8 @@ public class Hello {
 
 				list.add(subjectName.toString());
 				
-				text_4.setText("");
-				text_5.setText("");
+				text.setText("");
+				text_subName.setText("");
 					
 			}
 
@@ -237,6 +236,7 @@ public class Hello {
 		lblDataFile.setText("Data File:");
 		
 		text_1 = new Text(composite_3, SWT.BORDER);
+		text_1.setText("2");
 		text_1.setBounds(239, 92, 33, 21);
 		
 		Label lblNewLabel = new Label(composite_3, SWT.NONE);
@@ -328,7 +328,7 @@ public class Hello {
 		tbtmStats.setControl(composite_1);
 		
 		TabItem tbtmMachineLearning = new TabItem(tabFolder, SWT.NONE);
-		tbtmMachineLearning.setText("Machine Learning");
+		tbtmMachineLearning.setText("Data Mining");
 		
 		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 		tbtmMachineLearning.setControl(composite_2);
@@ -397,16 +397,14 @@ public class Hello {
 		
 				text_4.setText("");
 				text_5.setText("");
+				text_subName2.setText("");
 				
 			}
 		});
 		
 		TabItem tbtmNewItem_2 = new TabItem(tabFolder_1, SWT.NONE);
-		tbtmNewItem_2.setText("Hatachi");
+		tbtmNewItem_2.setText("Hatachi/Other");
 		tbtmNewItem_2.setControl(composite_4);
-		
-		TabItem tbtmNewItem_1 = new TabItem(tabFolder_1, SWT.NONE);
-		tbtmNewItem_1.setText("Other");
 		
 	}
 }

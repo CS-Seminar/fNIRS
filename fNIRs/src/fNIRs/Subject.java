@@ -3,7 +3,6 @@ package fNIRs;
 import java.io.File;
 
 import com.mathworks.toolbox.javabuilder.MWException;
-import com.mathworks.toolbox.javabuilder.MWNumericArray;
 
 import preprocess_2013.Preprocess;
 
@@ -19,6 +18,8 @@ public class Subject {
 	
 	Subject(String name, File orig) {
 		this.name = name;
+		File dir = new File(System.getProperty("user.dir") + "\\" + name);
+		dir.mkdir();
 		origFile = orig;
 	}
 	
@@ -30,8 +31,13 @@ public class Subject {
 	
 	Subject(String filename, File Hb, File HbO) {
 		name = filename;
+		String path = System.getProperty("user.dir") + "\\" + name;
+		File dir = new File(path);
+		dir.mkdir();
 		origFile = null;
-		HbFile = Hb;	
+		Hb.renameTo(new File(path + "\\Hb"));
+		HbO.renameTo(new File(path + "\\HbO"));
+		HbFile = Hb;
 		HbOFile = HbO;
 	}
 	
@@ -71,11 +77,14 @@ public class Subject {
 		
 		try {
 			Object[] in = { origFile.toString(), freq, hpf, lpf, slideavg, interval };
-			Object[] result = null;
-			result = pre.preprocess_2013(2,in);
-			MWNumericArray HbInfo = (MWNumericArray)result[0];
-			this.HbFile = new File("Hb");
-			this.HbOFile = new File("HbO");
+			pre.preprocess_2013(in);
+			File hbFile = new File("Hb");
+			File hboFile = new File("HbO");
+			String path = hbFile.getAbsolutePath().substring(0,hbFile.getAbsolutePath().length()-2);
+			hbFile.renameTo(new File(path + "\\" + name + "\\Hb"));
+			hboFile.renameTo(new File(path + "\\" + name + "\\HbO"));
+			this.HbFile = hbFile;
+			this.HbOFile = hboFile;
 		} catch (MWException e1) {
 			e1.printStackTrace();
 		}
