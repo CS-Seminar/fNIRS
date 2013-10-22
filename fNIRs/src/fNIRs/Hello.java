@@ -188,6 +188,11 @@ public class Hello {
 		lblSubjectName.setBounds(60, 197, 83, 15);
 		lblSubjectName.setText("Subject Name:");
 		
+		final Label lblChooseANew = new Label(composite_3, SWT.NONE);
+		lblChooseANew.setBounds(295, 197, 110, 15);
+		lblChooseANew.setText("Choose a new name");
+		lblChooseANew.setVisible(false);
+		
 		text_subName = new Text(composite_3, SWT.BORDER);
 		text_subName.setBounds(162, 197, 110, 21);
 		
@@ -225,6 +230,11 @@ public class Hello {
 				
 				String subjectName = text_subName.getText();
 				
+				if (subjectName == "" || subjectMap.containsKey(subjectName)) {
+					lblChooseANew.setVisible(true);
+					return;
+				}
+				lblChooseANew.setVisible(false);
 					
 				if (btnCheckButton.getSelection()) {
 					slideavg = 'y';
@@ -383,6 +393,11 @@ public class Hello {
 		lblFileDoesNot_2.setText("File Does Not Exist");
 		lblFileDoesNot_2.setBounds(203, 109, 105, 15);
 		lblFileDoesNot_2.setVisible(false);
+		
+		final Label lblChooseANew_1 = new Label(composite_4, SWT.NONE);
+		lblChooseANew_1.setBounds(315, 133, 155, 15);
+		lblChooseANew_1.setText("Choose a new subject name");
+		lblChooseANew_1.setVisible(false);
 
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -406,8 +421,14 @@ public class Hello {
 				}
 
 				String subjectName = text_subName2.getText();
+				
+				if (subjectName == "" || subjectMap.containsKey(subjectName)) {
+					lblChooseANew_1.setVisible(true);
+					return;
+				}
+				lblChooseANew_1.setVisible(false);
 
-				Subject newSubject = new Subject(subjectName, HbFile,HbOFile);
+				Subject newSubject = new Subject(subjectName, HbFile, HbOFile);
 				
 				subjectMap.put(subjectName, newSubject);
 
