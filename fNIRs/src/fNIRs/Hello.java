@@ -166,6 +166,11 @@ public class Hello {
 		spinner.setEnabled(false);
 		spinner.setBounds(462, 92, 47, 22);
 		
+		final Label lblPleaseFillIn = new Label(composite_3, SWT.NONE);
+		lblPleaseFillIn.setBounds(363, 138, 147, 15);
+		lblPleaseFillIn.setText("Please fill in all frequencies");
+		lblPleaseFillIn.setVisible(false);
+		
 		final Button btnCheckButton = new Button(composite_3, SWT.CHECK);
 		btnCheckButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -199,9 +204,22 @@ public class Hello {
 				}
 				lblFileDoesNot.setVisible(false);
 				
-				double freq = (Double.valueOf(text_1.getText())).doubleValue();
-				double hpf = (Double.valueOf(text_2.getText())).doubleValue();
-				double lpf = (Double.valueOf(text_3.getText())).doubleValue();
+				double freq;
+				double hpf;
+				double lpf;
+				
+				try {
+					freq = (Double.valueOf(text_1.getText())).doubleValue();
+					hpf = (Double.valueOf(text_2.getText())).doubleValue();
+					lpf = (Double.valueOf(text_3.getText())).doubleValue();
+				}
+				catch (NumberFormatException e1) {
+					lblPleaseFillIn.setVisible(true);
+					return;
+				}
+				
+				lblPleaseFillIn.setVisible(false);
+				
 				char slideavg = 'n';
 				int interval = 0;
 				
