@@ -321,7 +321,8 @@ public class Hello {
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
 				String fileName = fileDialog.open();
-				text_4.setText(fileName);
+				if (fileName!=null)
+					text_4.setText(fileName);
 			}
 		});
 		btnNewButton.setText("Browse");
