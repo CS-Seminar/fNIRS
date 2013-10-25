@@ -333,7 +333,8 @@ public class Hello {
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
 				String fileName = fileDialog.open();
-				text_5.setText(fileName);
+				if (fileName!=null)
+					text_5.setText(fileName);
 			}
 		});
 		btnBrowse_1.setText("Browse");
