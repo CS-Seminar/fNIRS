@@ -34,6 +34,7 @@ public class Hello {
 	protected Shell shlFnirsDataProcessing;
 	private static ArrayList<Integer> indexList;
 	private static HashMap<String,Subject> subjectMap;
+	private static Workspace workspace;
 	private Text text;
 	private Text text_1;
 	private Text text_2;
@@ -54,6 +55,8 @@ public class Hello {
 			indexList = new ArrayList<Integer>();
 			subjectMap = new HashMap<String,Subject>();
 			pre = new Preprocess();
+			workspace = new Workspace("C:\\Users\\shammond\\Desktop\\CS_Seminar\\fNIRs\\workspace");
+			subjectMap = workspace.loadSubjects(subjectMap);
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -103,6 +106,10 @@ public class Hello {
 				list.select(indices);
 			}
 		});
+		for (String file : subjectMap.keySet()) {
+			list.add(file);
+		}
+		
 		
 		Menu menu = new Menu(shlFnirsDataProcessing, SWT.BAR);
 		shlFnirsDataProcessing.setMenuBar(menu);
@@ -242,7 +249,7 @@ public class Hello {
 					interval = (Integer.valueOf(spinner.getText())).intValue();
 				}
 
-				Subject newSubject = new Subject(subjectName, newFile);
+				Subject newSubject = new Subject(subjectName, newFile, workspace);
 				newSubject.preprocess(pre, freq, hpf, lpf, slideavg, interval);
 					
 				subjectMap.put(subjectName, newSubject);
@@ -431,7 +438,7 @@ public class Hello {
 				}
 				lblChooseANew_1.setVisible(false);
 
-				Subject newSubject = new Subject(subjectName, HbFile, HbOFile);
+				Subject newSubject = new Subject(subjectName, HbFile, HbOFile, workspace);
 				
 				subjectMap.put(subjectName, newSubject);
 
