@@ -27,6 +27,8 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
 
+import com.rapidminer.operator.OperatorException;
+
 public class Hello {
 
 	protected Shell shlFnirsDataProcessing;
@@ -39,6 +41,8 @@ public class Hello {
 	private Text text_3;
 	private Text text_4;
 	private Text text_5;
+	
+	private static RapidDriver rapidDriver;
 
 	/**
 	 * Launch the application.
@@ -50,6 +54,7 @@ public class Hello {
 			indexList = new ArrayList<Integer>();
 			subjectMap = new HashMap<String,Subject>();
 			subjectNumber = 1;
+			rapidDriver = new RapidDriver();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -216,6 +221,21 @@ public class Hello {
 		
 		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 		tbtmMachineLearning.setControl(composite_2);
+		
+		Button btnNewButton_1 = new Button(composite_2, SWT.NONE);
+		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				try {
+					rapidDriver.run();
+				} catch (OperatorException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton_1.setBounds(46, 173, 75, 25);
+		btnNewButton_1.setText("Run Process");
 		
 		Button btnRemove = new Button(shlFnirsDataProcessing, SWT.NONE);
 		btnRemove.addSelectionListener(new SelectionAdapter() {

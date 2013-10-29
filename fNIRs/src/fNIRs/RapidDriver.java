@@ -11,14 +11,27 @@ import com.rapidminer.tools.XMLException;
 
 public class RapidDriver {
 
+	//Workspace Dir
+	Process process;
 	
-	public static void main(String[] argv) throws Exception {
+	RapidDriver() throws IOException, XMLException{
+		//Initialize Rapid Miner and create process specified in process file 
 		//Running within another program		
-		RapidMiner.setExecutionMode(ExecutionMode.EMBEDDED_WITHOUT_UI);
-	    
+		RapidMiner.setExecutionMode(ExecutionMode.EMBEDDED_WITHOUT_UI);	
+		File myFile = new File("./src/fNirs/process");
 
-//		String rapidMinerHome = "C:\\Program Files\\Rapid-I\\RapidMiner5\\lib";
-		System.out.println(System.getProperty("user.dir"));
+		// MUST BE INVOKED BEFORE ANYTHING ELSE !!!
+		RapidMiner.init();
+	    // create the process from the process file
+		this.process = new Process(myFile);
+
+	}
+	void run() throws OperatorException{
+		this.process.run();
+	}
+/*	public static void main(String[] argv) throws Exception {
+		//		String rapidMinerHome = "C:\\Program Files\\Rapid-I\\RapidMiner5\\lib";
+		//System.out.println(System.getProperty("user.dir"));
 		
 		//		String rapidMinerHome = "/fNIRs";
 //		System.setProperty("rapidminer.home", rapidMinerHome);
@@ -36,5 +49,5 @@ public class RapidDriver {
 	    // run the process on the input
 	    process.run();
 	}
-	
+*/	
 }
