@@ -45,7 +45,7 @@ public class Hello {
 	private static Preprocess pre;
 	private Text text_subName2;
 
-	/**
+	/*
 	 * Launch the application.
 	 * @param args
 	 */
@@ -55,7 +55,7 @@ public class Hello {
 			indexList = new ArrayList<Integer>();
 			subjectMap = new HashMap<String,Subject>();
 			pre = new Preprocess();
-			workspace = new Workspace("C:\\Users\\shammond\\Desktop\\CS_Seminar\\fNIRs\\workspace");
+			workspace = new Workspace("C:\\Users\\dgong\\Desktop\\workspace");
 			subjectMap = workspace.loadSubjects(subjectMap);
 			window.open();
 		} catch (Exception e) {
@@ -87,6 +87,11 @@ public class Hello {
 		shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		shlFnirsDataProcessing.setSize(1000, 600);
 		shlFnirsDataProcessing.setText("fNIRs Data Processing and Analysis");
+		
+		FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing);
+	    fileDialog.setText("Select File");
+	    String selected = fileDialog.open();
+	    System.out.println(selected);
 		
 		final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		list.setBounds(10, 10, 226, 491);
