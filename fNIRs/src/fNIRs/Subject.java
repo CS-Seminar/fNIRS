@@ -4,7 +4,7 @@ import java.io.File;
 
 import com.mathworks.toolbox.javabuilder.MWException;
 
-import preprocess_2013.Preprocess;
+import preprocess_2.Preprocess;
 
 public class Subject {
 	
@@ -32,7 +32,7 @@ public class Subject {
 	Subject(String filename, File Hb, File HbO, Workspace space) {
 		name = filename;
 		workspace = space;
-		workspace.addSubject(name, Hb, HbO);
+		//workspace.addSubject(name, Hb, HbO);
 		origFile = null;
 		HbFile = workspace.getHb(name);
 		HbOFile = workspace.getHbO(name);
@@ -77,7 +77,7 @@ public class Subject {
 			pre.preprocess_2013(in);
 			File hbFile = new File("Hb");
 			File hboFile = new File("HbO");
-			workspace.addSubject(name, hbFile, hboFile);
+			//workspace.addSubject(name, hbFile, hboFile);
 			this.HbFile = workspace.getHb(name);
 			this.HbOFile = workspace.getHbO(name);
 		} catch (MWException e1) {
