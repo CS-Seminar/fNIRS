@@ -27,10 +27,14 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
-
 import com.mathworks.toolbox.javabuilder.*;
 
 import preprocess_2.Preprocess;
+import org.eclipse.swt.*;
+import org.eclipse.swt.events.*;
+import org.eclipse.swt.layout.*;
+import org.eclipse.swt.widgets.*;
+
 public class Hello {
 
 	protected Shell shlFnirsDataProcessing;
@@ -58,7 +62,7 @@ public class Hello {
 			Hello window = new Hello();
 			indexList = new ArrayList<Integer>();
 			pre = new Preprocess();
-			workspace = new Workspace("C:\\Users\\shammond\\Desktop\\CS_Seminar\\fNIRs\\workspace", pre);
+			//workspace = new Workspace("C:\\Users\\shammond\\Desktop\\CS_Seminar\\fNIRs\\workspace", pre);
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,17 +105,18 @@ public class Hello {
 	 */
 	protected void createContents() {
 		shlFnirsDataProcessing = new Shell();
-		shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/logotest.jpg"));
+		shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/logo.png"));
 		shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		shlFnirsDataProcessing.setSize(1000, 600);
 		shlFnirsDataProcessing.setText("fNIRs Data Processing and Analysis");
 		
 		fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
 		
-		FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing);
-	    fileDialog.setText("Select File");
-	    String selected = fileDialog.open();
-	    System.out.println(selected);
+		DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing);
+		dlg.setText("Select Workspace");
+	    String selected = dlg.open(); // cannot seem to name New Folder for some reason
+	    //System.out.println(selected);
+	    workspace = new Workspace(selected,pre);
 		
 		final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		list.setBounds(10, 10, 226, 491);
