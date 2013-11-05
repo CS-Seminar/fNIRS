@@ -55,7 +55,7 @@ public class Hello {
 			indexList = new ArrayList<Integer>();
 			subjectMap = new HashMap<String,Subject>();
 			pre = new Preprocess();
-			workspace = new Workspace("C:\\Users\\dgong\\Desktop\\workspace");
+			workspace = new Workspace("C:\\Users\\shammond\\Desktop\\CS_Seminar\\fNIRs\\workspace");
 			subjectMap = workspace.loadSubjects(subjectMap);
 			window.open();
 		} catch (Exception e) {
