@@ -3,7 +3,9 @@ package fNIRs;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Button;
@@ -28,12 +30,12 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.mathworks.toolbox.javabuilder.*;
 
-import preprocess_2013.Preprocess;
+import preprocess_2.Preprocess;
 public class Hello {
 
 	protected Shell shlFnirsDataProcessing;
 	private static ArrayList<Integer> indexList;
-	private static HashMap<String,Subject> subjectMap;
+	private static Workspace workspace;
 	private Text text;
 	private Text text_1;
 	private Text text_2;
@@ -43,6 +45,9 @@ public class Hello {
 	private Text text_subName;
 	private static Preprocess pre;
 	private Text text_subName2;
+	private Text text_6;
+	private FileDialog fileDialog;
+	private Text text_7;
 
 	/**
 	 * Launch the application.
@@ -52,8 +57,8 @@ public class Hello {
 		try {
 			Hello window = new Hello();
 			indexList = new ArrayList<Integer>();
-			subjectMap = new HashMap<String,Subject>();
 			pre = new Preprocess();
+			workspace = new Workspace("C:\\Users\\shammond\\Desktop\\CS_Seminar\\fNIRs\\workspace", pre);
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,6 +79,22 @@ public class Hello {
 			}
 		}
 	}
+	
+	boolean setExists(File file, Label label) {
+		if (!file.exists()) {
+			label.setVisible(true);
+			return false;
+		}
+		label.setVisible(false);
+		return true;
+	}
+	
+	void browse(Text text) {
+		String fileName = fileDialog.open();
+		if (fileName!=null)
+			text.setText(fileName);
+	}
+	
 
 	/**
 	 * Create contents of the window.
@@ -84,6 +105,8 @@ public class Hello {
 		shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(255, 255, 255));
 		shlFnirsDataProcessing.setSize(1000, 600);
 		shlFnirsDataProcessing.setText("fNIRs Data Processing and Analysis");
+		
+		fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
 		
 		final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		list.setBounds(10, 10, 226, 491);
@@ -103,6 +126,7 @@ public class Hello {
 				list.select(indices);
 			}
 		});
+		workspace.loadSubjects(list);
 		
 		Menu menu = new Menu(shlFnirsDataProcessing, SWT.BAR);
 		shlFnirsDataProcessing.setMenuBar(menu);
@@ -146,19 +170,17 @@ public class Hello {
 		tbtmNewItem.setControl(composite_3);
 		
 		Button btnBrowse = new Button(composite_3, SWT.NONE);
-		btnBrowse.setBounds(528, 8, 75, 21);
+		btnBrowse.setBounds(510, 8, 75, 21);
 		btnBrowse.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
-				String fileName = fileDialog.open();
-				text.setText(fileName);
+				browse(text);
 			}
 		});
 		btnBrowse.setText("Browse");
 		
 		final Label lblFileDoesNot = new Label(composite_3, SWT.NONE);
-		lblFileDoesNot.setBounds(422, 41, 100, 15);
+		lblFileDoesNot.setBounds(600, 11, 100, 15);
 		lblFileDoesNot.setText("File does not exist");
 		lblFileDoesNot.setVisible(false);
 		
@@ -196,6 +218,10 @@ public class Hello {
 		text_subName = new Text(composite_3, SWT.BORDER);
 		text_subName.setBounds(162, 197, 110, 21);
 		
+		final Label label_2 = new Label(composite_3, SWT.NONE);
+		label_2.setVisible(false);
+		label_2.setText("File does not exist");
+		label_2.setBounds(600, 41, 100, 15);
 		
 		Button btnEnter = new Button(composite_3, SWT.NONE);
 		btnEnter.setBounds(275, 247, 75, 21);
@@ -203,11 +229,12 @@ public class Hello {
 			public void widgetSelected(SelectionEvent e) {
 				
 				File newFile = new File(text.getText());
-				if (!newFile.exists()) {
-					lblFileDoesNot.setVisible(true);
+				if (!setExists(newFile,lblFileDoesNot))
 					return;
-				}
-				lblFileDoesNot.setVisible(false);
+				
+				File condFile = new File(text_6.getText());
+				if (!setExists(condFile,label_2))
+					return;
 				
 				double freq;
 				double hpf;
@@ -230,7 +257,7 @@ public class Hello {
 				
 				String subjectName = text_subName.getText();
 				
-				if (subjectName == "" || subjectMap.containsKey(subjectName)) {
+				if (subjectName == "" || Arrays.asList(list.getItems()).contains(subjectName)) {
 					lblChooseANew.setVisible(true);
 					return;
 				}
@@ -240,24 +267,20 @@ public class Hello {
 					slideavg = 'y';
 					interval = (Integer.valueOf(spinner.getText())).intValue();
 				}
-
-				Subject newSubject = new Subject(subjectName, newFile);
-				newSubject.preprocess(pre, freq, hpf, lpf, slideavg, interval);
-					
-				subjectMap.put(subjectName, newSubject);
-
-				list.add(subjectName.toString());
+				
+				workspace.addSubject(subjectName, newFile, condFile, freq, hpf, lpf, slideavg, interval);
+				list.add(subjectName);
 				
 				text.setText("");
 				text_subName.setText("");
-					
+				text_6.setText("");
 			}
 
 		});
 		btnEnter.setText("Add");
 		
 		text = new Text(composite_3, SWT.BORDER);
-		text.setBounds(107, 8, 415, 21);
+		text.setBounds(107, 8, 397, 21);
 		
 		Label lblDataFile = new Label(composite_3, SWT.NONE);
 		lblDataFile.setBounds(46, 11, 55, 15);
@@ -303,6 +326,23 @@ public class Hello {
 		lblPreprocessingOptions.setBounds(60, 74, 130, 15);
 		lblPreprocessingOptions.setText("Preprocessing Options:");
 		
+		Label lblConditionsFile = new Label(composite_3, SWT.NONE);
+		lblConditionsFile.setBounds(46, 41, 90, 15);
+		lblConditionsFile.setText("Conditions File:");
+		
+		text_6 = new Text(composite_3, SWT.BORDER);
+		text_6.setBounds(142, 41, 361, 21);
+		
+		Button button = new Button(composite_3, SWT.NONE);
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				browse(text_6);
+			}
+		});
+		button.setText("Browse");
+		button.setBounds(510, 41, 75, 21);
+		
 		final Composite composite_4 = new Composite(tabFolder_1, SWT.NONE);
 		composite_4.setBounds(10, 96, 694, 254);
 		composite_4.setVisible(false);
@@ -318,9 +358,7 @@ public class Hello {
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
-				String fileName = fileDialog.open();
-				text_4.setText(fileName);
+				browse(text_4);
 			}
 		});
 		btnNewButton.setText("Browse");
@@ -330,9 +368,7 @@ public class Hello {
 		btnBrowse_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				FileDialog fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
-				String fileName = fileDialog.open();
-				text_5.setText(fileName);
+				browse(text_5);
 			}
 		});
 		btnBrowse_1.setText("Browse");
@@ -346,7 +382,7 @@ public class Hello {
 		lblHbFile.setText("Hb File:");
 		
 		Button btnAdd = new Button(composite_4, SWT.NONE);
-		btnAdd.setBounds(295, 184, 75, 25);
+		btnAdd.setBounds(295, 222, 75, 25);
 		btnAdd.setText("Add");
 		
 		TabItem tbtmStats = new TabItem(tabFolder, SWT.NONE);
@@ -378,11 +414,11 @@ public class Hello {
 		btnRemove.setText("Remove Files");
 		
 		Label lblSubjectName2 = new Label(composite_4, SWT.NONE);
-		lblSubjectName2.setBounds(55, 133, 84, 15);
+		lblSubjectName2.setBounds(55, 183, 84, 15);
 		lblSubjectName2.setText("Subject Name:");
 		
 		text_subName2 = new Text(composite_4, SWT.BORDER);
-		text_subName2.setBounds(145, 133, 144, 21);
+		text_subName2.setBounds(145, 180, 144, 21);
 		
 		final Label lblFileDoesNot_1 = new Label(composite_4, SWT.NONE);
 		lblFileDoesNot_1.setBounds(203, 59, 105, 15);
@@ -395,47 +431,79 @@ public class Hello {
 		lblFileDoesNot_2.setVisible(false);
 		
 		final Label lblChooseANew_1 = new Label(composite_4, SWT.NONE);
-		lblChooseANew_1.setBounds(315, 133, 155, 15);
+		lblChooseANew_1.setBounds(312, 183, 155, 15);
 		lblChooseANew_1.setText("Choose a new subject name");
 		lblChooseANew_1.setVisible(false);
+		
+		final Spinner spinner_1 = new Spinner(composite_4, SWT.BORDER);
+		spinner_1.setBounds(557, 56, 47, 22);
+		
+		Label lblNumberOfChannels = new Label(composite_4, SWT.NONE);
+		lblNumberOfChannels.setBounds(436, 59, 115, 15);
+		lblNumberOfChannels.setText("Number of Channels:");
+		
+		final Label label_4 = new Label(composite_4, SWT.NONE);
+		label_4.setVisible(false);
+		label_4.setText("File Does Not Exist");
+		label_4.setBounds(203, 159, 105, 15);
 
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				File HbFile = new File(text_4.getText());
-				if (!HbFile.exists()) {
-					lblFileDoesNot_1.setVisible(true);
+				
+				File condFile = new File(text_7.getText());
+				if (!setExists(condFile,label_4))
 					return;
-				}
-				else {
-					lblFileDoesNot_1.setVisible(false);
+				
+				int channels = (Integer.valueOf(spinner_1.getText())).intValue();
+				
+				File HbFile = new File(text_4.getText());
+				File HbOFile = new File(text_5.getText());
+				
+				if (text_4.getText()!="")
+					if (!setExists(HbFile,lblFileDoesNot_1))
+						return;
+				
+				if (text_5.getText()!="")
+					if (!setExists(HbOFile,lblFileDoesNot_2))
+						return;
+				
+				if (!HbFile.exists() && !HbOFile.exists()) {
+					return;
 				}
 				
-				File HbOFile = new File(text_5.getText());
-				if (!HbOFile.exists()) {
-					lblFileDoesNot_2.setVisible(true);
-					return;
-				}
-				else {
-					lblFileDoesNot_2.setVisible(false);
-				}
-
 				String subjectName = text_subName2.getText();
 				
-				if (subjectName == "" || subjectMap.containsKey(subjectName)) {
+				if (subjectName == "" || Arrays.asList(list.getItems()).contains(subjectName)) {
 					lblChooseANew_1.setVisible(true);
 					return;
 				}
 				lblChooseANew_1.setVisible(false);
 
-				Subject newSubject = new Subject(subjectName, HbFile, HbOFile);
+				if (HbFile.exists()) {
+					try {
+						pre.xlsreadfile(HbFile.getAbsolutePath(), "Hb", channels);
+						HbFile = new File("Hb");
+					} catch (MWException e1) {
+						e1.printStackTrace();
+					}
+				}
 				
-				subjectMap.put(subjectName, newSubject);
+				if (HbOFile.exists()) {
+					try {
+						pre.xlsreadfile(HbOFile.getAbsolutePath(), "HbO", channels);
+						HbOFile = new File("HbO");
+					} catch (MWException e1) {
+						e1.printStackTrace();
+					}
+				}
 
+				workspace.addSubject(subjectName, HbFile, HbOFile, condFile);
 				list.add(subjectName);
-		
+				
 				text_4.setText("");
 				text_5.setText("");
+				text_7.setText("");
 				text_subName2.setText("");
 				
 			}
@@ -445,5 +513,21 @@ public class Hello {
 		tbtmNewItem_2.setText("Hatachi/Other");
 		tbtmNewItem_2.setControl(composite_4);
 		
+		Label label_3 = new Label(composite_4, SWT.NONE);
+		label_3.setText("Conditions File:");
+		label_3.setBounds(38, 133, 90, 15);
+		
+		text_7 = new Text(composite_4, SWT.BORDER);
+		text_7.setBounds(135, 130, 155, 21);
+		
+		Button button_1 = new Button(composite_4, SWT.NONE);
+		button_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				browse(text_7);
+			}
+		});
+		button_1.setText("Browse");
+		button_1.setBounds(295, 126, 75, 25);
 	}
 }
