@@ -40,6 +40,8 @@ import java.io.BufferedReader; // for making the Scanner
 //import java.util.Collection; // for sillily general Group constructor
 import java.util.List; // for generalized findNextOccurrence method
 
+// import HelloWorldNick.GroupedChannels; // WUT
+
 public class StatsPreprocessing {
     private static void error(String errMsg){
 	System.out.println("Error: " + errMsg + ".");
@@ -609,5 +611,76 @@ public class StatsPreprocessing {
 	for (int i = 0; i < lst.size(); i++) {
 	    System.out.println(i + "\t " + lst.get(i));
 	}
+    }
+    public static void main(String[] args) {
+	// think about saving things so it will be quicker for the user
+	// Prepare to read files: (the GUI will give these files somehow)
+	//File dataFile = new File("/home/nkolesar/cs410-Senior-Seminar/Zombie_MiNIR/linux-version/testHb");
+	File dataFile = new File("C:/Users/nkolesar/Desktop/sub19/testHb");
+	int numChannels = 8; // number of channels in the input file (GUI)	
+	//File groupFile = new File("/home/nkolesar/cs410-Senior-Seminar/Zombie_MiNIR/linux-version/groups");
+	File groupFile = new File("C:/Users/nkolesar/Desktop/sub19/groups");
+	
+	//--------------------------------------------------------------------//
+	//                  CLASS TESTING: Groups classes                     //
+	//--------------------------------------------------------------------//
+	System.out.println("Reading group information.");
+	// read channel grouping information:
+	GroupedChannels groups = new GroupedChannels(numChannels,
+						     groupFile,
+						     dataFile);
+	//groups.printChannels();
+	System.out.println("-------------------------------------------------");
+
+	groups.print("first");
+	int cond = 1;
+	System.out.println("Average sequence for condition " + cond + " is:");
+	print(groups.getGroup("first").getData(cond));
+
+	System.out.println("-------------------------------------------------");
+
+	groups.print("second");
+	System.out.println("Average sequence for condition " + cond + " is:");	
+	groups.getGroup("second").getData(1);
+
+	System.out.println("-------------------------------------------------");
+
+	groups.print("all_chans");
+	System.out.println("Average sequence for condition " + cond + " is:");	
+	groups.getGroup("all_chans").getData(1);
+
+	System.out.println("-------------------------------------------------");
+		
+	System.out.println("Done!");
+
+	System.out.println("-------------------------------------------------");
+
+	ArrayList<String> groupNames = new ArrayList<String>();
+	groupNames.add("first");
+	groupNames.add("second");
+	groupNames.add("all_chans");
+
+	ArrayList<Integer> conditions = new ArrayList<Integer>();
+	conditions.add(1);
+	conditions.add(2);
+	conditions.add(3);
+	
+	ArrayList<ArrayList<GroupedChannels.TaggedDataSequence>> output =
+	    new ArrayList<ArrayList<GroupedChannels.TaggedDataSequence>>();
+	
+	output = groups.getData(groupNames, conditions);
+
+	for (ArrayList<GroupedChannels.TaggedDataSequence> ary :
+		 output) {
+	    for (GroupedChannels.TaggedDataSequence data : ary){
+		data.print();
+	    }
+	}
+	    
+	
+	//--------------------------------------------------------------------//
+	//                  DONE TESTING CLASS: Groups classes                //
+	//--------------------------------------------------------------------//
+	System.exit(0);
     }
 }
