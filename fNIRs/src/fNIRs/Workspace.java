@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 import org.eclipse.swt.widgets.List;
 
@@ -65,20 +66,18 @@ public class Workspace {
 			
 			BufferedReader creader = new BufferedReader(new FileReader(conditions));
 			BufferedReader freader = new BufferedReader(new FileReader(file));
+			Scanner scanner = new Scanner(creader);
 			BufferedWriter fwriter = new BufferedWriter(new FileWriter(tempfile));
-			String cline;
 			String line;
 			int row = 1;
-			String[] vals;
 			int start;
 			int stop;
 			String condition;
 			
-			while ((cline = creader.readLine()) != null) {
-				vals = cline.split(" ");
-				start = Integer.valueOf(vals[0]).intValue();
-				stop = Integer.valueOf(vals[1]).intValue();
-				condition = vals[2];
+			while (scanner.hasNext()) {
+				start = scanner.nextInt();
+				stop = scanner.nextInt();
+				condition = scanner.next();
 				while (row<start) {
 					line = freader.readLine();
 					fwriter.write(line + "\t0");
@@ -100,6 +99,7 @@ public class Workspace {
 			creader.close();
 			freader.close();
 			fwriter.close();
+			scanner.close();
 			
 		} catch(IOException ie) {
 			ie.printStackTrace();
