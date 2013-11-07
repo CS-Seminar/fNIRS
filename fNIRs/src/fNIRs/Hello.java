@@ -120,22 +120,6 @@ public class Hello {
 		
 		final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		list.setBounds(10, 10, 226, 491);
-		list.addSelectionListener(new SelectionAdapter(){
-			public void widgetSelected(SelectionEvent e) {
-				if (indexList.contains(list.getFocusIndex())) {
-					indexList.remove((Object)list.getFocusIndex());
-					list.deselect(list.getFocusIndex());
-				}
-				else {
-					for (Integer item: list.getSelectionIndices())
-						indexList.add(item);
-				}
-				int[] indices = new int[indexList.size()];
-				for (int i=0; i<indexList.size();i++)
-					indices[i] = indexList.get(i);
-				list.select(indices);
-			}
-		});
 		workspace.loadSubjects(list);
 		
 		Menu menu = new Menu(shlFnirsDataProcessing, SWT.BAR);
