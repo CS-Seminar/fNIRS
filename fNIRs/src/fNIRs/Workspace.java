@@ -124,10 +124,24 @@ public class Workspace {
 		}
 		return;
 	}
+
+	void preprocess(File origFile, double freq, double hpf, double lpf, char slideavg, int interval) {
+		try {
+			Object[] in = { origFile.getAbsolutePath(), freq, hpf, lpf, slideavg, interval };
+			pre.preprocess_2013(in);
+		} catch (MWException e1) {
+			e1.printStackTrace();
+		}
+	}
 	
 	void addSubject(String name, File origFile, File condFile, double freq, double hpf, double lpf, char slideavg, int interval) {
 		// adds an ISS Oxyplex subject which requires preprocessing
-		try {
+		preprocess(origFile, freq, hpf, lpf, slideavg, interval);
+		File hbFile = new File("Hb");
+		File hboFile = new File("HbO");
+		addSubject(name, hbFile, hboFile, condFile);
+	
+		/*try {
 			Object[] in = { origFile.getAbsolutePath(), freq, hpf, lpf, slideavg, interval };
 			pre.preprocess_2013(in);
 			File hbFile = new File("Hb");
@@ -135,8 +149,38 @@ public class Workspace {
 			addSubject(name, hbFile, hboFile, condFile);
 		} catch (MWException e1) {
 			e1.printStackTrace();
-		}
+		}*/
 			
+	}
+	
+	void concatSession(String name, File origFile, File condFile, double freq, double hpf, double lpf, char slideavg, int interval) {
+		preprocess(origFile, freq, hpf, lpf, slideavg, interval);
+		File hbFile = new File("Hb");
+		File hboFile = new File("HbO");
+		File tempFile = addConditions(hbFile, condFile);
+		concatFiles(getHb(name),tempFile);
+		tempFile = addConditions(hboFile, condFile);
+		concatFiles(getHbO(name),tempFile);
+		hbFile.delete();
+		hboFile.delete();
+	}
+	
+	void concatFiles(File file, File other) {
+		try {
+			BufferedReader oreader = new BufferedReader(new FileReader(other));
+			BufferedWriter fwriter = new BufferedWriter(new FileWriter(file,true));
+			String line;
+			while((line = oreader.readLine()) != null) {
+				fwriter.write(line);
+				fwriter.newLine();
+			}
+			fwriter.close();
+			oreader.close();
+			other.delete();
+		}
+		catch(IOException ie) {
+			ie.printStackTrace();
+		}
 	}
 
 	File getHb(String name) {
@@ -155,5 +199,14 @@ public class Workspace {
 			return HbOPath;
 		else
 			return null;
+	}
+	
+	public static void main(String[] args) {
+		File first = new File("first.txt");
+		File second = new File("second.txt");
+		
+		Workspace w = new Workspace();
+		
+		w.concatFiles(first,second);
 	}
 }

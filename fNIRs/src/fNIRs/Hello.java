@@ -53,6 +53,9 @@ public class Hello {
 	private Text text_6;
 	private FileDialog fileDialog;
 	private Text text_7;
+	
+	private String subjectName = null;
+	private int sessionNum;
 
 	/*
 	 * Launch the application.
@@ -164,8 +167,10 @@ public class Hello {
 		Composite composite_3 = new Composite(tabFolder_1, SWT.NONE);
 		tbtmNewItem.setControl(composite_3);
 		
+		final ArrayList<Control> loadItems = new ArrayList<Control>();
+		
 		Button btnBrowse = new Button(composite_3, SWT.NONE);
-		btnBrowse.setBounds(510, 8, 75, 21);
+		btnBrowse.setBounds(510, 63, 75, 21);
 		btnBrowse.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -173,18 +178,20 @@ public class Hello {
 			}
 		});
 		btnBrowse.setText("Browse");
+		loadItems.add(btnBrowse);
 		
 		final Label lblFileDoesNot = new Label(composite_3, SWT.NONE);
-		lblFileDoesNot.setBounds(600, 11, 100, 15);
+		lblFileDoesNot.setBounds(591, 66, 100, 15);
 		lblFileDoesNot.setText("File does not exist");
 		lblFileDoesNot.setVisible(false);
 		
 		final Spinner spinner = new Spinner(composite_3, SWT.BORDER);
 		spinner.setEnabled(false);
-		spinner.setBounds(462, 92, 47, 22);
+		spinner.setBounds(461, 181, 47, 22);
+		loadItems.add(spinner);
 		
 		final Label lblPleaseFillIn = new Label(composite_3, SWT.NONE);
-		lblPleaseFillIn.setBounds(363, 138, 147, 15);
+		lblPleaseFillIn.setBounds(352, 230, 147, 15);
 		lblPleaseFillIn.setText("Please fill in all frequencies");
 		lblPleaseFillIn.setVisible(false);
 		
@@ -198,28 +205,38 @@ public class Hello {
 					spinner.setEnabled(false);
 			}
 		});
-		btnCheckButton.setBounds(352, 94, 103, 16);
+		btnCheckButton.setBounds(352, 183, 103, 16);
 		btnCheckButton.setText("Sliding Average");
+		loadItems.add(btnCheckButton);
 		
 		Label lblSubjectName = new Label(composite_3, SWT.NONE);
-		lblSubjectName.setBounds(60, 197, 83, 15);
+		lblSubjectName.setBounds(76, 23, 83, 15);
 		lblSubjectName.setText("Subject Name:");
 		
 		final Label lblChooseANew = new Label(composite_3, SWT.NONE);
-		lblChooseANew.setBounds(295, 197, 110, 15);
+		lblChooseANew.setBounds(165, 42, 110, 15);
 		lblChooseANew.setText("Choose a new name");
 		lblChooseANew.setVisible(false);
 		
 		text_subName = new Text(composite_3, SWT.BORDER);
-		text_subName.setBounds(162, 197, 110, 21);
+		text_subName.setBounds(165, 20, 110, 21);
 		
 		final Label label_2 = new Label(composite_3, SWT.NONE);
 		label_2.setVisible(false);
 		label_2.setText("File does not exist");
-		label_2.setBounds(600, 41, 100, 15);
+		label_2.setBounds(591, 100, 100, 15);
+		
+		final Label lblOf = new Label(composite_3, SWT.NONE);
+		lblOf.setBounds(370, 348, 55, 15);
+		lblOf.setText("1 of 1");
+		loadItems.add(lblOf);
+		
+		final Spinner num_sessions = new Spinner(composite_3, SWT.BORDER);
+		num_sessions.setMinimum(1);
+		num_sessions.setBounds(418, 20, 47, 22);
 		
 		Button btnEnter = new Button(composite_3, SWT.NONE);
-		btnEnter.setBounds(275, 247, 75, 21);
+		btnEnter.setBounds(276, 345, 75, 21);
 		btnEnter.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				
@@ -249,84 +266,97 @@ public class Hello {
 				
 				char slideavg = 'n';
 				int interval = 0;
-				
-				String subjectName = text_subName.getText();
-				
-				if (subjectName == "" || Arrays.asList(list.getItems()).contains(subjectName)) {
-					lblChooseANew.setVisible(true);
-					return;
-				}
-				lblChooseANew.setVisible(false);
 					
 				if (btnCheckButton.getSelection()) {
 					slideavg = 'y';
 					interval = (Integer.valueOf(spinner.getText())).intValue();
 				}
 				
-				workspace.addSubject(subjectName, newFile, condFile, freq, hpf, lpf, slideavg, interval);
-				list.add(subjectName);
+				if (sessionNum==1) {
+					workspace.addSubject(subjectName, newFile, condFile, freq, hpf, lpf, slideavg, interval);
+					list.add(subjectName);
+				}
+				else {
+					workspace.concatSession(subjectName, newFile, condFile, freq, hpf, lpf, slideavg, interval);
+				}
+				sessionNum++;
+				lblOf.setText(sessionNum + " of " + num_sessions.getText());
 				
 				text.setText("");
-				text_subName.setText("");
 				text_6.setText("");
 			}
 
 		});
 		btnEnter.setText("Add");
+		loadItems.add(btnEnter);
 		
 		text = new Text(composite_3, SWT.BORDER);
-		text.setBounds(107, 8, 397, 21);
+		text.setBounds(107, 63, 397, 21);
+		loadItems.add(text);
 		
 		Label lblDataFile = new Label(composite_3, SWT.NONE);
-		lblDataFile.setBounds(46, 11, 55, 15);
+		lblDataFile.setBounds(46, 66, 55, 15);
 		lblDataFile.setText("Data File:");
+		loadItems.add(lblDataFile);
 		
 		text_1 = new Text(composite_3, SWT.BORDER);
 		text_1.setText("2");
-		text_1.setBounds(239, 92, 33, 21);
+		text_1.setBounds(256, 181, 33, 21);
+		loadItems.add(text_1);
 		
 		Label lblNewLabel = new Label(composite_3, SWT.NONE);
-		lblNewLabel.setBounds(117, 95, 116, 15);
+		lblNewLabel.setBounds(136, 184, 116, 15);
 		lblNewLabel.setText("Sampling Frequency:");
+		loadItems.add(lblNewLabel);
 		
 		Label lblHz = new Label(composite_3, SWT.NONE);
-		lblHz.setBounds(275, 95, 14, 15);
+		lblHz.setBounds(295, 184, 14, 15);
 		lblHz.setText("Hz");
+		loadItems.add(lblHz);
 		
 		Label lblHighPassFilter = new Label(composite_3, SWT.NONE);
-		lblHighPassFilter.setBounds(107, 124, 147, 15);
+		lblHighPassFilter.setBounds(107, 227, 147, 15);
 		lblHighPassFilter.setText("High Pass Filter Frequency:");
+		loadItems.add(lblHighPassFilter);
 		
 		text_2 = new Text(composite_3, SWT.BORDER);
 		text_2.setText(".1");
-		text_2.setBounds(260, 121, 29, 21);
+		text_2.setBounds(260, 227, 29, 21);
+		loadItems.add(text_2);
 		
 		Label label = new Label(composite_3, SWT.NONE);
 		label.setText("Hz");
-		label.setBounds(295, 124, 14, 15);
+		label.setBounds(295, 230, 14, 15);
+		loadItems.add(label);
 		
 		Label lblLowPassFilter = new Label(composite_3, SWT.NONE);
-		lblLowPassFilter.setBounds(107, 156, 142, 15);
+		lblLowPassFilter.setBounds(110, 269, 142, 15);
 		lblLowPassFilter.setText("Low Pass Filter Frequency:");
+		loadItems.add(lblLowPassFilter);
 		
 		text_3 = new Text(composite_3, SWT.BORDER);
 		text_3.setText(".01");
-		text_3.setBounds(260, 153, 29, 21);
+		text_3.setBounds(260, 266, 29, 21);
+		loadItems.add(text_3);
 		
 		Label label_1 = new Label(composite_3, SWT.NONE);
 		label_1.setText("Hz");
-		label_1.setBounds(295, 156, 14, 15);
+		label_1.setBounds(295, 269, 14, 15);
+		loadItems.add(label_1);
 		
 		Label lblPreprocessingOptions = new Label(composite_3, SWT.NONE);
-		lblPreprocessingOptions.setBounds(60, 74, 130, 15);
+		lblPreprocessingOptions.setBounds(64, 134, 130, 15);
 		lblPreprocessingOptions.setText("Preprocessing Options:");
+		loadItems.add(lblPreprocessingOptions);
 		
 		Label lblConditionsFile = new Label(composite_3, SWT.NONE);
-		lblConditionsFile.setBounds(46, 41, 90, 15);
+		lblConditionsFile.setBounds(46, 100, 90, 15);
 		lblConditionsFile.setText("Conditions File:");
+		loadItems.add(lblConditionsFile);
 		
 		text_6 = new Text(composite_3, SWT.BORDER);
-		text_6.setBounds(142, 41, 361, 21);
+		text_6.setBounds(142, 97, 361, 21);
+		loadItems.add(text_6);
 		
 		Button button = new Button(composite_3, SWT.NONE);
 		button.addSelectionListener(new SelectionAdapter() {
@@ -336,7 +366,45 @@ public class Hello {
 			}
 		});
 		button.setText("Browse");
-		button.setBounds(510, 41, 75, 21);
+		button.setBounds(510, 97, 75, 21);
+		loadItems.add(button);
+		
+		for (Control item : loadItems) {
+			item.setVisible(false);
+		}
+		
+		Label lblNumberOfSessions = new Label(composite_3, SWT.NONE);
+		lblNumberOfSessions.setBounds(295, 23, 117, 15);
+		lblNumberOfSessions.setText("Number of Sessions:");
+
+		final Button btnEnter_1 = new Button(composite_3, SWT.NONE);
+		btnEnter_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				subjectName = text_subName.getText();
+				
+				if (subjectName == "" || Arrays.asList(list.getItems()).contains(subjectName)) {
+					lblChooseANew.setVisible(true);
+					return;
+				}
+				lblChooseANew.setVisible(false);
+				
+				for (Control item : loadItems) {
+					item.setVisible(true);
+				}
+				
+				sessionNum = 1;
+				
+				lblOf.setText("1 of " + num_sessions.getText());
+				
+				text_subName.setEnabled(false);
+				num_sessions.setEnabled(false);
+				btnEnter_1.setEnabled(false);
+			}
+		});
+		btnEnter_1.setBounds(496, 18, 75, 25);
+		btnEnter_1.setText("Enter");
 		
 		final Composite composite_4 = new Composite(tabFolder_1, SWT.NONE);
 		composite_4.setBounds(10, 96, 694, 254);
