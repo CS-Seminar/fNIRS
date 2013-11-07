@@ -56,6 +56,7 @@ public class Hello {
 	
 	private String subjectName = null;
 	private int sessionNum;
+	private int sessionNumH;
 
 	/*
 	 * Launch the application.
@@ -235,6 +236,35 @@ public class Hello {
 		num_sessions.setMinimum(1);
 		num_sessions.setBounds(418, 20, 47, 22);
 		
+		final Button btnEnter_1 = new Button(composite_3, SWT.NONE);
+		btnEnter_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+				subjectName = text_subName.getText();
+				
+				if (subjectName == "" || Arrays.asList(list.getItems()).contains(subjectName)) {
+					lblChooseANew.setVisible(true);
+					return;
+				}
+				lblChooseANew.setVisible(false);
+				
+				for (Control item : loadItems) {
+					item.setVisible(true);
+				}
+				
+				sessionNum = 1;
+				
+				lblOf.setText("1 of " + num_sessions.getText());
+				
+				text_subName.setEnabled(false);
+				num_sessions.setEnabled(false);
+				btnEnter_1.setEnabled(false);
+			}
+		});
+		btnEnter_1.setBounds(496, 18, 75, 25);
+		btnEnter_1.setText("Enter");
+		
 		Button btnEnter = new Button(composite_3, SWT.NONE);
 		btnEnter.setBounds(276, 345, 75, 21);
 		btnEnter.addSelectionListener(new SelectionAdapter() {
@@ -274,13 +304,26 @@ public class Hello {
 				
 				if (sessionNum==1) {
 					workspace.addSubject(subjectName, newFile, condFile, freq, hpf, lpf, slideavg, interval);
-					list.add(subjectName);
 				}
 				else {
 					workspace.concatSession(subjectName, newFile, condFile, freq, hpf, lpf, slideavg, interval);
 				}
 				sessionNum++;
-				lblOf.setText(sessionNum + " of " + num_sessions.getText());
+				
+				if (sessionNum>Integer.valueOf(num_sessions.getText()).intValue()) {
+					list.add(subjectName);
+					for (Control item : loadItems) {
+						item.setVisible(false);
+					}
+					text_subName.setEnabled(true);
+					num_sessions.setEnabled(true);
+					btnEnter_1.setEnabled(true);
+					text_subName.setText("");
+					num_sessions.setSelection(1);
+				}
+				else {
+					lblOf.setText(sessionNum + " of " + num_sessions.getText());
+				}
 				
 				text.setText("");
 				text_6.setText("");
@@ -376,48 +419,19 @@ public class Hello {
 		Label lblNumberOfSessions = new Label(composite_3, SWT.NONE);
 		lblNumberOfSessions.setBounds(295, 23, 117, 15);
 		lblNumberOfSessions.setText("Number of Sessions:");
-
-		final Button btnEnter_1 = new Button(composite_3, SWT.NONE);
-		btnEnter_1.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				
-				subjectName = text_subName.getText();
-				
-				if (subjectName == "" || Arrays.asList(list.getItems()).contains(subjectName)) {
-					lblChooseANew.setVisible(true);
-					return;
-				}
-				lblChooseANew.setVisible(false);
-				
-				for (Control item : loadItems) {
-					item.setVisible(true);
-				}
-				
-				sessionNum = 1;
-				
-				lblOf.setText("1 of " + num_sessions.getText());
-				
-				text_subName.setEnabled(false);
-				num_sessions.setEnabled(false);
-				btnEnter_1.setEnabled(false);
-			}
-		});
-		btnEnter_1.setBounds(496, 18, 75, 25);
-		btnEnter_1.setText("Enter");
 		
 		final Composite composite_4 = new Composite(tabFolder_1, SWT.NONE);
 		composite_4.setBounds(10, 96, 694, 254);
 		composite_4.setVisible(false);
 		
 		text_4 = new Text(composite_4, SWT.BORDER);
-		text_4.setBounds(116, 32, 173, 21);
+		text_4.setBounds(237, 122, 173, 21);
 		
 		text_5 = new Text(composite_4, SWT.BORDER);
-		text_5.setBounds(116, 82, 173, 21);
+		text_5.setBounds(237, 170, 173, 21);
 		
 		Button btnNewButton = new Button(composite_4, SWT.NONE);
-		btnNewButton.setBounds(295, 32, 75, 25);
+		btnNewButton.setBounds(434, 120, 75, 25);
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -427,7 +441,7 @@ public class Hello {
 		btnNewButton.setText("Browse");
 		
 		Button btnBrowse_1 = new Button(composite_4, SWT.NONE);
-		btnBrowse_1.setBounds(295, 78, 75, 25);
+		btnBrowse_1.setBounds(434, 168, 75, 25);
 		btnBrowse_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -436,17 +450,22 @@ public class Hello {
 		});
 		btnBrowse_1.setText("Browse");
 		
+		final ArrayList<Control> loadHatachi = new ArrayList<Control>();
+		
 		Label lblHboFile = new Label(composite_4, SWT.NONE);
-		lblHboFile.setBounds(55, 85, 55, 15);
+		lblHboFile.setBounds(170, 173, 55, 15);
 		lblHboFile.setText("HbO File:");
+		loadHatachi.add(lblHboFile);
 		
 		Label lblHbFile = new Label(composite_4, SWT.NONE);
-		lblHbFile.setBounds(66, 35, 44, 15);
+		lblHbFile.setBounds(170, 125, 44, 15);
 		lblHbFile.setText("Hb File:");
+		loadHatachi.add(lblHbFile);
 		
 		Button btnAdd = new Button(composite_4, SWT.NONE);
-		btnAdd.setBounds(295, 222, 75, 25);
+		btnAdd.setBounds(295, 308, 75, 25);
 		btnAdd.setText("Add");
+		loadHatachi.add(btnAdd);
 		
 		TabItem tbtmStats = new TabItem(tabFolder, SWT.NONE);
 		tbtmStats.setText("Statistical Analysis");
@@ -477,38 +496,78 @@ public class Hello {
 		btnRemove.setText("Remove Files");
 		
 		Label lblSubjectName2 = new Label(composite_4, SWT.NONE);
-		lblSubjectName2.setBounds(55, 183, 84, 15);
+		lblSubjectName2.setBounds(65, 40, 84, 15);
 		lblSubjectName2.setText("Subject Name:");
 		
 		text_subName2 = new Text(composite_4, SWT.BORDER);
-		text_subName2.setBounds(145, 180, 144, 21);
+		text_subName2.setBounds(155, 37, 144, 21);
 		
 		final Label lblFileDoesNot_1 = new Label(composite_4, SWT.NONE);
-		lblFileDoesNot_1.setBounds(203, 59, 105, 15);
+		lblFileDoesNot_1.setBounds(306, 149, 105, 15);
 		lblFileDoesNot_1.setText("File Does Not Exist");
 		lblFileDoesNot_1.setVisible(false);
 		
 		final Label lblFileDoesNot_2 = new Label(composite_4, SWT.NONE);
 		lblFileDoesNot_2.setText("File Does Not Exist");
-		lblFileDoesNot_2.setBounds(203, 109, 105, 15);
+		lblFileDoesNot_2.setBounds(305, 197, 105, 15);
 		lblFileDoesNot_2.setVisible(false);
 		
 		final Label lblChooseANew_1 = new Label(composite_4, SWT.NONE);
-		lblChooseANew_1.setBounds(312, 183, 155, 15);
+		lblChooseANew_1.setBounds(155, 64, 155, 15);
 		lblChooseANew_1.setText("Choose a new subject name");
 		lblChooseANew_1.setVisible(false);
 		
-		final Spinner spinner_1 = new Spinner(composite_4, SWT.BORDER);
-		spinner_1.setBounds(557, 56, 47, 22);
+		final Spinner num_channels_H = new Spinner(composite_4, SWT.BORDER);
+		num_channels_H.setBounds(477, 37, 47, 22);
+		loadHatachi.add(num_channels_H);
 		
 		Label lblNumberOfChannels = new Label(composite_4, SWT.NONE);
-		lblNumberOfChannels.setBounds(436, 59, 115, 15);
+		lblNumberOfChannels.setBounds(444, 20, 115, 15);
 		lblNumberOfChannels.setText("Number of Channels:");
+		loadHatachi.add(lblNumberOfChannels);
 		
 		final Label label_4 = new Label(composite_4, SWT.NONE);
 		label_4.setVisible(false);
 		label_4.setText("File Does Not Exist");
-		label_4.setBounds(203, 159, 105, 15);
+		label_4.setBounds(306, 251, 105, 15);
+		
+		final Spinner num_Sessions_H = new Spinner(composite_4, SWT.BORDER);
+		num_Sessions_H.setMinimum(1);
+		num_Sessions_H.setBounds(352, 37, 47, 22);
+		loadHatachi.add(num_Sessions_H);
+		
+		final Label lblOf_H = new Label(composite_4, SWT.NONE);
+		lblOf_H.setText("1 of 1");
+		lblOf_H.setBounds(393, 313, 55, 15);
+		loadHatachi.add(lblOf_H);
+		
+		Button button_2 = new Button(composite_4, SWT.NONE);
+		button_2.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				subjectName = text_subName2.getText();
+				
+				if (subjectName == "" || Arrays.asList(list.getItems()).contains(subjectName)) {
+					lblChooseANew_1.setVisible(true);
+					return;
+				}
+				lblChooseANew_1.setVisible(false);
+				
+				for (Control item : loadHatachi) {
+					item.setVisible(true);
+				}
+				
+				sessionNumH = 1;
+				
+				lblOf_H.setText("1 of " + num_Sessions_H.getText());
+				
+				text_subName.setEnabled(false);
+				num_sessions.setEnabled(false);
+				btnEnter_1.setEnabled(false);
+			}
+		});
+		button_2.setText("Enter");
+		button_2.setBounds(576, 30, 75, 25);
 
 		btnAdd.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -518,7 +577,7 @@ public class Hello {
 				if (!setExists(condFile,label_4))
 					return;
 				
-				int channels = (Integer.valueOf(spinner_1.getText())).intValue();
+				int channels = (Integer.valueOf(num_channels_H.getText())).intValue();
 				
 				File HbFile = new File(text_4.getText());
 				File HbOFile = new File(text_5.getText());
@@ -534,14 +593,6 @@ public class Hello {
 				if (!HbFile.exists() && !HbOFile.exists()) {
 					return;
 				}
-				
-				String subjectName = text_subName2.getText();
-				
-				if (subjectName == "" || Arrays.asList(list.getItems()).contains(subjectName)) {
-					lblChooseANew_1.setVisible(true);
-					return;
-				}
-				lblChooseANew_1.setVisible(false);
 
 				if (HbFile.exists()) {
 					try {
@@ -571,17 +622,20 @@ public class Hello {
 				
 			}
 		});
+		loadHatachi.add(btnAdd);
 		
 		TabItem tbtmNewItem_2 = new TabItem(tabFolder_1, SWT.NONE);
-		tbtmNewItem_2.setText("Hatachi/Other");
+		tbtmNewItem_2.setText("Hatachi");
 		tbtmNewItem_2.setControl(composite_4);
 		
 		Label label_3 = new Label(composite_4, SWT.NONE);
 		label_3.setText("Conditions File:");
-		label_3.setBounds(38, 133, 90, 15);
+		label_3.setBounds(159, 227, 90, 15);
+		loadHatachi.add(label_3);
 		
 		text_7 = new Text(composite_4, SWT.BORDER);
-		text_7.setBounds(135, 130, 155, 21);
+		text_7.setBounds(255, 224, 155, 21);
+		loadHatachi.add(text_7);
 		
 		Button button_1 = new Button(composite_4, SWT.NONE);
 		button_1.addSelectionListener(new SelectionAdapter() {
@@ -591,6 +645,10 @@ public class Hello {
 			}
 		});
 		button_1.setText("Browse");
-		button_1.setBounds(295, 126, 75, 25);
+		button_1.setBounds(434, 222, 75, 25);
+		
+		Label label_5 = new Label(composite_4, SWT.NONE);
+		label_5.setText("Number of Sessions:");
+		label_5.setBounds(321, 20, 117, 15);
 	}
 }
