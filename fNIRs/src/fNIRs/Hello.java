@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
+
 import com.mathworks.toolbox.javabuilder.*;
 
 import preprocess_2.Preprocess;
@@ -368,11 +369,11 @@ public class Hello {
 		btnBrowse_1.setText("Browse");
 		
 		Label lblHboFile = new Label(composite_4, SWT.NONE);
-		lblHboFile.setBounds(55, 35, 55, 15);
+		lblHboFile.setBounds(55, 85, 55, 15);
 		lblHboFile.setText("HbO File:");
 		
 		Label lblHbFile = new Label(composite_4, SWT.NONE);
-		lblHbFile.setBounds(66, 85, 44, 15);
+		lblHbFile.setBounds(66, 35, 44, 15);
 		lblHbFile.setText("Hb File:");
 		
 		Button btnAdd = new Button(composite_4, SWT.NONE);
