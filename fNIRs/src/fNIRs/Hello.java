@@ -3,6 +3,7 @@ package fNIRs;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.eclipse.swt.widgets.Display;
@@ -226,12 +227,10 @@ public class Hello {
 		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				try {
-					rapidDriver.run();
-				} catch (OperatorException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				//rapidDriver.run();
+				rapidDriver.filter(new ArrayList(Arrays.asList(2)) , 
+						new File("C:\\Users\\jssmith\\Desktop\\Workspace\\subjects\\Work\\Hb"),
+						new File("output"));
 			}
 		});
 		btnNewButton_1.setBounds(46, 173, 75, 25);
