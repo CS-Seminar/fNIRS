@@ -41,6 +41,7 @@ import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
+import com.rapidminer.operator.OperatorException;
 
 public class Hello {
 
@@ -64,6 +65,10 @@ public class Hello {
 	private int sessionNum;
 	private int sessionNumH;
 
+	
+	private static RapidDriver rapidDriver;
+
+
 	/*
 	 * Launch the application.
 	 * @param args
@@ -74,6 +79,7 @@ public class Hello {
 			indexList = new ArrayList<Integer>();
 			pre = new Preprocess();
 			//workspace = new Workspace("C:\\Users\\shammond\\Desktop\\CS_Seminar\\fNIRs\\workspace", pre);
+			rapidDriver = new RapidDriver();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -500,6 +506,23 @@ public class Hello {
 			String strI = "" + i;
 			list_1.add(strI);
 		}
+
+		/*
+		Button for filtering
+		Button btnNewButton_1 = new Button(composite_2, SWT.NONE);
+		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				//rapidDriver.run();
+				rapidDriver.filter(new ArrayList(Arrays.asList(2)) , 
+						new File("C:\\Users\\jssmith\\Desktop\\Workspace\\subjects\\Work\\Hb"),
+						new File("output"));
+			}
+		});
+		btnNewButton_1.setBounds(46, 173, 75, 25);
+		btnNewButton_1.setText("Run Process");
+		 */
+		
 		
 		Button btnRemove = new Button(shlFnirsDataProcessing, SWT.NONE);
 		btnRemove.addSelectionListener(new SelectionAdapter() {
