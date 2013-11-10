@@ -118,7 +118,6 @@ public class Hello {
 			list.add(file);
 		}
 		
-		
 		Menu menu = new Menu(shlFnirsDataProcessing, SWT.BAR);
 		shlFnirsDataProcessing.setMenuBar(menu);
 		
@@ -143,7 +142,7 @@ public class Hello {
 		btnClear.setText("Clear Selections");
 		
 		TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
-		tabFolder.setBounds(242, 10, 746, 522);
+		tabFolder.setBounds(242, 10, 742, 522);
 		
 		TabItem tbtmLoadFiles = new TabItem(tabFolder, SWT.NONE);
 		tbtmLoadFiles.setText("Load File(s) / Preprocessing");
@@ -378,6 +377,17 @@ public class Hello {
 		
 		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 		tbtmMachineLearning.setControl(composite_2);
+		
+		List list_1 = new List(composite_2, SWT.BORDER);
+		list_1.setBounds(10, 10, 217, 474);
+		
+		Button btnNewButton_1 = new Button(composite_2, SWT.NONE);
+		btnNewButton_1.setBounds(303, 339, 75, 25);
+		btnNewButton_1.setText("New Button");
+		for (int i=1; i<20; i++) {
+			String strI = "" + i;
+			list_1.add(strI);
+		}
 		
 		Button btnRemove = new Button(shlFnirsDataProcessing, SWT.NONE);
 		btnRemove.addSelectionListener(new SelectionAdapter() {
