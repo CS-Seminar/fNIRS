@@ -384,7 +384,7 @@ public class Hello {
 		Button btnNewButton_1 = new Button(composite_2, SWT.NONE);
 		btnNewButton_1.setBounds(303, 339, 75, 25);
 		btnNewButton_1.setText("New Button");
-		for (int i=1; i<20; i++) {
+		for (int i=1; i<40; i++) {
 			String strI = "" + i;
 			list_1.add(strI);
 		}
