@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="5.3.013">
+  <context>
+    <input/>
+    <output>
+      <location>//Local Repository/data/results</location>
+    </output>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
+    <parameter key="logfile" value="C:\Users\jssmith\Desktop\log.txt"/>
+    <parameter key="resultfile" value="C:\Users\jssmith\Desktop\output.txt"/>
+    <process expanded="true">
+      <operator activated="true" class="retrieve" compatibility="5.3.013" expanded="true" height="60" name="Retrieve" width="90" x="45" y="165">
+        <parameter key="repository_entry" value="//Test/Hb"/>
+      </operator>
+      <operator activated="true" class="rename" compatibility="5.3.013" expanded="true" height="76" name="Rename" width="90" x="313" y="120">
+        <parameter key="old_name" value="-4.9400930e+00"/>
+        <parameter key="new_name" value="Testing"/>
+        <list key="rename_additional_attributes"/>
+      </operator>
+      <connect from_op="Retrieve" from_port="output" to_op="Rename" to_port="example set input"/>
+      <connect from_op="Rename" from_port="example set output" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>
