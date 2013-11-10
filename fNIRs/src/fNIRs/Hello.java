@@ -152,6 +152,7 @@ public class Hello {
 		btnClear.setText("Clear Selections");
 		
 		TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
+		tabFolder.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
 		tabFolder.setBounds(242, 10, 742, 522);
 		
 		TabItem tbtmLoadFiles = new TabItem(tabFolder, SWT.NONE);
@@ -161,17 +162,20 @@ public class Hello {
 		tbtmLoadFiles.setControl(composite);
 
 		TabFolder tabFolder_1 = new TabFolder(composite, SWT.NONE);
+		tabFolder_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
 		tabFolder_1.setBounds(10, 10, 718, 474);
 
 		TabItem tbtmNewItem = new TabItem(tabFolder_1, SWT.NONE);
 		tbtmNewItem.setText("ISS Oxyplex");
 
 		Composite composite_3 = new Composite(tabFolder_1, SWT.NONE);
+		composite_3.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		tbtmNewItem.setControl(composite_3);
 		
 		final ArrayList<Control> loadItems = new ArrayList<Control>();
 		
 		Button btnBrowse = new Button(composite_3, SWT.NONE);
+		btnBrowse.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnBrowse.setBounds(510, 63, 75, 21);
 		btnBrowse.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -188,16 +192,19 @@ public class Hello {
 		lblFileDoesNot.setVisible(false);
 		
 		final Spinner spinner = new Spinner(composite_3, SWT.BORDER);
+		spinner.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		spinner.setEnabled(false);
 		spinner.setBounds(461, 181, 47, 22);
 		loadItems.add(spinner);
 		
 		final Label lblPleaseFillIn = new Label(composite_3, SWT.NONE);
+		lblPleaseFillIn.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblPleaseFillIn.setBounds(352, 230, 147, 15);
 		lblPleaseFillIn.setText("Please fill in all frequencies");
 		lblPleaseFillIn.setVisible(false);
 		
 		final Button btnCheckButton = new Button(composite_3, SWT.CHECK);
+		btnCheckButton.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnCheckButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -212,16 +219,19 @@ public class Hello {
 		loadItems.add(btnCheckButton);
 		
 		Label lblSubjectName = new Label(composite_3, SWT.NONE);
-		lblSubjectName.setBounds(76, 23, 83, 15);
+		lblSubjectName.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		lblSubjectName.setBounds(18, 20, 141, 25);
 		lblSubjectName.setText("Subject Name:");
 		
 		final Label lblChooseANew = new Label(composite_3, SWT.NONE);
+		lblChooseANew.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblChooseANew.setBounds(165, 42, 110, 15);
 		lblChooseANew.setText("Choose a new name");
 		lblChooseANew.setVisible(false);
 		
 		text_subName = new Text(composite_3, SWT.BORDER);
-		text_subName.setBounds(165, 20, 110, 21);
+		text_subName.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		text_subName.setBounds(126, 17, 110, 21);
 		
 		final Label label_2 = new Label(composite_3, SWT.NONE);
 		label_2.setVisible(false);
@@ -229,15 +239,18 @@ public class Hello {
 		label_2.setBounds(591, 100, 100, 15);
 		
 		final Label lblOf = new Label(composite_3, SWT.NONE);
+		lblOf.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblOf.setBounds(370, 348, 55, 15);
 		lblOf.setText("1 of 1");
 		loadItems.add(lblOf);
 		
 		final Spinner num_sessions = new Spinner(composite_3, SWT.BORDER);
+		num_sessions.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		num_sessions.setMinimum(1);
 		num_sessions.setBounds(418, 20, 47, 22);
 		
 		final Button btnEnter_1 = new Button(composite_3, SWT.NONE);
+		btnEnter_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnEnter_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -267,6 +280,7 @@ public class Hello {
 		btnEnter_1.setText("Enter");
 		
 		Button btnEnter = new Button(composite_3, SWT.NONE);
+		btnEnter.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnEnter.setBounds(276, 345, 75, 21);
 		btnEnter.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -335,74 +349,89 @@ public class Hello {
 		loadItems.add(btnEnter);
 		
 		text = new Text(composite_3, SWT.BORDER);
+		text.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text.setBounds(107, 63, 397, 21);
 		loadItems.add(text);
 		
 		Label lblDataFile = new Label(composite_3, SWT.NONE);
+		lblDataFile.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblDataFile.setBounds(46, 66, 55, 15);
 		lblDataFile.setText("Data File:");
 		loadItems.add(lblDataFile);
 		
 		text_1 = new Text(composite_3, SWT.BORDER);
+		text_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text_1.setText("2");
 		text_1.setBounds(256, 181, 33, 21);
 		loadItems.add(text_1);
 		
 		Label lblNewLabel = new Label(composite_3, SWT.NONE);
+		lblNewLabel.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblNewLabel.setBounds(136, 184, 116, 15);
 		lblNewLabel.setText("Sampling Frequency:");
 		loadItems.add(lblNewLabel);
 		
 		Label lblHz = new Label(composite_3, SWT.NONE);
+		lblHz.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblHz.setBounds(295, 184, 14, 15);
 		lblHz.setText("Hz");
 		loadItems.add(lblHz);
 		
 		Label lblHighPassFilter = new Label(composite_3, SWT.NONE);
+		lblHighPassFilter.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblHighPassFilter.setBounds(107, 227, 147, 15);
 		lblHighPassFilter.setText("High Pass Filter Frequency:");
 		loadItems.add(lblHighPassFilter);
 		
 		text_2 = new Text(composite_3, SWT.BORDER);
+		text_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text_2.setText(".1");
 		text_2.setBounds(260, 227, 29, 21);
 		loadItems.add(text_2);
 		
 		Label label = new Label(composite_3, SWT.NONE);
+		label.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		label.setText("Hz");
 		label.setBounds(295, 230, 14, 15);
 		loadItems.add(label);
 		
 		Label lblLowPassFilter = new Label(composite_3, SWT.NONE);
+		lblLowPassFilter.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblLowPassFilter.setBounds(110, 269, 142, 15);
 		lblLowPassFilter.setText("Low Pass Filter Frequency:");
 		loadItems.add(lblLowPassFilter);
 		
 		text_3 = new Text(composite_3, SWT.BORDER);
+		text_3.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text_3.setText(".01");
 		text_3.setBounds(260, 266, 29, 21);
 		loadItems.add(text_3);
 		
 		Label label_1 = new Label(composite_3, SWT.NONE);
+		label_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		label_1.setText("Hz");
 		label_1.setBounds(295, 269, 14, 15);
 		loadItems.add(label_1);
 		
 		Label lblPreprocessingOptions = new Label(composite_3, SWT.NONE);
+		lblPreprocessingOptions.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblPreprocessingOptions.setBounds(64, 134, 130, 15);
 		lblPreprocessingOptions.setText("Preprocessing Options:");
 		loadItems.add(lblPreprocessingOptions);
 		
 		Label lblConditionsFile = new Label(composite_3, SWT.NONE);
+		lblConditionsFile.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblConditionsFile.setBounds(46, 100, 90, 15);
 		lblConditionsFile.setText("Conditions File:");
 		loadItems.add(lblConditionsFile);
 		
 		text_6 = new Text(composite_3, SWT.BORDER);
+		text_6.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text_6.setBounds(142, 97, 361, 21);
 		loadItems.add(text_6);
 		
 		Button button = new Button(composite_3, SWT.NONE);
+		button.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -418,6 +447,7 @@ public class Hello {
 		}
 		
 		Label lblNumberOfSessions = new Label(composite_3, SWT.NONE);
+		lblNumberOfSessions.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblNumberOfSessions.setBounds(295, 23, 117, 15);
 		lblNumberOfSessions.setText("Number of Sessions:");
 		
@@ -480,12 +510,23 @@ public class Hello {
 		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 		tbtmMachineLearning.setControl(composite_2);
 		
-		List list_1 = new List(composite_2, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-		list_1.setBounds(10, 10, 217, 474);
+		final List list_1 = new List(composite_2, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		list_1.setBounds(10, 10, 136, 437);
 		
 		Button btnNewButton_1 = new Button(composite_2, SWT.NONE);
-		btnNewButton_1.setBounds(303, 339, 75, 25);
-		btnNewButton_1.setText("New Button");
+		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ArrayList<Integer> selected; 
+				for (Integer item: list_1.getSelectionIndices())
+					indexList.add(item + 1);
+				System.out.println(indexList);
+				indexList.clear();
+			}
+		});
+		
+		btnNewButton_1.setBounds(10, 453, 136, 25);
+		btnNewButton_1.setText("Select");
 		for (int i=1; i<40; i++) {
 			String strI = "" + i;
 			list_1.add(strI);
