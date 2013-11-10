@@ -1,7 +1,12 @@
 package fNIRs;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -31,6 +36,7 @@ import org.eclipse.swt.widgets.Composite;
 import com.mathworks.toolbox.javabuilder.*;
 
 import preprocess_2.Preprocess;
+
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
 import org.eclipse.swt.layout.*;
@@ -424,14 +430,18 @@ public class Hello {
 		composite_4.setBounds(10, 96, 694, 254);
 		composite_4.setVisible(false);
 		
+		final ArrayList<Control> loadHatachi = new ArrayList<Control>();
+		
 		text_4 = new Text(composite_4, SWT.BORDER);
-		text_4.setBounds(237, 122, 173, 21);
+		text_4.setBounds(237, 164, 173, 21);
+		loadHatachi.add(text_4);
 		
 		text_5 = new Text(composite_4, SWT.BORDER);
-		text_5.setBounds(237, 170, 173, 21);
+		text_5.setBounds(237, 212, 173, 21);
+		loadHatachi.add(text_5);
 		
-		Button btnNewButton = new Button(composite_4, SWT.NONE);
-		btnNewButton.setBounds(434, 120, 75, 25);
+		final Button btnNewButton = new Button(composite_4, SWT.NONE);
+		btnNewButton.setBounds(434, 162, 75, 25);
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -439,9 +449,10 @@ public class Hello {
 			}
 		});
 		btnNewButton.setText("Browse");
+		loadHatachi.add(btnNewButton);
 		
-		Button btnBrowse_1 = new Button(composite_4, SWT.NONE);
-		btnBrowse_1.setBounds(434, 168, 75, 25);
+		final Button btnBrowse_1 = new Button(composite_4, SWT.NONE);
+		btnBrowse_1.setBounds(434, 210, 75, 25);
 		btnBrowse_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -449,21 +460,20 @@ public class Hello {
 			}
 		});
 		btnBrowse_1.setText("Browse");
+		loadHatachi.add(btnBrowse_1);
 		
-		final ArrayList<Control> loadHatachi = new ArrayList<Control>();
-		
-		Label lblHboFile = new Label(composite_4, SWT.NONE);
-		lblHboFile.setBounds(170, 173, 55, 15);
+		final Label lblHboFile = new Label(composite_4, SWT.NONE);
+		lblHboFile.setBounds(170, 215, 55, 15);
 		lblHboFile.setText("HbO File:");
 		loadHatachi.add(lblHboFile);
 		
-		Label lblHbFile = new Label(composite_4, SWT.NONE);
-		lblHbFile.setBounds(170, 125, 44, 15);
+		final Label lblHbFile = new Label(composite_4, SWT.NONE);
+		lblHbFile.setBounds(181, 167, 44, 15);
 		lblHbFile.setText("Hb File:");
 		loadHatachi.add(lblHbFile);
 		
 		Button btnAdd = new Button(composite_4, SWT.NONE);
-		btnAdd.setBounds(295, 308, 75, 25);
+		btnAdd.setBounds(297, 351, 75, 25);
 		btnAdd.setText("Add");
 		loadHatachi.add(btnAdd);
 		
@@ -503,13 +513,13 @@ public class Hello {
 		text_subName2.setBounds(155, 37, 144, 21);
 		
 		final Label lblFileDoesNot_1 = new Label(composite_4, SWT.NONE);
-		lblFileDoesNot_1.setBounds(306, 149, 105, 15);
+		lblFileDoesNot_1.setBounds(305, 191, 105, 15);
 		lblFileDoesNot_1.setText("File Does Not Exist");
 		lblFileDoesNot_1.setVisible(false);
 		
 		final Label lblFileDoesNot_2 = new Label(composite_4, SWT.NONE);
 		lblFileDoesNot_2.setText("File Does Not Exist");
-		lblFileDoesNot_2.setBounds(305, 197, 105, 15);
+		lblFileDoesNot_2.setBounds(305, 239, 105, 15);
 		lblFileDoesNot_2.setVisible(false);
 		
 		final Label lblChooseANew_1 = new Label(composite_4, SWT.NONE);
@@ -519,29 +529,39 @@ public class Hello {
 		
 		final Spinner num_channels_H = new Spinner(composite_4, SWT.BORDER);
 		num_channels_H.setBounds(477, 37, 47, 22);
-		loadHatachi.add(num_channels_H);
 		
 		Label lblNumberOfChannels = new Label(composite_4, SWT.NONE);
 		lblNumberOfChannels.setBounds(444, 20, 115, 15);
 		lblNumberOfChannels.setText("Number of Channels:");
-		loadHatachi.add(lblNumberOfChannels);
 		
 		final Label label_4 = new Label(composite_4, SWT.NONE);
 		label_4.setVisible(false);
 		label_4.setText("File Does Not Exist");
-		label_4.setBounds(306, 251, 105, 15);
+		label_4.setBounds(306, 287, 105, 15);
 		
-		final Spinner num_Sessions_H = new Spinner(composite_4, SWT.BORDER);
-		num_Sessions_H.setMinimum(1);
-		num_Sessions_H.setBounds(352, 37, 47, 22);
-		loadHatachi.add(num_Sessions_H);
+		final Spinner num_sessions_h = new Spinner(composite_4, SWT.BORDER);
+		num_sessions_h.setMinimum(1);
+		num_sessions_h.setBounds(352, 37, 47, 22);
 		
 		final Label lblOf_H = new Label(composite_4, SWT.NONE);
 		lblOf_H.setText("1 of 1");
-		lblOf_H.setBounds(393, 313, 55, 15);
+		lblOf_H.setBounds(393, 356, 55, 15);
 		loadHatachi.add(lblOf_H);
 		
-		Button button_2 = new Button(composite_4, SWT.NONE);
+		final Button btnHb = new Button(composite_4, SWT.CHECK);
+		btnHb.setBounds(181, 85, 37, 16);
+		btnHb.setText("Hb");
+		
+		final Button btnHbo = new Button(composite_4, SWT.CHECK);
+		btnHbo.setText("HbO");
+		btnHbo.setBounds(280, 85, 44, 16);
+		
+		final Label lblNeedAtLeast = new Label(composite_4, SWT.NONE);
+		lblNeedAtLeast.setBounds(355, 85, 84, 15);
+		lblNeedAtLeast.setText("Need at least 1");
+		lblNeedAtLeast.setVisible(false);
+		
+		final Button button_2 = new Button(composite_4, SWT.NONE);
 		button_2.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -553,17 +573,38 @@ public class Hello {
 				}
 				lblChooseANew_1.setVisible(false);
 				
+				if (!btnHb.getSelection() && !btnHbo.getSelection()) {
+					lblNeedAtLeast.setVisible(true);
+					return;
+				}
+				lblNeedAtLeast.setVisible(false);
+				
 				for (Control item : loadHatachi) {
 					item.setVisible(true);
 				}
 				
+				if (!btnHb.getSelection()) {
+					lblHbFile.setVisible(false);
+					text_4.setVisible(false);
+					btnNewButton.setVisible(false);
+				}
+				
+				if (!btnHbo.getSelection()) {
+					lblHboFile.setVisible(false);
+					text_5.setVisible(false);
+					btnBrowse_1.setVisible(false);
+				}
+				
 				sessionNumH = 1;
 				
-				lblOf_H.setText("1 of " + num_Sessions_H.getText());
+				lblOf_H.setText("1 of " + num_sessions_h.getText());
 				
-				text_subName.setEnabled(false);
-				num_sessions.setEnabled(false);
-				btnEnter_1.setEnabled(false);
+				text_subName2.setEnabled(false);
+				num_sessions_h.setEnabled(false);
+				num_channels_H.setEnabled(false);
+				button_2.setEnabled(false);
+				btnHb.setEnabled(false);
+				btnHbo.setEnabled(false);
 			}
 		});
 		button_2.setText("Enter");
@@ -579,8 +620,30 @@ public class Hello {
 				
 				int channels = (Integer.valueOf(num_channels_H.getText())).intValue();
 				
-				File HbFile = new File(text_4.getText());
-				File HbOFile = new File(text_5.getText());
+				File Hb = new File(text_4.getText());
+				File HbO = new File(text_5.getText());
+				
+				File HbFile = new File("HbFile.xlsx");
+				File HbOFile = new File("HbOFile.xlsx");
+				
+				//FileInputStream input = new FileInputStream(HbFile);
+				//FileOutputStream output = new FileOutputStream(Hb);
+				
+				try {
+					Files.copy(Hb.toPath(),HbFile.toPath().toAbsolutePath(),StandardCopyOption.REPLACE_EXISTING);
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+					return;
+				}
+				
+				try {
+					Files.copy(HbO.toPath(),HbOFile.toPath().toAbsolutePath(),StandardCopyOption.REPLACE_EXISTING);
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+					return;
+				}
 				
 				if (text_4.getText()!="")
 					if (!setExists(HbFile,lblFileDoesNot_1))
@@ -594,12 +657,13 @@ public class Hello {
 					return;
 				}
 
-				if (HbFile.exists()) {
+				/*if (HbFile.exists()) {
 					try {
 						pre.xlsreadfile(HbFile.getAbsolutePath(), "Hb", channels);
 						HbFile = new File("Hb");
 					} catch (MWException e1) {
 						e1.printStackTrace();
+						return;
 					}
 				}
 				
@@ -609,17 +673,41 @@ public class Hello {
 						HbOFile = new File("HbO");
 					} catch (MWException e1) {
 						e1.printStackTrace();
+						return;
 					}
-				}
+				}*/
 
-				workspace.addSubject(subjectName, HbFile, HbOFile, condFile);
-				list.add(subjectName);
+				if (sessionNumH==1) {
+					workspace.addSubject(subjectName, HbFile, HbOFile, condFile);
+				}
+				else{
+					workspace.concatSession(subjectName, HbFile, HbOFile, condFile);
+				}
+				sessionNumH++;
+				
+				if (sessionNumH>Integer.valueOf(num_sessions_h.getText()).intValue()) {
+					list.add(subjectName);
+					for (Control item : loadHatachi) {
+						item.setVisible(false);
+					}
+					text_subName2.setEnabled(true);
+					num_sessions_h.setEnabled(true);
+					button_2.setEnabled(true);
+					
+					num_channels_H.setEnabled(true);
+					btnHb.setEnabled(true);
+					btnHbo.setEnabled(true);
+					
+					text_subName2.setText("");
+					num_sessions_h.setSelection(1);
+				}
+				else {
+					lblOf_H.setText(sessionNumH + " of " + num_sessions_h.getText());
+				}
 				
 				text_4.setText("");
 				text_5.setText("");
 				text_7.setText("");
-				text_subName2.setText("");
-				
 			}
 		});
 		loadHatachi.add(btnAdd);
@@ -630,11 +718,11 @@ public class Hello {
 		
 		Label label_3 = new Label(composite_4, SWT.NONE);
 		label_3.setText("Conditions File:");
-		label_3.setBounds(159, 227, 90, 15);
+		label_3.setBounds(155, 263, 90, 15);
 		loadHatachi.add(label_3);
 		
 		text_7 = new Text(composite_4, SWT.BORDER);
-		text_7.setBounds(255, 224, 155, 21);
+		text_7.setBounds(255, 260, 155, 21);
 		loadHatachi.add(text_7);
 		
 		Button button_1 = new Button(composite_4, SWT.NONE);
@@ -645,7 +733,12 @@ public class Hello {
 			}
 		});
 		button_1.setText("Browse");
-		button_1.setBounds(434, 222, 75, 25);
+		button_1.setBounds(434, 258, 75, 25);
+		loadHatachi.add(button_1);
+		
+		for (Control item : loadHatachi) {
+			item.setVisible(false);
+		}
 		
 		Label label_5 = new Label(composite_4, SWT.NONE);
 		label_5.setText("Number of Sessions:");
