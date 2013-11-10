@@ -73,9 +73,6 @@ public class Hello {
 			indexList = new ArrayList<Integer>();
 			pre = new Preprocess();
 			//workspace = new Workspace("C:\\Users\\shammond\\Desktop\\CS_Seminar\\fNIRs\\workspace", pre);
-
-			subjectMap = new HashMap<String,Subject>();
-			subjectNumber = 1;
 			rapidDriver = new RapidDriver();
 			window.open();
 		} catch (Exception e) {
