@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 import org.eclipse.swt.widgets.List;
 
@@ -65,20 +66,18 @@ public class Workspace {
 			
 			BufferedReader creader = new BufferedReader(new FileReader(conditions));
 			BufferedReader freader = new BufferedReader(new FileReader(file));
+			Scanner scanner = new Scanner(creader);
 			BufferedWriter fwriter = new BufferedWriter(new FileWriter(tempfile));
-			String cline;
 			String line;
 			int row = 1;
-			String[] vals;
 			int start;
 			int stop;
 			String condition;
 			
-			while ((cline = creader.readLine()) != null) {
-				vals = cline.split(" ");
-				start = Integer.valueOf(vals[0]).intValue();
-				stop = Integer.valueOf(vals[1]).intValue();
-				condition = vals[2];
+			while (scanner.hasNext()) {
+				start = scanner.nextInt();
+				stop = scanner.nextInt();
+				condition = scanner.next();
 				while (row<start) {
 					line = freader.readLine();
 					fwriter.write(line + "\t0");
@@ -100,6 +99,7 @@ public class Workspace {
 			creader.close();
 			freader.close();
 			fwriter.close();
+			scanner.close();
 			
 		} catch(IOException ie) {
 			ie.printStackTrace();
@@ -124,10 +124,24 @@ public class Workspace {
 		}
 		return;
 	}
+
+	void preprocess(File origFile, double freq, double hpf, double lpf, char slideavg, int interval) {
+		try {
+			Object[] in = { origFile.getAbsolutePath(), freq, hpf, lpf, slideavg, interval };
+			pre.preprocess_2013(in);
+		} catch (MWException e1) {
+			e1.printStackTrace();
+		}
+	}
 	
 	void addSubject(String name, File origFile, File condFile, double freq, double hpf, double lpf, char slideavg, int interval) {
 		// adds an ISS Oxyplex subject which requires preprocessing
-		try {
+		preprocess(origFile, freq, hpf, lpf, slideavg, interval);
+		File hbFile = new File("Hb");
+		File hboFile = new File("HbO");
+		addSubject(name, hbFile, hboFile, condFile);
+	
+		/*try {
 			Object[] in = { origFile.getAbsolutePath(), freq, hpf, lpf, slideavg, interval };
 			pre.preprocess_2013(in);
 			File hbFile = new File("Hb");
@@ -135,8 +149,38 @@ public class Workspace {
 			addSubject(name, hbFile, hboFile, condFile);
 		} catch (MWException e1) {
 			e1.printStackTrace();
-		}
+		}*/
 			
+	}
+	
+	void concatSession(String name, File origFile, File condFile, double freq, double hpf, double lpf, char slideavg, int interval) {
+		preprocess(origFile, freq, hpf, lpf, slideavg, interval);
+		File hbFile = new File("Hb");
+		File hboFile = new File("HbO");
+		File tempFile = addConditions(hbFile, condFile);
+		concatFiles(getHb(name),tempFile);
+		tempFile = addConditions(hboFile, condFile);
+		concatFiles(getHbO(name),tempFile);
+		hbFile.delete();
+		hboFile.delete();
+	}
+	
+	void concatFiles(File file, File other) {
+		try {
+			BufferedReader oreader = new BufferedReader(new FileReader(other));
+			BufferedWriter fwriter = new BufferedWriter(new FileWriter(file,true));
+			String line;
+			while((line = oreader.readLine()) != null) {
+				fwriter.write(line);
+				fwriter.newLine();
+			}
+			fwriter.close();
+			oreader.close();
+			other.delete();
+		}
+		catch(IOException ie) {
+			ie.printStackTrace();
+		}
 	}
 
 	File getHb(String name) {
@@ -155,5 +199,14 @@ public class Workspace {
 			return HbOPath;
 		else
 			return null;
+	}
+	
+	public static void main(String[] args) {
+		File first = new File("first.txt");
+		File second = new File("second.txt");
+		
+		Workspace w = new Workspace();
+		
+		w.concatFiles(first,second);
 	}
 }
