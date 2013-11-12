@@ -126,8 +126,7 @@ public class Hello {
 		shlFnirsDataProcessing.setSize(1000, 600);
 		shlFnirsDataProcessing.setText("fNIRs Data Processing and Analysis");
 		
-		fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
-		
+		//fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
 		DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing);
 		dlg.setText("Select Workspace");
 	    String selected = dlg.open(); // cannot seem to name New Folder for some reason
