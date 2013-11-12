@@ -140,17 +140,6 @@ public class Workspace {
 		File hbFile = new File("Hb");
 		File hboFile = new File("HbO");
 		addSubject(name, hbFile, hboFile, condFile);
-	
-		/*try {
-			Object[] in = { origFile.getAbsolutePath(), freq, hpf, lpf, slideavg, interval };
-			pre.preprocess_2013(in);
-			File hbFile = new File("Hb");
-			File hboFile = new File("HbO");
-			addSubject(name, hbFile, hboFile, condFile);
-		} catch (MWException e1) {
-			e1.printStackTrace();
-		}*/
-			
 	}
 	
 	void concatSession(String name, File origFile, File condFile, double freq, double hpf, double lpf, char slideavg, int interval) {
