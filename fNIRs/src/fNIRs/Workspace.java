@@ -140,29 +140,37 @@ public class Workspace {
 		File hbFile = new File("Hb");
 		File hboFile = new File("HbO");
 		addSubject(name, hbFile, hboFile, condFile);
-	
-		/*try {
-			Object[] in = { origFile.getAbsolutePath(), freq, hpf, lpf, slideavg, interval };
-			pre.preprocess_2013(in);
-			File hbFile = new File("Hb");
-			File hboFile = new File("HbO");
-			addSubject(name, hbFile, hboFile, condFile);
-		} catch (MWException e1) {
-			e1.printStackTrace();
-		}*/
-			
 	}
 	
 	void concatSession(String name, File origFile, File condFile, double freq, double hpf, double lpf, char slideavg, int interval) {
 		preprocess(origFile, freq, hpf, lpf, slideavg, interval);
 		File hbFile = new File("Hb");
 		File hboFile = new File("HbO");
-		File tempFile = addConditions(hbFile, condFile);
-		concatFiles(getHb(name),tempFile);
-		tempFile = addConditions(hboFile, condFile);
-		concatFiles(getHbO(name),tempFile);
-		hbFile.delete();
-		hboFile.delete();
+		File tempFile;
+		if (hbFile.exists()) {
+			tempFile = addConditions(hbFile, condFile);
+			concatFiles(getHb(name),tempFile);
+			hbFile.delete();
+		}
+		if (hboFile.exists()) {
+			tempFile = addConditions(hboFile, condFile);
+			concatFiles(getHbO(name),tempFile);
+			hbFile.delete();
+		}
+	}
+	
+	void concatSession(String name, File hbFile, File hboFile, File condFile) {
+		File tempFile;
+		if (hbFile.exists()) {
+			tempFile = addConditions(hbFile, condFile);
+			concatFiles(getHb(name),tempFile);
+			hbFile.delete();
+		}
+		if (hboFile.exists()) {
+			tempFile = addConditions(hboFile, condFile);
+			concatFiles(getHbO(name),tempFile);
+			hbFile.delete();
+		}
 	}
 	
 	void concatFiles(File file, File other) {
@@ -199,6 +207,25 @@ public class Workspace {
 			return HbOPath;
 		else
 			return null;
+	}
+	
+	boolean deleteDirectory(File dir) {
+		if (dir.isDirectory()) {
+			for (File file : dir.listFiles()) {
+				if (file.isDirectory()) {
+					deleteDirectory(file);
+				}
+				else {
+					file.delete();
+				}
+			}
+		}
+		return dir.delete();
+	}
+	void removeSubject(String name) {
+		String path = subjects.getAbsolutePath();
+		File subject = new File(path + "\\" + name);
+		deleteDirectory(subject);
 	}
 	
 	public static void main(String[] args) {

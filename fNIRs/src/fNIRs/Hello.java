@@ -1,7 +1,12 @@
 package fNIRs;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -129,8 +134,7 @@ public class Hello {
 		//fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
 		DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing);
 		dlg.setText("Select Workspace");
-	    String selected = dlg.open(); // cannot seem to name New Folder for some reason
-	    //System.out.println(selected);
+	    String selected = dlg.open();
 	    workspace = new Workspace(selected,pre);
 		
 		final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
@@ -451,15 +455,19 @@ public class Hello {
 		composite_4.setBounds(10, 96, 694, 254);
 		composite_4.setVisible(false);
 		
+		final ArrayList<Control> loadHatachi = new ArrayList<Control>();
+		
 		text_4 = new Text(composite_4, SWT.BORDER);
+		loadHatachi.add(text_4);
 		text_4.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text_4.setBounds(136, 178, 470, 25);
 		
 		text_5 = new Text(composite_4, SWT.BORDER);
+		loadHatachi.add(text_5);
 		text_5.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text_5.setBounds(136, 218, 470, 25);
 		
-		Button btnNewButton = new Button(composite_4, SWT.NONE);
+		final Button btnNewButton = new Button(composite_4, SWT.NONE);
 		btnNewButton.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnNewButton.setBounds(612, 178, 75, 25);
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
@@ -469,8 +477,9 @@ public class Hello {
 			}
 		});
 		btnNewButton.setText("Browse");
+		loadHatachi.add(btnNewButton);
 		
-		Button btnBrowse_1 = new Button(composite_4, SWT.NONE);
+		final Button btnBrowse_1 = new Button(composite_4, SWT.NONE);
 		btnBrowse_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnBrowse_1.setBounds(612, 218, 75, 25);
 		btnBrowse_1.addSelectionListener(new SelectionAdapter() {
@@ -480,16 +489,15 @@ public class Hello {
 			}
 		});
 		btnBrowse_1.setText("Browse");
+		loadHatachi.add(btnBrowse_1);
 		
-		final ArrayList<Control> loadHatachi = new ArrayList<Control>();
-		
-		Label lblHboFile = new Label(composite_4, SWT.NONE);
+		final Label lblHboFile = new Label(composite_4, SWT.NONE);
 		lblHboFile.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblHboFile.setBounds(20, 218, 84, 25);
 		lblHboFile.setText("HbO File:");
 		loadHatachi.add(lblHboFile);
 		
-		Label lblHbFile = new Label(composite_4, SWT.NONE);
+		final Label lblHbFile = new Label(composite_4, SWT.NONE);
 		lblHbFile.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblHbFile.setBounds(20, 178, 84, 25);
 		lblHbFile.setText("Hb File:");
@@ -557,6 +565,11 @@ public class Hello {
 		btnRemove.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				
+				for (String subject : list.getSelection()) {
+					workspace.removeSubject(subject);
+				}
+				
 				for (Integer item: list.getSelectionIndices())
 					indexList.add(item);
 				int[] indices = new int[indexList.size()];
@@ -593,13 +606,11 @@ public class Hello {
 		final Spinner num_channels_H = new Spinner(composite_4, SWT.BORDER);
 		num_channels_H.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		num_channels_H.setBounds(412, 65, 47, 25);
-		loadHatachi.add(num_channels_H);
 		
 		Label lblNumberOfChannels = new Label(composite_4, SWT.NONE);
 		lblNumberOfChannels.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblNumberOfChannels.setBounds(255, 65, 149, 25);
 		lblNumberOfChannels.setText("Number of Channels:");
-		loadHatachi.add(lblNumberOfChannels);
 		
 		final Label label_4 = new Label(composite_4, SWT.NONE);
 		label_4.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -607,11 +618,10 @@ public class Hello {
 		label_4.setText("File Does Not Exist");
 		label_4.setBounds(306, 339, 105, 15);
 		
-		final Spinner num_Sessions_H = new Spinner(composite_4, SWT.BORDER);
-		num_Sessions_H.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		num_Sessions_H.setMinimum(1);
-		num_Sessions_H.setBounds(172, 65, 47, 25);
-		loadHatachi.add(num_Sessions_H);
+		final Spinner num_sessions_h = new Spinner(composite_4, SWT.BORDER);
+		num_sessions_h.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		num_sessions_h.setMinimum(1);
+		num_sessions_h.setBounds(172, 65, 47, 25);
 		
 		final Label lblOf_H = new Label(composite_4, SWT.NONE);
 		lblOf_H.setAlignment(SWT.CENTER);
@@ -620,7 +630,20 @@ public class Hello {
 		lblOf_H.setBounds(330, 360, 74, 20);
 		loadHatachi.add(lblOf_H);
 		
-		Button button_2 = new Button(composite_4, SWT.NONE);
+		final Button btnHb = new Button(composite_4, SWT.CHECK);
+		btnHb.setBounds(506, 74, 37, 16);
+		btnHb.setText("Hb");
+		
+		final Button btnHbo = new Button(composite_4, SWT.CHECK);
+		btnHbo.setText("HbO");
+		btnHbo.setBounds(562, 74, 44, 16);
+		
+		final Label lblNeedAtLeast = new Label(composite_4, SWT.NONE);
+		lblNeedAtLeast.setBounds(355, 85, 84, 15);
+		lblNeedAtLeast.setText("Need at least 1");
+		lblNeedAtLeast.setVisible(false);
+		
+		final Button button_2 = new Button(composite_4, SWT.NONE);
 		button_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		button_2.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -635,17 +658,40 @@ public class Hello {
 					return;
 				}
 				
+				if (!btnHb.getSelection() && !btnHbo.getSelection()) {
+					MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
+				    messageDialog.setText("Warning!");
+				    messageDialog.setMessage("Select Hb or HbO or both.");
+				    messageDialog.open();
+					return;
+				}
+				
 				for (Control item : loadHatachi) {
 					item.setVisible(true);
 				}
 				
+				if (!btnHb.getSelection()) {
+					lblHbFile.setVisible(false);
+					text_4.setVisible(false);
+					btnNewButton.setVisible(false);
+				}
+				
+				if (!btnHbo.getSelection()) {
+					lblHboFile.setVisible(false);
+					text_5.setVisible(false);
+					btnBrowse_1.setVisible(false);
+				}
+				
 				sessionNumH = 1;
 				
-				lblOf_H.setText("1 of " + num_Sessions_H.getText());
+				lblOf_H.setText("1 of " + num_sessions_h.getText());
 				
-				text_subName.setEnabled(false);
-				num_sessions.setEnabled(false);
-				btnEnter_1.setEnabled(false);
+				text_subName2.setEnabled(false);
+				num_sessions_h.setEnabled(false);
+				num_channels_H.setEnabled(false);
+				button_2.setEnabled(false);
+				btnHb.setEnabled(false);
+				btnHbo.setEnabled(false);
 			}
 		});
 		button_2.setText("Enter");
@@ -661,8 +707,30 @@ public class Hello {
 				
 				int channels = (Integer.valueOf(num_channels_H.getText())).intValue();
 				
-				File HbFile = new File(text_4.getText());
-				File HbOFile = new File(text_5.getText());
+				File Hb = new File(text_4.getText());
+				File HbO = new File(text_5.getText());
+				
+				File HbFile = new File("HbFile.xlsx");
+				File HbOFile = new File("HbOFile.xlsx");
+				
+				//FileInputStream input = new FileInputStream(HbFile);
+				//FileOutputStream output = new FileOutputStream(Hb);
+				
+				try {
+					Files.copy(Hb.toPath(),HbFile.toPath().toAbsolutePath(),StandardCopyOption.REPLACE_EXISTING);
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+					return;
+				}
+				
+				try {
+					Files.copy(HbO.toPath(),HbOFile.toPath().toAbsolutePath(),StandardCopyOption.REPLACE_EXISTING);
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+					return;
+				}
 				
 				if (text_4.getText()!="")
 					if (!setExists(HbFile,lblFileDoesNot_1))
@@ -677,12 +745,13 @@ public class Hello {
 					return;
 				}
 
-				if (HbFile.exists()) {
+				/*if (HbFile.exists()) {
 					try {
 						pre.xlsreadfile(HbFile.getAbsolutePath(), "Hb", channels);
 						HbFile = new File("Hb");
 					} catch (MWException e1) {
 						e1.printStackTrace();
+						return;
 					}
 				}
 				
@@ -692,17 +761,41 @@ public class Hello {
 						HbOFile = new File("HbO");
 					} catch (MWException e1) {
 						e1.printStackTrace();
+						return;
 					}
-				}
+				}*/
 
-				workspace.addSubject(subjectName, HbFile, HbOFile, condFile);
-				list.add(subjectName);
+				if (sessionNumH==1) {
+					workspace.addSubject(subjectName, HbFile, HbOFile, condFile);
+				}
+				else{
+					workspace.concatSession(subjectName, HbFile, HbOFile, condFile);
+				}
+				sessionNumH++;
+				
+				if (sessionNumH>Integer.valueOf(num_sessions_h.getText()).intValue()) {
+					list.add(subjectName);
+					for (Control item : loadHatachi) {
+						item.setVisible(false);
+					}
+					text_subName2.setEnabled(true);
+					num_sessions_h.setEnabled(true);
+					button_2.setEnabled(true);
+					
+					num_channels_H.setEnabled(true);
+					btnHb.setEnabled(true);
+					btnHbo.setEnabled(true);
+					
+					text_subName2.setText("");
+					num_sessions_h.setSelection(1);
+				}
+				else {
+					lblOf_H.setText(sessionNumH + " of " + num_sessions_h.getText());
+				}
 				
 				text_4.setText("");
 				text_5.setText("");
 				text_7.setText("");
-				text_subName2.setText("");
-				
 			}
 		});
 		loadHatachi.add(btnAdd);
@@ -731,6 +824,17 @@ public class Hello {
 			}
 		});
 		button_1.setText("Browse");
+		loadHatachi.add(button_1);
+		
+		Label label_2 = new Label(composite_4, SWT.NONE);
+		label_2.setText("Preprocessing Options:");
+		label_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
+		label_2.setBounds(20, 128, 189, 25);
+		loadHatachi.add(label_2);
+		
+		for (Control item : loadHatachi) {
+			item.setVisible(false);
+		}
 		button_1.setBounds(612, 258, 75, 25);
 		
 		Label label_5 = new Label(composite_4, SWT.NONE);
@@ -738,9 +842,6 @@ public class Hello {
 		label_5.setText("Number of Sessions:");
 		label_5.setBounds(20, 65, 149, 25);
 		
-		Label label_2 = new Label(composite_4, SWT.NONE);
-		label_2.setText("Preprocessing Options:");
-		label_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
-		label_2.setBounds(20, 128, 189, 25);
+
 	}
 }
