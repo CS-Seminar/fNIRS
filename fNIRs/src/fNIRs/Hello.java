@@ -442,14 +442,32 @@ public class Hello {
 		button.setBounds(611, 160, 80, 25);
 		loadItems.add(button);
 		
-		for (Control item : loadItems) {
-			item.setVisible(false);
-		}
-		
 		Label lblNumberOfSessions = new Label(composite_3, SWT.NONE);
 		lblNumberOfSessions.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblNumberOfSessions.setBounds(405, 20, 147, 25);
 		lblNumberOfSessions.setText("Number of Sessions:");
+		
+		Button button_3 = new Button(composite_3, SWT.NONE);
+		button_3.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				for (Control item : loadItems) {
+					item.setVisible(false);
+				}
+				text_subName.setEnabled(true);
+				num_sessions.setEnabled(true);
+				btnEnter_1.setEnabled(true);
+				text_subName.setText("");
+				num_sessions.setSelection(1);
+			}
+		});
+		button_3.setText("Cancel");
+		button_3.setBounds(416, 389, 84, 27);
+		loadItems.add(button_3);
+		
+		for (Control item : loadItems) {
+			item.setVisible(false);
+		}
 		
 		final Composite composite_4 = new Composite(tabFolder_1, SWT.NONE);
 		composite_4.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -711,8 +729,8 @@ public class Hello {
 				File Hb = new File(text_4.getText());
 				File HbO = new File(text_5.getText());
 				
-				File HbFile = new File("HbFile.xlsx");
-				File HbOFile = new File("HbOFile.xlsx");
+				File HbFile = new File("HbFile");
+				File HbOFile = new File("HbOFile");
 				
 				//FileInputStream input = new FileInputStream(HbFile);
 				//FileOutputStream output = new FileOutputStream(Hb);
@@ -818,6 +836,7 @@ public class Hello {
 		
 		Button button_1 = new Button(composite_4, SWT.NONE);
 		button_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		button_1.setBounds(612, 258, 75, 25);
 		button_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -833,16 +852,36 @@ public class Hello {
 		label_2.setBounds(20, 128, 189, 25);
 		loadHatachi.add(label_2);
 		
-		for (Control item : loadHatachi) {
-			item.setVisible(false);
-		}
-		button_1.setBounds(612, 258, 75, 25);
-		
 		Label label_5 = new Label(composite_4, SWT.NONE);
 		label_5.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		label_5.setText("Number of Sessions:");
 		label_5.setBounds(20, 65, 149, 25);
 		
-
+		Button btnCancel = new Button(composite_4, SWT.NONE);
+		btnCancel.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				for (Control item : loadHatachi) {
+					item.setVisible(false);
+				}
+				text_subName2.setEnabled(true);
+				num_sessions_h.setEnabled(true);
+				button_2.setEnabled(true);
+				
+				num_channels_H.setEnabled(true);
+				btnHb.setEnabled(true);
+				btnHbo.setEnabled(true);
+				
+				text_subName2.setText("");
+				num_sessions_h.setSelection(1);
+			}
+		});
+		btnCancel.setBounds(425, 400, 84, 27);
+		btnCancel.setText("Cancel");
+		loadHatachi.add(btnCancel);
+		
+		for (Control item : loadHatachi) {
+			item.setVisible(false);
+		}
 	}
 }
