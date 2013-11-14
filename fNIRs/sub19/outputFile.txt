@@ -1,0 +1,5 @@
+                groupOne c1     secondGroup c1  groupThree c1   group4 c1       
+groupOne c1     1.00000000      0.00000762      0.00025119      0.35591768      
+secondGroup c1  0.00000762      1.00000000      0.00054563      0.00000265      
+groupThree c1   0.00025119      0.00054563      1.00000000      0.00008824      
+group4 c1       0.35591768      0.00000265      0.00008824      NaN             
