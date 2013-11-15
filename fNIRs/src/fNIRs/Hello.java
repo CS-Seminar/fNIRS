@@ -451,6 +451,7 @@ public class Hello {
 		button_3.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				workspace.removeSubject(subjectName);
 				for (Control item : loadItems) {
 					item.setVisible(false);
 				}
@@ -735,20 +736,30 @@ public class Hello {
 				//FileInputStream input = new FileInputStream(HbFile);
 				//FileOutputStream output = new FileOutputStream(Hb);
 				
-				try {
-					Files.copy(Hb.toPath(),HbFile.toPath().toAbsolutePath(),StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-					return;
+				if (text_4.getText()!="") {
+					try {
+						Files.copy(Hb.toPath(),HbFile.toPath().toAbsolutePath(),StandardCopyOption.REPLACE_EXISTING);
+					} catch (IOException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+						return;
+					}
+				}
+				else {
+					HbFile = null;
 				}
 				
-				try {
-					Files.copy(HbO.toPath(),HbOFile.toPath().toAbsolutePath(),StandardCopyOption.REPLACE_EXISTING);
-				} catch (IOException e2) {
-					// TODO Auto-generated catch block
-					e2.printStackTrace();
-					return;
+				if (text_5.getText()!="") {				
+					try {
+						Files.copy(HbO.toPath(),HbOFile.toPath().toAbsolutePath(),StandardCopyOption.REPLACE_EXISTING);
+					} catch (IOException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+						return;
+					}
+				}
+				else {
+					HbOFile = null;
 				}
 				
 				if (text_4.getText()!="")
@@ -861,6 +872,7 @@ public class Hello {
 		btnCancel.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				workspace.removeSubject(subjectName);
 				for (Control item : loadHatachi) {
 					item.setVisible(false);
 				}
