@@ -63,7 +63,8 @@ public class Hello {
 	private FileDialog fileDialog;
 	private Text text_7;
 	
-	private String subjectName = null;
+	private String subjectName = null;  // make sure these are different before adding new subject!
+	private String subjectNameH = null;
 	private int sessionNum;
 	private int sessionNumH;
 
@@ -253,6 +254,7 @@ public class Hello {
 				text_subName.setEnabled(false);
 				num_sessions.setEnabled(false);
 				btnEnter_1.setEnabled(false);
+				
 			}
 		});
 		btnEnter_1.setBounds(611, 20, 80, 25);
@@ -669,9 +671,9 @@ public class Hello {
 		button_2.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				subjectName = text_subName2.getText();
+				subjectNameH = text_subName2.getText();
 				
-				if (subjectName == "" || Arrays.asList(list.getItems()).contains(subjectName)) {
+				if (subjectNameH == "" || Arrays.asList(list.getItems()).contains(subjectNameH)) {
 					MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
 				    messageDialog.setText("Warning!");
 				    messageDialog.setMessage("Please enter a new name");
@@ -771,7 +773,7 @@ public class Hello {
 					if (!setExists(HbOFile,lblFileDoesNot_2))
 						return;
 				
-				if (!HbFile.exists() && !HbOFile.exists()) {
+				if (HbFile!=null && HbOFile!=null) {
 					
 					return;
 				}
@@ -797,15 +799,15 @@ public class Hello {
 				}*/
 
 				if (sessionNumH==1) {
-					workspace.addSubject(subjectName, HbFile, HbOFile, condFile);
+					workspace.addSubject(subjectNameH, HbFile, HbOFile, condFile);
 				}
 				else{
-					workspace.concatSession(subjectName, HbFile, HbOFile, condFile);
+					workspace.concatSession(subjectNameH, HbFile, HbOFile, condFile);
 				}
 				sessionNumH++;
 				
 				if (sessionNumH>Integer.valueOf(num_sessions_h.getText()).intValue()) {
-					list.add(subjectName);
+					list.add(subjectNameH);
 					for (Control item : loadHatachi) {
 						item.setVisible(false);
 					}
@@ -832,7 +834,7 @@ public class Hello {
 		loadHatachi.add(btnAdd);
 		
 		TabItem tbtmNewItem_2 = new TabItem(tabFolder_1, SWT.NONE);
-		tbtmNewItem_2.setText("Hatachi");
+		tbtmNewItem_2.setText("Hitachi");
 		tbtmNewItem_2.setControl(composite_4);
 		
 		Label label_3 = new Label(composite_4, SWT.NONE);
@@ -873,7 +875,7 @@ public class Hello {
 		btnCancel.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				workspace.removeSubject(subjectName);
+				workspace.removeSubject(subjectNameH);
 				for (Control item : loadHatachi) {
 					item.setVisible(false);
 				}
@@ -892,6 +894,9 @@ public class Hello {
 		btnCancel.setBounds(425, 400, 84, 27);
 		btnCancel.setText("Cancel");
 		loadHatachi.add(btnCancel);
+		
+		TabItem tbtmOther = new TabItem(tabFolder_1, SWT.NONE);
+		tbtmOther.setText("Other");
 		
 		for (Control item : loadHatachi) {
 			item.setVisible(false);
