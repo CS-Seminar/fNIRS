@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Scanner;
 
 import org.eclipse.swt.widgets.List;
@@ -74,6 +76,9 @@ public class Workspace {
 			int stop;
 			String condition;
 			
+			// get rid of max condition
+			if (scanner.hasNext())
+				scanner.nextInt();
 			while (scanner.hasNext()) {
 				start = scanner.nextInt();
 				stop = scanner.nextInt();
@@ -112,12 +117,20 @@ public class Workspace {
 		String path = subjects.getAbsolutePath();
 		File subject = new File(path + "\\" + name);
 		subject.mkdir();
-		if (HbFile.exists()) {
+		File conditions = new File(path + "\\" + name + "\\conditions");
+		try {
+			Files.copy(condFile.toPath(),conditions.toPath(),StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+			return;
+		}
+		if (HbFile != null) {
 			File tempFile = addConditions(HbFile, condFile);
 			HbFile.delete();
 			tempFile.renameTo(new File(path + "\\" + name + "\\Hb"));
 		}
-		if (HbOFile.exists()) {
+		if (HbOFile != null) {
 			File tempFile = addConditions(HbOFile, condFile);
 			HbOFile.delete();
 			tempFile.renameTo(new File(path + "\\" + name + "\\HbO"));
@@ -210,22 +223,45 @@ public class Workspace {
 	}
 	
 	boolean deleteDirectory(File dir) {
-		if (dir.isDirectory()) {
-			for (File file : dir.listFiles()) {
-				if (file.isDirectory()) {
-					deleteDirectory(file);
-				}
-				else {
-					file.delete();
+		if (dir.exists()) {
+			if (dir.isDirectory()) {
+				for (File file : dir.listFiles()) {
+					if (file.isDirectory()) {
+						deleteDirectory(file);
+					}
+					else {
+						file.delete();
+					}
 				}
 			}
+			return dir.delete();
 		}
-		return dir.delete();
+		else
+			return false;
 	}
+	
 	void removeSubject(String name) {
 		String path = subjects.getAbsolutePath();
 		File subject = new File(path + "\\" + name);
 		deleteDirectory(subject);
+	}
+	
+	int getMaxCond(String name) {
+		File conditions = new File(subjects.getAbsolutePath() + "\\" + name + "\\conditions");
+		try {
+			BufferedReader cFile = new BufferedReader(new FileReader(conditions));
+			Scanner scanner = new Scanner(cFile);
+			int n;
+			if (scanner.hasNext())
+				n = scanner.nextInt();
+			else 
+				n = 0;
+			scanner.close();
+			return n;
+		}
+		catch (IOException ioe) {
+			return 0;
+		}
 	}
 	
 	public static void main(String[] args) {
