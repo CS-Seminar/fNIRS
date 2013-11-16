@@ -108,13 +108,18 @@ public class Hello {
 	
 	boolean setExists(File file) {
 		if (!file.exists()) {
-			MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
-		    messageDialog.setText("Warning!");
-		    messageDialog.setMessage("File does not exist");
-		    messageDialog.open();
+			errorBox("Warning!","File does not exist");
 			return false;
 		}
 		return true;
+	}
+	
+	void errorBox(String title,String message) {
+		MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
+	    messageDialog.setText(title);
+	    messageDialog.setMessage(message);
+	    messageDialog.open();
+		return;
 	}
 	
 	void browse(Text text) {
