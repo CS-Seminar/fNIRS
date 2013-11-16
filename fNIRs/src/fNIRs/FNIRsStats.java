@@ -6,8 +6,9 @@
  * Description:                                                               *
  ******************************************************************************/
 
-// are final things only unchangeable references or actually unalterable
-//    objects???
+// THINK ABOUT SAVING THINGS SO IT WILL BE QUICKER FOR THE USER
+// ARE FINAL THINGS ONLY UNCHANGEABLE REFERENCES OR ACTUALLY UNALTERABLE
+//    OBJECTS???
 // HASNEXTDOUBLE DOES DETECT INTEGERS IN THE FILE, IT JUST READS THEM AS LEGAL
 //    DOUBLE VALUES
 // FIND OUT MORE ABOUT THE STATIC KEYWORD...MAYBE ASK A PROFESSOR
@@ -31,7 +32,7 @@ package fNIRs;
 import org.apache.commons.math3.stat.inference.OneWayAnova;
 import java.util.Scanner; // to read doubles simply
 // I found out Locale is apparently for things like what to use for decimal
-//    points, etc. e.g. the European style of writing U.S. "8.5" as "8,5" and
+//    points, etc. e.g. the European style of writing U.S. "8.5" as "8,5" and v
 //    U.S "8,000" as "8.000"
 import java.util.Locale; // for Scanner (defines character encoding)
 import java.util.InputMismatchException;
@@ -97,12 +98,11 @@ public class FNIRsStats {
         }
     }
 
-    // INCONSISTENT NAME D:
-    // public void ANOVAandOutput(GroupedChannels data,
-    // 			       List<String> groups,
-    // 			       List<Integer> conditions) {
-    // }
-    //    public void statsify(
+    public static GroupedChannels processAllSubjectData(List<File> data) {
+	
+	return null;
+    }
+    
     // COULD OPTIMIZE BY HARDCODING THE REFLEXIVE ANOVAs
     // http://stackoverflow.com/questions/12375768/java-equivalent-to-printf-f/12375811#12375811
     // this should chunk the data, too
@@ -118,7 +118,7 @@ public class FNIRsStats {
 	ArrayList<GroupedChannels.TaggedDataSequence> allTDSs =
 	    data.getAllSelectedTDSs(groupNames, conditions);
 
-	chunkData(allTDSs, numChunks); // COMMENT THIS LATER
+	//chunkData(allTDSs, numChunks); // COMMENT THIS LATER
 	
 	// calculate required widths for printed names and condition numbers:
 	int nameWidth = longestLength(groupNames); // length of longest name
@@ -151,8 +151,6 @@ public class FNIRsStats {
 	ostream.println(); // print newline
 	// output ANOVA values line by line:
 	OneWayAnova myANOVA = new OneWayAnova();
-	// IS THE BEST WAY TO FIX THIS double[]/Double[] BS TO JUST CHANGE THE
-	//    COMMONS MATH METHOD????
 	for (GroupedChannels.TaggedDataSequence first : allTDSs) {
 	    // output tds identifier in first column:
 	    ostream.printf(idFieldFormat + "  ",
@@ -171,12 +169,25 @@ public class FNIRsStats {
 		double result = 0;
 		try {
 		    result = myANOVA.anovaPValue(dataSets);
+		    // if (first == second) { // if the two TDSs are the same TDS,
+		    // 	result = 1; // then the ANOVA value should be 1, even
+			// though a divide-by-zero
+		    //		    }
 		} catch (Exception ex) {
 		    ostream.println();
 		    error(ex.getMessage());
 		}
 		if (result != result) { // if result is NaN
-		    System.out.println("NaN on " + first.getGroupName() + " c" + first.getCondition() + " and " + second.getGroupName() + " c" + second.getCondition());
+		    System.out.println("NaN on " + first.getGroupName() +
+				       " c" + first.getCondition() + " and " +
+				       second.getGroupName() + " c" +
+				       second.getCondition());
+		    System.out.println("first");
+		    for (int i = 0; i < 4; i++)
+			System.out.println(i + " " + dataSets.get(0)[i]);
+		    System.out.println("second");
+		    for (int i = 0; i < 4; i++)
+			System.out.println(i + " " + dataSets.get(1)[i]);
 		}
 		// AGAIN, SEE IF "PRECISON" == "NUMBER OF DECIMAL PLACES"
 		// APPARENTLY THE 1 IS COMPULSORY....
@@ -382,23 +393,47 @@ public class FNIRsStats {
         //    SOMETHING FROM IT....
 
         /* GroupedChannels
-         * IN:  groupFile, A file specifying channel groupings for statistical 
+         * IN:  groupFile, a File specifying channel groupings for statistical 
          *         analysis. Format is a string to name the grouping, then 
          *         natural numbers identifying the channels in that group, 
          *         terminated by the next grouping's name or EOF.
-         *      numChannels, the number of channels the Hb and HbO input files
-         *         will have (not counting the extra condition column)
+         *      dataFile, a File containing whitespace-delimited columns of
+	 *         preprocessed Hb or HbO values, which correspond to channels
+	 *         from the fNIRs device. The last column must contain an
+	 *         integer condition number for each (newline-delimited) row.
          * This constructor creates all the necessary Groups to read from an Hb
          *    or HbO file and checks to see if any channels are specified to be
          *    in multiple groups or not specified to be in a group.
          */
-        public GroupedChannels (int numChannels, File groups, File data) {
-            NumChannels = numChannels; // set number of channels in Hb/HbO
-                                       //    file
+        public GroupedChannels (File data, File groups) {
+            NumChannels = calcNumChannels(data); // find and store the number of
+                                                 //    channels in the Hb/HbO
+                                                 //    file
             GroupList = new ArrayList<Group>(); // initialize GroupList
+	    Conditions = new ArrayList<Integer>(); // initialize Conditions 
             makeGroups(groups);
             readData(data);
         }
+	/* calcNumChannels()
+	 * IN:  dataFile, a File containing whitespace-delimited columns of
+	 *         preprocessed Hb or HbO values, which correspond to channels
+	 *         from the fNIRs device. The last column must contain an
+	 *         integer condition number for each (newline-delimited) row.
+         * OUT: numChannels, the number of channels the Hb or HbO input file 
+         *         has (not counting the extra condition column)
+	 */
+	private int calcNumChannels(File dataFile) {
+	    Scanner s = makeScanner(dataFile);
+	    // read one line from the file, then remove leading and trailing
+	    //    whitespace:
+	    String line = s.nextLine().trim();
+	    // produce an array by splitting line on whitespace characters:
+	    String[] columnValues = line.split("\\s+"); // regular expression
+	    // the number of channels is the number of columns in the input file
+	    //    minus one, because the last column in each row contains the
+	    //    condition number for the row:
+	    return columnValues.length - 1; 
+	}
         /* makeGroups
          * IN:  groupFile, A file specifying channel groupings for statistical 
          *         analysis. Format is a string to name the grouping, then 
@@ -486,6 +521,8 @@ public class FNIRsStats {
                         values[channel] = s.nextDouble(); // read all data
                     }
                     int condition = s.nextInt(); // read condition for this row
+		    if (!Conditions.contains(condition)) 
+			Conditions.add(condition); // store condition number
                     for (int channel = 1; channel <= NumChannels; channel++){
                         for (Group g : GroupList){
                             if (g.hasChannel(channel)){
@@ -561,6 +598,17 @@ public class FNIRsStats {
         private void removeAfter(List<?> ary, int startIndex){
             ary.subList(startIndex, ary.size()).clear();
         }
+	/* getAllTDSs
+	 * IN:  none
+	 * OUT: returns an ArrayList containing all TaggedDataSequences 
+	 *         specified by a condition-group combination contained by the
+	 *         object
+	 */
+	public ArrayList<TaggedDataSequence> getAllTDSs() {
+	    ArrayList<String> groupNames = getGroupNames();
+	    ArrayList<Integer> conditions = getConditions();
+	    return combineArrayLists(selectData(groupNames, conditions));
+	}
 	/* getAllSelectedTDSs
 	 * IN:  groups, a list of group names (strings)
 	 *      conditions, a list of condition identifiers (ints)
@@ -654,6 +702,14 @@ public class FNIRsStats {
 	    }
 	    return groupNames;
 	}
+	/* getGroupNames
+	 * IN:  none
+	 * OUT: returns an ArrayList containing the names of all the channel 
+	 *         groupings.
+	 */	
+	public ArrayList<Integer> getConditions() {
+	    return new ArrayList<Integer> (Conditions);	    
+	}
         /* getGroup
          * IN:  channels, a List of channels the group should be assigned
          * OUT: returns a reference to group whose set of assigned channels is
@@ -715,7 +771,8 @@ public class FNIRsStats {
         }
         private final int NumChannels;
         private ArrayList<Group> GroupList;
-
+	private ArrayList<Integer> Conditions;
+	
         private class Group {
             public Group(String name, ArrayList<Integer> channels){            
                 Name = name;
@@ -1013,64 +1070,35 @@ public class FNIRsStats {
         }
     }
     public static void main(String[] args) {
-        // think about saving things so it will be quicker for the user
-        // Prepare to read files: (the GUI will give these files somehow)
-        //File dataFile = new File("/home/nkolesar/cs410-Senior-Seminar/Zombie_MiNIR/linux-version/testHb");
-        //File dataFile = new File("C:/Users/nkolesar/Desktop/sub19/testHb");
-	File dataFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/testHb");
-	//File dataFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/subjects/sub19-1/Hb");
-        int numChannels = 8; // number of channels in the input file (GUI)        
-        //File groupFile = new File("/home/nkolesar/cs410-Senior-Seminar/Zombie_MiNIR/linux-version/groups");
-        //File groupFile = new File("C:/Users/nkolesar/Desktop/sub19/groups");
+	File dataFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/subjects/matlab19/Hb");
+        //int numChannels = 8; // number of channels in the input file (GUI) 
 	File groupFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/groups");
-        //--------------------------------------------------------------------//
-        //                  CLASS TESTING: Groups classes                     //
-        //--------------------------------------------------------------------//
+	
         System.out.println("Reading group information.");
         // read channel grouping information:
-        GroupedChannels groups = new GroupedChannels(numChannels,
-                                                     groupFile,
-                                                     dataFile);
-        //groups.printChannels();
-        System.out.println("-------------------------------------------------");
+        GroupedChannels groups = new GroupedChannels(dataFile, groupFile);
+	System.out.println("-------------------------------------------------");
 
         groups.print("groupOne");
         int cond = 1;
         System.out.println("Average sequence for condition " + cond + " is:");
         printList(groups.getGroup("groupOne").getData(cond));
 
+	int numChunks = 7;	
 	ArrayList<Double> result =
-	    averageChunks(groups.getGroup("groupOne").getData(1), 2);
-	System.out.println("Average sequence after averaging 2 chunks together:");
+	    averageChunks(groups.getGroup("groupOne").getData(1), numChunks);
+	System.out.println("Average sequence after averaging " + numChunks +
+			   " chunks together:");
 	printList(result);
 
         System.out.println("-------------------------------------------------");
-	/*
-        groups.print("second");
-        System.out.println("Average sequence for condition " + cond + " is:"); 
-        printList(groups.getGroup("second").getData(1));
-
-        System.out.println("-------------------------------------------------");
-	*/ /*
-        groups.print("all_chans");
-        System.out.println("Average sequence for condition " + cond + " is:"); 
-        printList(groups.getGroup("all_chans").getData(1));
-
-        System.out.println("-------------------------------------------------");
-                
-        System.out.println("Done!");
-
-        System.out.println("-------------------------------------------------");
-	   */
 
 	ArrayList<Double> result2 =
-	    averageChunks(groups.getGroup("groupOne").getData(2), 2);
-	System.out.println("Average sequence after averaging 2 chunks together:");
+	    averageChunks(groups.getGroup("groupOne").getData(2), numChunks);
+	System.out.println("Average sequence after averaging " + numChunks +
+			   " chunks together:");
 	printList(result2);
 
-	//Anova(double[] resp, double[] factor1, double[] factor2) {
-	
-	
         ArrayList<String> groupNames = new ArrayList<String>();
 	//        groupNames.add("first");
 	//        groupNames.add("second");
@@ -1078,7 +1106,8 @@ public class FNIRsStats {
 	groupNames.add("secondGroup");
 	groupNames.add("groupThree");
 	groupNames.add("group4");
-        groupNames.add("all_chans");
+	groupNames.add("g5");
+	//        groupNames.add("all_chans");
 
         ArrayList<Integer> conditions = new ArrayList<Integer>();
         conditions.add(1);
@@ -1104,13 +1133,17 @@ public class FNIRsStats {
 	// TEST ANOVA AND OUTPUT FUNCTIONS: 
 
 	int precision = 8;
-	int numChunks = 7;
 	
-	outputANOVAs(groups, groupNames, conditions, numChunks, precision);
+	outputANOVAs(groups,
+		     groups.getGroupNames(), groups.getConditions(),
+		     numChunks, precision);
 
 	File outFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/outputFile.txt");
-	writeANOVAs(outFile, groups, groupNames, conditions, numChunks, precision);
-	
-        System.exit(0);
+	writeANOVAs(outFile, groups,
+		    groups.getGroupNames(), groups.getConditions(),
+		    // groupNames, conditions,
+		    numChunks, precision);
+
+	System.exit(0);
     }
 }
