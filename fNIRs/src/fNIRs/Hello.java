@@ -59,6 +59,7 @@ public class Hello {
 	private Text text_6;
 	private FileDialog fileDialog;
 	private Text text_7;
+	private Text text_dm_sub;
 	
 	private String subjectName = null;  // make sure these are different before adding new subject!
 	private String subjectNameH = null;
@@ -658,27 +659,158 @@ public class Hello {
 		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 		tbtmMachineLearning.setControl(composite_2);
 		
+		final ArrayList<Control> step2 = new ArrayList<Control>();
+		
 		final List list_1 = new List(composite_2, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		list_1.setBounds(306, 52, 160, 395);
+		step2.add(list_1);
+				
+		final ArrayList<Integer> cond_list = new ArrayList<Integer>();
 		
 		Button btnNewButton_1 = new Button(composite_2, SWT.NONE);
 		btnNewButton_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ArrayList<Integer> cond_list = new ArrayList<Integer>(); 
+				
+				if ((list_1.getSelectionIndices()).length==0) {
+					MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
+				    messageDialog.setText("Warning!");
+				    messageDialog.setMessage("Select at least 1 condition.");
+				    messageDialog.open();
+					return;
+				}
+				
+				cond_list.clear(); 
 				for (Integer item: list_1.getSelectionIndices())
-					cond_list.add(item + 1);
+					cond_list.add(item);
 				System.out.println(cond_list);
+				for (Control item: step2)
+					item.setEnabled(false);
 			}
 		});
 		
 		btnNewButton_1.setBounds(340, 453, 84, 25);
 		btnNewButton_1.setText("Select");
-		for (int i=1; i<40; i++) {
-			String strI = "Condition #" + i;
-			list_1.add(strI);
-		}
+		step2.add(btnNewButton_1);
+		
+		final ArrayList<Control> step1 = new ArrayList<Control>();
+		
+		final Button btnHb_1 = new Button(composite_2, SWT.CHECK);
+		btnHb_1.setBounds(93, 178, 93, 16);
+		btnHb_1.setText("Hb");
+		step1.add(btnHb_1);
+		
+		final Button btnHbO_1 = new Button(composite_2, SWT.CHECK);
+		btnHbO_1.setText("HbO");
+		btnHbO_1.setBounds(93, 216, 93, 16);
+		step1.add(btnHbO_1);
+		
+		text_dm_sub = new Text(composite_2, SWT.BORDER);
+		text_dm_sub.setBounds(88, 120, 122, 21);
+		step1.add(text_dm_sub);
+		
+		list.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (text_dm_sub.getEnabled()) {
+					String[] dmSubjects = list.getSelection();
+					String dmSubject = dmSubjects[dmSubjects.length-1];
+					text_dm_sub.setText(dmSubject);
+				}
+			} 
+		});
+		
+		Label lblStep = new Label(composite_2, SWT.NONE);
+		lblStep.setBounds(76, 31, 55, 15);
+		lblStep.setText("Step 1");
+		
+		Label lblStep_1 = new Label(composite_2, SWT.NONE);
+		lblStep_1.setText("Step 2");
+		lblStep_1.setBounds(295, 31, 55, 15);
+		
+		Label lblStep_2 = new Label(composite_2, SWT.NONE);
+		lblStep_2.setText("Step 3");
+		lblStep_2.setBounds(489, 31, 55, 15);
+		
+		Button btnRun = new Button(composite_2, SWT.NONE);
+		btnRun.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String name = text_dm_sub.getText();
+				if (btnHb_1.getSelection()) {
+					rapidDriver.filter(cond_list, workspace.getHb(name), workspace.getHbOutput(name));
+				}
+				else {
+					rapidDriver.empty(workspace.getHbOutput(name));
+				}
+				
+				if (btnHbO_1.getSelection()) {
+					rapidDriver.filter(cond_list, workspace.getHbO(name), workspace.getHbOOutput(name));
+				}
+				else {
+					rapidDriver.empty(workspace.getHbOOutput(name));
+				}
+				
+				boolean done = false;
+				
+				try {
+					pre.rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath());
+					done = true;
+				}
+				catch(MWException mwe) {
+					mwe.printStackTrace();
+					done = false;
+				}
+				
+				if (done) {
+					try {
+						rapidDriver.run(workspace.getRMInput(name));
+					} catch (OperatorException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				
+				
+			}
+		});
+		btnRun.setBounds(530, 163, 75, 25);
+		btnRun.setText("Run");
+		
+		Button btnNext = new Button(composite_2, SWT.NONE);
+		btnNext.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (text_dm_sub.getText() == "" || !Arrays.asList(list.getItems()).contains(text_dm_sub.getText())) {
+					MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
+				    messageDialog.setText("Warning!");
+				    messageDialog.setMessage("Subject " + text_dm_sub.getText() + " does not exist.");
+				    messageDialog.open();
+					return;
+				}
+				if (!btnHb_1.getSelection() && !btnHbO_1.getSelection()) {
+					MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
+				    messageDialog.setText("Warning!");
+				    messageDialog.setMessage("Select Hb or HbO or both.");
+				    messageDialog.open();
+					return;
+				}
+				for (Control item : step1) {
+					item.setEnabled(false);
+				}
+				
+				int n = workspace.getMaxCond(text_dm_sub.getText());
+				
+				for (int i=0; i<=n; i++) {
+					String strI = "Condition #" + i;
+					list_1.add(strI);
+				}
+			}
+		});
+		btnNext.setBounds(111, 275, 75, 25);
+		btnNext.setText("Next");
+		step1.add(btnNext);
 
 		/*
 		Button for filtering
