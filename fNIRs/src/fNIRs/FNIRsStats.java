@@ -97,10 +97,26 @@ public class FNIRsStats {
             System.out.println(i + "\t " + lst.get(i));
         }
     }
-
-    public static GroupedChannels processAllSubjectData(List<File> data) {
-	
-	return null;
+    /* processAllSubjectData
+     * IN:  dataFiles, a nonempty List of data files to process together for 
+     *         statistical analysis
+     *      groupFile, a group file that applies to all the files in dataFiles
+     * Creates a GroupedChannels object containing, for each channel grouping
+     *    specified in the group file, the average sequence produced by 
+     *    averaging all subjects' data for the specified channels.
+     * OUT: the GroupedChannels object thus created
+     */
+    public static GroupedChannels processAllSubjectData(List<File> dataFiles,
+							File groupFile) {
+	// initialize output data with the data from the first data file and the
+	//    appropriate channel grouping information:
+	GroupedChannels output = new GroupedChannels(dataFiles.get(0),
+						     groupFile);
+	// iterate through the remaining subjects' data files:
+	for (dataFile : data.subList(1, data.size()) {
+	    output.;
+	}
+	return output;
     }
     
     // COULD OPTIMIZE BY HARDCODING THE REFLEXIVE ANOVAs
@@ -549,9 +565,24 @@ public class FNIRsStats {
 	// 	getData(groups, conditions);
 	
 	// }
-        public void combineGroups(List<Group> others){
-            // find group that matches the one in other
-            // IMPLEMENT
+	/* combineGroups
+         * IN:  other, a GroupedChannels object whose data should be merged into
+         *         this object's channel grouping average sequences
+         * OUT: The groups in this object which have the same set of channels as
+         *         a group in other have data sequences which are the length of
+         *         the shorter of the two original sequences. They contain the 
+         *         averages of all the channels in both groupings as if they 
+         *         were averaged together into the same sequence instead of
+	 *         being put into separate Groups.
+         */
+        public void combineGroups(GroupedChannels other){
+	    if (other == this)
+		error("?????");
+	    for (Group g : other.getGroups()) {
+		// add g's data to the average sequence in the group that
+		//    matches g in this object:
+		combineGroups(g);
+	    }
         }
         /* combineGroups
          * IN:  other, another Group whose data should be merged into the
