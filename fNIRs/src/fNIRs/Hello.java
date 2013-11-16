@@ -545,6 +545,7 @@ public class Hello {
 		btnNewButton_2.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				browse(text_8);
 			}
 		});
 		btnNewButton_2.setBounds(590, 70, 116, 25);
@@ -560,57 +561,91 @@ public class Hello {
 		HbOCheck.setBounds(80, 70, 64, 25);
 		HbOCheck.setText("HbO");
 		
-		List list_2 = new List(composite_1, SWT.BORDER);
-		list_2.setBounds(30, 151, 188, 309);
+		final List list_2 = new List(composite_1, SWT.BORDER);
+		list_2.setEnabled(false);
+		list_2.setBounds(30, 182, 188, 278);
 		
-		List list_3 = new List(composite_1, SWT.BORDER);
-		list_3.setBounds(240, 151, 188, 309);
+		final List list_3 = new List(composite_1, SWT.BORDER);
+		list_3.setEnabled(false);
+		list_3.setBounds(240, 182, 188, 278);
 		
-		Label lblNewLabel_1 = new Label(composite_1, SWT.NONE);
-		lblNewLabel_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		lblNewLabel_1.setBounds(30, 120, 55, 25);
-		lblNewLabel_1.setText("Groups:");
+		final Label grouplbl = new Label(composite_1, SWT.NONE);
+		grouplbl.setEnabled(false);
+		grouplbl.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		grouplbl.setBounds(30, 151, 55, 25);
+		grouplbl.setText("Groups:");
 		
-		Label lblNewLabel_2 = new Label(composite_1, SWT.NONE);
-		lblNewLabel_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		lblNewLabel_2.setBounds(240, 120, 116, 25);
-		lblNewLabel_2.setText("Conditions:");
+		final Label condlbl = new Label(composite_1, SWT.NONE);
+		condlbl.setEnabled(false);
+		condlbl.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		condlbl.setBounds(240, 151, 116, 25);
+		condlbl.setText("Conditions:");
 		
-		Label lblChunking = new Label(composite_1, SWT.NONE);
-		lblChunking.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		lblChunking.setBounds(484, 151, 86, 25);
-		lblChunking.setText("Chunking:");
+		final Label chunking = new Label(composite_1, SWT.NONE);
+		chunking.setEnabled(false);
+		chunking.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		chunking.setBounds(484, 151, 86, 25);
+		chunking.setText("Chunking:");
 		
 		text_9 = new Text(composite_1, SWT.BORDER);
+		text_9.setEnabled(false);
 		text_9.setBounds(484, 182, 55, 25);
 		
-		Label lblNewLabel_3 = new Label(composite_1, SWT.NONE);
-		lblNewLabel_3.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		lblNewLabel_3.setBounds(545, 182, 161, 25);
-		lblNewLabel_3.setText("chunks");
+		final Label chunks = new Label(composite_1, SWT.NONE);
+		chunks.setEnabled(false);
+		chunks.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		chunks.setBounds(545, 182, 86, 25);
+		chunks.setText("chunks");
 		
-		Label lblNewLabel_4 = new Label(composite_1, SWT.NONE);
-		lblNewLabel_4.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		lblNewLabel_4.setBounds(484, 238, 148, 25);
-		lblNewLabel_4.setText("ANOVA Precision:");
+		final Label aprecision = new Label(composite_1, SWT.NONE);
+		aprecision.setEnabled(false);
+		aprecision.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		aprecision.setBounds(484, 238, 148, 25);
+		aprecision.setText("ANOVA Precision:");
 		
 		text_10 = new Text(composite_1, SWT.BORDER);
+		text_10.setEnabled(false);
 		text_10.setBounds(484, 269, 55, 25);
 		
-		Label lblDecimalPlaces = new Label(composite_1, SWT.NONE);
-		lblDecimalPlaces.setText("decimal places");
-		lblDecimalPlaces.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		lblDecimalPlaces.setBounds(545, 269, 161, 25);
+		final Label dplace = new Label(composite_1, SWT.NONE);
+		dplace.setEnabled(false);
+		dplace.setText("decimal places");
+		dplace.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		dplace.setBounds(545, 269, 116, 25);
 		
-		Button btnNewButton_3 = new Button(composite_1, SWT.NONE);
-		btnNewButton_3.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		btnNewButton_3.setBounds(484, 358, 130, 25);
-		btnNewButton_3.setText("ANOVA");
+		final Button anovabtn = new Button(composite_1, SWT.NONE);
+		anovabtn.setEnabled(false);
+		anovabtn.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		anovabtn.setBounds(484, 358, 130, 25);
+		anovabtn.setText("ANOVA");
 		
-		Label lblNewLabel_5 = new Label(composite_1, SWT.NONE);
-		lblNewLabel_5.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		lblNewLabel_5.setBounds(484, 327, 148, 25);
-		lblNewLabel_5.setText("Processes to Run:");
+		final Label run = new Label(composite_1, SWT.NONE);
+		run.setEnabled(false);
+		run.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		run.setBounds(484, 327, 148, 25);
+		run.setText("Processes to Run:");
+		
+		Button btnLoadGroupsAnd = new Button(composite_1, SWT.NONE);
+		btnLoadGroupsAnd.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				grouplbl.setEnabled(true);
+				condlbl.setEnabled(true);
+				list_2.setEnabled(true);
+				list_3.setEnabled(true);
+				chunking.setEnabled(true);
+				aprecision.setEnabled(true);
+				dplace.setEnabled(true);
+				chunks.setEnabled(true);
+				run.setEnabled(true);
+				text_9.setEnabled(true);
+				text_10.setEnabled(true);
+				anovabtn.setEnabled(true);
+			}
+		});
+		btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		btnLoadGroupsAnd.setBounds(240, 115, 276, 25);
+		btnLoadGroupsAnd.setText("Load Groups and Conditions");
 		
 		TabItem tbtmMachineLearning = new TabItem(tabFolder, SWT.NONE);
 		tbtmMachineLearning.setText("Data Mining");
