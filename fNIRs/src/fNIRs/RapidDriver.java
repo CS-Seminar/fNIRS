@@ -6,7 +6,9 @@ import java.util.*;
 import com.rapidminer.RapidMiner.ExecutionMode;
 import com.rapidminer.RapidMiner;
 import com.rapidminer.Process;
+import com.rapidminer.operator.Operator;
 import com.rapidminer.operator.OperatorException;
+import com.rapidminer.operator.io.ExcelExampleSource;
 import com.rapidminer.tools.XMLException;
 
 
@@ -24,7 +26,6 @@ public class RapidDriver {
 		RapidMiner.init();
 	    // create the process from the process file
 		this.process = new Process(myFile);
-
 	}
 
 	private void writeRow(BufferedWriter fwriter, String[] entries){
@@ -40,6 +41,21 @@ public class RapidDriver {
 			e.printStackTrace();
 		}
 	}
+	void empty(File output){
+		try {
+			BufferedWriter fwriter;
+			fwriter = new BufferedWriter(new FileWriter(output));
+			fwriter.write("0");
+			fwriter.newLine();	
+			fwriter.write("0");
+			fwriter.newLine();
+		} catch (IOException ie) {
+			// TODO Auto-generated catch block
+			ie.printStackTrace();
+		}
+		
+	}
+	
 	void filter(ArrayList<Integer> conditions, File input, File output){
 		//Filter a Hb/Hbo file with conditions listed in the last col
 		//Result only contains rows with conditions in conditions array
@@ -90,7 +106,9 @@ public class RapidDriver {
 		
 	}
 	
-	void run() throws OperatorException{
+	void run(File input) throws OperatorException{
+		Operator op = this.process.getOperator("Read Excel");	
+		op.setParameter(ExcelExampleSource.PARAMETER_EXCEL_FILE, input.getAbsolutePath());
 		this.process.run();
 	}
 
