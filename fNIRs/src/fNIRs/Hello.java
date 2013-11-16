@@ -80,6 +80,7 @@ public class Hello {
 			Hello window = new Hello();
 			indexList = new ArrayList<Integer>();
 			pre = new Preprocess();
+			//pre.rapidFormatConversion("Hb_output.txt", "HbO_output.txt", "rapid_output.xls");
 			//workspace = new Workspace("C:\\Users\\shammond\\Desktop\\CS_Seminar\\fNIRs\\workspace", pre);
 			rapidDriver = new RapidDriver();
 			window.open();
