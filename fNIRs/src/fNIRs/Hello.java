@@ -545,6 +545,7 @@ public class Hello {
 		btnNewButton_2.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				
 			}
 		});
 		btnNewButton_2.setBounds(590, 70, 116, 25);
@@ -562,6 +563,8 @@ public class Hello {
 		
 		List list_2 = new List(composite_1, SWT.BORDER);
 		list_2.setBounds(30, 151, 188, 309);
+		for (String groupName : statsData.getGroupNames())
+		    list_2.add(groupName);
 		
 		List list_3 = new List(composite_1, SWT.BORDER);
 		list_3.setBounds(240, 151, 188, 309);
