@@ -30,7 +30,7 @@ public class RapidDriver {
 
 	private void writeRow(BufferedWriter fwriter, String[] entries){
 		try {
-			for(int i = 0; i < (entries.length - 2); i++){
+			for(int i = 0; i < (entries.length - 1); i++){
 				fwriter.write(entries[i]); 
 				fwriter.write(", ");
 			}
