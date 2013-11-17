@@ -264,6 +264,28 @@ public class Workspace {
 		}
 	}
 	
+	File getHbOutput(String name) {
+		String path = subjects.getAbsolutePath();
+		File HbOutput = new File(path + "\\" + name + "\\Hb_output.txt");
+		return HbOutput;
+	}
+	
+	File getHbOOutput(String name) {
+		String path = subjects.getAbsolutePath();
+		File HbOOutput = new File(path + "\\" + name + "\\HbO_output.txt");
+		return HbOOutput;
+	}
+	
+	File getRMInput(String name) {
+		String path = subjects.getAbsolutePath();
+		File RMInputFile = new File(path + "\\" + name + "\\rm_input_file.xls");
+		return RMInputFile;
+	}
+	
+	String getStatsPath() {
+		return stats.getAbsolutePath();
+	}
+	
 	public static void main(String[] args) {
 		File first = new File("first.txt");
 		File second = new File("second.txt");
