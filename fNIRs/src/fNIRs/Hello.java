@@ -705,7 +705,7 @@ public class Hello {
 		
 		final Button btnHb_1 = new Button(composite_2, SWT.CHECK);
 		btnHb_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		btnHb_1.setBounds(440, 30, 61, 25);
+		btnHb_1.setBounds(440, 30, 44, 25);
 		btnHb_1.setText("Hb");
 		step1.add(btnHb_1);
 		
@@ -774,7 +774,7 @@ public class Hello {
 				
 			}
 		});
-		btnRun.setBounds(521, 120, 180, 180);
+		btnRun.setBounds(216, 120, 485, 339);
 		btnRun.setText("Run");
 		
 		Button btnNext = new Button(composite_2, SWT.NONE);
