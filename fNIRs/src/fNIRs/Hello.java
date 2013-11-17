@@ -128,6 +128,17 @@ public class Hello {
 			text.setText(fileName);
 	}
 	
+	void enableList(ArrayList<Control> lst) {
+		for (Control item : lst) {
+			item.setEnabled(true);
+		}
+	}
+	
+	void disableList(ArrayList<Control> lst) {
+		for (Control item : lst) {
+			item.setEnabled(false);
+		}
+	}
 
 	/**
 	 * Create contents of the window.
@@ -666,6 +677,7 @@ public class Hello {
 		tbtmMachineLearning.setControl(composite_2);
 		
 		final ArrayList<Control> step2 = new ArrayList<Control>();
+		final ArrayList<Control> step3 = new ArrayList<Control>();
 		
 		final List list_1 = new List(composite_2, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		list_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -692,8 +704,8 @@ public class Hello {
 				for (Integer item: list_1.getSelectionIndices())
 					cond_list.add(item);
 				System.out.println(cond_list);
-				for (Control item: step2)
-					item.setEnabled(false);
+				disableList(step2);
+				enableList(step3);
 			}
 		});
 		
@@ -701,18 +713,22 @@ public class Hello {
 		btnNewButton_1.setText("Select");
 		step2.add(btnNewButton_1);
 		
+		for (Control item : step2) {
+			item.setEnabled(false);
+		}
+		
 		final ArrayList<Control> step1 = new ArrayList<Control>();
 		
 		final Button btnHb_1 = new Button(composite_2, SWT.CHECK);
 		btnHb_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		btnHb_1.setBounds(440, 30, 61, 25);
+		btnHb_1.setBounds(440, 30, 44, 25);
 		btnHb_1.setText("Hb");
 		step1.add(btnHb_1);
 		
 		final Button btnHbO_1 = new Button(composite_2, SWT.CHECK);
 		btnHbO_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnHbO_1.setText("HbO");
-		btnHbO_1.setBounds(490, 30, 69, 25);
+		btnHbO_1.setBounds(490, 30, 54, 25);
 		step1.add(btnHbO_1);
 		
 		text_dm_sub = new Text(composite_2, SWT.BORDER);
@@ -736,6 +752,7 @@ public class Hello {
 		btnRun.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				disableList(step3);
 				String name = text_dm_sub.getText();
 				if (btnHb_1.getSelection()) {
 					rapidDriver.filter(cond_list, workspace.getHb(name), workspace.getHbOutput(name));
@@ -771,11 +788,16 @@ public class Hello {
 					}
 				}
 				
-				
+				enableList(step1);
 			}
 		});
 		btnRun.setBounds(521, 120, 180, 180);
 		btnRun.setText("Run");
+		step3.add(btnRun);
+		
+		for (Control item : step3) {
+			item.setEnabled(false);
+		}
 		
 		Button btnNext = new Button(composite_2, SWT.NONE);
 		btnNext.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -796,9 +818,8 @@ public class Hello {
 				    messageDialog.open();
 					return;
 				}
-				for (Control item : step1) {
-					item.setEnabled(false);
-				}
+				disableList(step1);
+				enableList(step2);
 				
 				int n = workspace.getMaxCond(text_dm_sub.getText());
 				
