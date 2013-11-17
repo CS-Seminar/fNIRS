@@ -563,12 +563,17 @@ public class Hello {
 		btnNewButton_2.setBounds(590, 70, 116, 25);
 		btnNewButton_2.setText("Browse...");
 		
-		Button HbCheck = new Button(composite_1, SWT.CHECK);
+		final Button HbCheck = new Button(composite_1, SWT.CHECK);
+		HbCheck.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
 		HbCheck.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		HbCheck.setBounds(30, 70, 48, 25);
 		HbCheck.setText("Hb");
 		
-		Button HbOCheck = new Button(composite_1, SWT.CHECK);
+		final Button HbOCheck = new Button(composite_1, SWT.CHECK);
 		HbOCheck.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		HbOCheck.setBounds(80, 70, 64, 25);
 		HbOCheck.setText("HbO");
@@ -576,6 +581,12 @@ public class Hello {
 		final List list_2 = new List(composite_1, SWT.BORDER);
 		list_2.setEnabled(false);
 		list_2.setBounds(30, 182, 188, 278);
+<<<<<<< Updated upstream
+=======
+		// for (String groupName : statsData.getGroupNames()) // populate group names list
+		//     list_2.add(groupName);
+
+>>>>>>> Stashed changes
 		
 		final List list_3 = new List(composite_1, SWT.BORDER);
 		list_3.setEnabled(false);
@@ -641,6 +652,7 @@ public class Hello {
 		btnLoadGroupsAnd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+<<<<<<< Updated upstream
 				grouplbl.setEnabled(true);
 				condlbl.setEnabled(true);
 				list_2.setEnabled(true);
@@ -653,6 +665,85 @@ public class Hello {
 				text_9.setEnabled(true);
 				text_10.setEnabled(true);
 				anovabtn.setEnabled(true);
+=======
+			    // prepare to do stats things!
+			    // gotta worry about whether to do Hb data, HbO data, or both:
+			    // THIS CAN PROBABLY ALL BE REWRITTEN AS A METHOD THAT DOES EITHER HB OR
+			    //    HBO
+			    String outputDirectoryName = null; // GET FROM GUI ELSEWHERE & SAVE
+			    File groupFile = null; // GET FROM GUI ELSEWHERE & SAVE
+			    ArrayList<String> subjects = new ArrayList<String>(); // REMOVE THIS 
+			    ArrayList<File> hbFiles = null;
+			    ArrayList<File> hbOFiles = null;
+			    // IT SEEMS WE NEED TO SAVE THE VALUE OF HbCheck.getSelection() and
+			    //    HbOCheck.getSelection() GLOBALLY OR SOMETHING IN ORDER TO ACCESS
+			    //    THEM HERE
+			    // if (HbCheck.getSelection()) { // if Hb box is checked,
+			    // 	hbFiles = new ArrayList<File>(); // create an ArrayList for the 
+                            //                                      //    selected subjects' Hb files
+			    // }
+			    // if (HBOCheck.getSelection()) { // if HbO box is checked,
+			    // 	hbOFiles = new ArrayList<File>(); // create an ArrayList for the 
+                            //                                       //    selected subjects' HbO files
+			    // }
+			    if (hbFiles == null && hbOFiles == null) { // if neither box was checked
+				// UNCOMMENT errorBox(...) WHEN THAT CODE EXISTS (AFTER PULLING)
+				//errorBox("Error", "Please select Hb, HbO, or both.");
+				return;				
+			    }
+			    // iterate through the List of selected subjects:
+			    for (String subject: list.getSelection()) {
+				subjects.add(subject); // WE WON'T ACTUALLY USE THESE
+				if (hbFiles != null) { // if we want to analyze Hb files,
+				    hbFiles.add(workspace.getHb(subject)); // store this subject's
+				}
+				if (hbOFiles != null) { // if we want to analyze HbO files, 
+				    hbOFiles.add(workspace.getHbO(subject)); // store this subject's
+				}
+			    }
+			    //FNIRsStats.printList(subjects); // VERIFICATION--REMOVE LATER
+			    // output!
+			    // UNCOMMENT ONCE IT EXISTS:
+			    // File statsOutputDirectory = new File(getStatsPath() + "\\" +
+			    // 					 outputDirectoryName);
+			    // CHECK THE DIRECTORY DOES NOT EXIST??
+			    // UNCOMMENT ONCE IT EXISTS:
+			    // statsOutputDirectory.mkdir(); // create new directory with name given
+			    if (hbFiles != null) { // if we're analyzing Hb data
+				// UNCOMMENT ONCE IT EXISTS:				
+				// File statsHbOutputFile = new File(getStatsPath() + "\\" +
+				// 				  outputDirectoryName + "\\Hb");
+				FNIRsStats.GroupedChannels statsHb =
+				    FNIRsStats.processAllSubjectData(hbFiles, groupFile);
+				// writeANOVAs(statsHbOutputFile,
+				// 	    statsHb,
+				// 	    ...
+			    }
+			    if (hbOFiles != null) { // if we're analyzing HbO data
+				// UNCOMMENT ONCE IT EXISTS:
+				// File statsHbOOutputFile = new File(getStatsPath() + "\\" +
+				// 				   outputDirectoryName + "\\HbO");
+				FNIRsStats.GroupedChannels statsHb =
+				    FNIRsStats.processAllSubjectData(hbFiles, groupFile);
+				// writeANOVAs(statsHbOutputFile,
+				// 	    statsHb,
+				// 	    ...
+			    }
+			    
+			    
+			    grouplbl.setEnabled(true);
+			    condlbl.setEnabled(true);
+			    list_2.setEnabled(true);
+			    list_3.setEnabled(true);
+			    chunking.setEnabled(true);
+			    aprecision.setEnabled(true);
+			    dplace.setEnabled(true);
+			    chunks.setEnabled(true);
+			    run.setEnabled(true);
+			    text_9.setEnabled(true);
+			    text_10.setEnabled(true);
+			    anovabtn.setEnabled(true);
+>>>>>>> Stashed changes
 			}
 		});
 		btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));

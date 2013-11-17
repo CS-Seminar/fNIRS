@@ -1,5 +1,5 @@
 /******************************************************************************
- * File: StatsPreprocessing.java                                              *
+ * File: FNIRsStats.java                                              *
  * Author: Nicholas Kolesar                                                   *
  * Hamilton College                                                           *
  * Fall 2013                                                                  *
@@ -113,8 +113,10 @@ public class FNIRsStats {
 	GroupedChannels output = new GroupedChannels(dataFiles.get(0),
 						     groupFile);
 	// iterate through the remaining subjects' data files:
-	for (dataFile : data.subList(1, data.size()) {
-	    output.;
+	for (File dataFile : dataFiles.subList(1, dataFiles.size())) {
+	    GroupedChannels subjectData = new GroupedChannels(dataFile,
+							      groupFile);
+	    output.combineGroups(subjectData);
 	}
 	return output;
     }
@@ -577,7 +579,7 @@ public class FNIRsStats {
          */
         public void combineGroups(GroupedChannels other){
 	    if (other == this)
-		error("?????");
+		error("?????"); // MAYBE FIX THIS OR SOMETHING
 	    for (Group g : other.getGroups()) {
 		// add g's data to the average sequence in the group that
 		//    matches g in this object:
@@ -594,11 +596,13 @@ public class FNIRsStats {
          *         both groupings as if they were averaged together into the
          *         same sequence instead of being put into separate Groups.
          */
-        // HAVEN'T TESTED THIS YET!
+	// broken :(
+	// only works for combining two groups!
         public void combineGroups(Group other){
-            // Make sure we have a group with the same channels        as the
+            // Make sure we have a group with the same channels as the
             //    specified one:
             Group ours = getGroup(other.getChannels());
+	    // (MAKE THIS ERROR BETTER)
             if (ours == null)
                 error("No other group contains those channels.");
             // See which group has a shorter data sequence:
@@ -611,14 +615,19 @@ public class FNIRsStats {
             }
             for (int i = 0; i < combinedSize; i++){
                 double ourSum =
-                    ours.getData().get(i) * ours.getNumChannels();
+                    ours.getData().get(i) *
+		    ours.getNumChannels() *
+		    NumSubjects;
                 double otherSum =
                     other.getData().get(i) * other.getNumChannels();
                 double totalNumChannels =
                     ours.getNumChannels() + other.getNumChannels();
-                Double combinedAverage = (ourSum + otherSum) / totalNumChannels;
+                Double combinedAverage =
+		    (ourSum + otherSum) / totalNumChannels / (NumSubjects + 1);
                 ours.getData().set(i, combinedAverage);
             }
+	    NumSubjects++; // since we've just added another subject's data to
+                           //    this group's
         }
         /* removeAfter
          * IN:  ary, a List to remove elements from
@@ -647,11 +656,10 @@ public class FNIRsStats {
 	 *         specified by a condition-group combination from the two input
 	 *         lists.
 	 */
-	public ArrayList<TaggedDataSequence>
+	public ArrayList<GroupedChannels.TaggedDataSequence>
 	    getAllSelectedTDSs(List<String> groupNames,
 			       List<Integer> conditions) {
 	    return combineArrayLists(selectData(groupNames, conditions));
-	    
 	}
 	/* selectData
 	 * IN:  groupNames, a list of group names (strings)
@@ -712,7 +720,8 @@ public class FNIRsStats {
             public int getCondition(){ return Condition; }
             public void print(){
                 System.out.println("Data from group \"" + getGroupName() +
-                                   "\" under condition " + getCondition() + ":");
+                                   "\" under condition " + getCondition() + ":"
+				   );
                 System.out.println("\t Row   Value ");
                 for (int i = 0; i < Data.size(); i++)
                     System.out.println("\t " + i + "\t " + Data.get(i));
@@ -790,6 +799,9 @@ public class FNIRsStats {
                     System.out.println("\t-----------------------------------");
             }
         }
+	public ArrayList<Group> getGroups() {
+	    return new ArrayList<Group>(GroupList);
+	}
         public void print(String groupName){
             getGroup(groupName).print();
         }
@@ -801,19 +813,21 @@ public class FNIRsStats {
             }
         }
         private final int NumChannels;
+	private int NumSubjects;
         private ArrayList<Group> GroupList;
 	private ArrayList<Integer> Conditions;
 	
         private class Group {
-            public Group(String name, ArrayList<Integer> channels){            
+            public Group(String name, ArrayList<Integer> channels){ 
                 Name = name;
                 DataSequence = new ArrayList<Double>();
                 Condition = new ArrayList<Integer>();
                 Channels = new ArrayList<Integer>(channels); // copy channels 
                                                              //    into Channels
                 NumChannels = channels.size();
-                Sum = 0;
-                NumVals = 0;
+                Sum = 0; // for addValue
+                NumVals = 0; // for addValue
+		NumSubjects = 1; // for combineGroups
             }
             /* addValue
              * IN:  value, an Hb/HbO value to be added to the Group's sequence 
@@ -1101,21 +1115,34 @@ public class FNIRsStats {
         }
     }
     public static void main(String[] args) {
-	File dataFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/subjects/matlab19/Hb");
-        //int numChannels = 8; // number of channels in the input file (GUI) 
+	File legitDataFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/subjects/matlab19/Hb");
+	File legitGroupFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/legitGroups");
+	
+	File dataFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/testHb");
 	File groupFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/groups");
+	File otherDataFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/otherTestHb");
+	File otherOtherDataFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/otherOtherTestHb");
 	
         System.out.println("Reading group information.");
         // read channel grouping information:
-        GroupedChannels groups = new GroupedChannels(dataFile, groupFile);
+	GroupedChannels legitGroups =
+	    new GroupedChannels(legitDataFile, legitGroupFile);
+        GroupedChannels groups =
+	    new GroupedChannels(dataFile, groupFile);
+	GroupedChannels otherGroups =
+	    new GroupedChannels(otherDataFile, groupFile);
+	GroupedChannels otherOtherGroups =
+	    new GroupedChannels(otherOtherDataFile, groupFile);
 	System.out.println("-------------------------------------------------");
 
+	/*
         groups.print("groupOne");
         int cond = 1;
         System.out.println("Average sequence for condition " + cond + " is:");
         printList(groups.getGroup("groupOne").getData(cond));
-
-	int numChunks = 7;	
+	*/
+	int numChunks = 3;
+	/*
 	ArrayList<Double> result =
 	    averageChunks(groups.getGroup("groupOne").getData(1), numChunks);
 	System.out.println("Average sequence after averaging " + numChunks +
@@ -1129,16 +1156,18 @@ public class FNIRsStats {
 	System.out.println("Average sequence after averaging " + numChunks +
 			   " chunks together:");
 	printList(result2);
-
+	*/
         ArrayList<String> groupNames = new ArrayList<String>();
-	//        groupNames.add("first");
-	//        groupNames.add("second");
+	//groupNames.add("first");
+	//groupNames.add("second");
+	/*
 	groupNames.add("groupOne");
 	groupNames.add("secondGroup");
 	groupNames.add("groupThree");
 	groupNames.add("group4");
 	groupNames.add("g5");
-	//        groupNames.add("all_chans");
+	*/
+	// groupNames.add("all");
 
         ArrayList<Integer> conditions = new ArrayList<Integer>();
         conditions.add(1);
@@ -1157,24 +1186,59 @@ public class FNIRsStats {
             }
         }
 	*/
-        //--------------------------------------------------------------------//
-        //                  DONE TESTING CLASS: Groups classes                //
-        //--------------------------------------------------------------------//
 
-	// TEST ANOVA AND OUTPUT FUNCTIONS: 
+	int precision = 7;
 
-	int precision = 8;
-	
-	outputANOVAs(groups,
-		     groups.getGroupNames(), groups.getConditions(),
+	outputANOVAs(legitGroups,
+		     legitGroups.getGroupNames(), legitGroups.getConditions(),
 		     numChunks, precision);
 
 	File outFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/outputFile.txt");
-	writeANOVAs(outFile, groups,
-		    groups.getGroupNames(), groups.getConditions(),
+	writeANOVAs(outFile, legitGroups,
+		    legitGroups.getGroupNames(), legitGroups.getConditions(),
 		    // groupNames, conditions,
 		    numChunks, precision);
 
+	// group groupOne condition 0
+	// group groupOne condition 1
+	// --------------------------
+	// ==> ANOVA value of 0.0000...000 (50 decimal places)
+	//  WHY?
+
+	/*
+	// test chunking function some more:
+	// (This results in three groups of two and one of three in a small,
+	//    9-row file.)
+	int numChunks = 4;
+	printList(groups.getGroup("all").getData(1));
+	printList(averageChunks(groups.getGroup("all").getData(1),
+				numChunks
+				)
+		  );
+	*/
+
+	// test subject combining functions:
+	/*
+	System.out.println("groups: (group \"all\", condition \"1\")");
+	printList(groups.getGroup("all").getData(1));
+	System.out.println("otherGroups: (group \"all\", condition \"1\")");	
+	printList(otherGroups.getGroup("all").getData(1));
+	System.out.println("otherOtherGroups: (group \"all\", condition \"1\")"
+			   );	
+	printList(otherOtherGroups.getGroup("all").getData(1));
+	File[] dataFileAry = {dataFile,
+			      otherDataFile,
+			      otherOtherDataFile
+	                      };
+	ArrayList<File> dataFileLst = new ArrayList<File>();
+	for (File f : dataFileAry){
+	    dataFileLst.add(f);
+	}
+	System.out.println("result: (group \"all\", condition \"1\")");
+	printList(processAllSubjectData(dataFileLst,groupFile
+					).getGroup("all").getData(1)
+		  );
+	*/
 	System.exit(0);
     }
 }
