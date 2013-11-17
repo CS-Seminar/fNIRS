@@ -177,11 +177,11 @@ public class Hello {
 		btnClear.setText("Clear Selections");
 		
 		TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
-		tabFolder.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
+		tabFolder.setFont(SWTResourceManager.getFont("Segoe UI", 13, SWT.BOLD));
 		tabFolder.setBounds(242, 10, 742, 522);
 		
 		TabItem tbtmLoadFiles = new TabItem(tabFolder, SWT.NONE);
-		tbtmLoadFiles.setText("Load File(s) / Preprocessing");
+		tbtmLoadFiles.setText("  Load File(s) / Preprocessing  ");
 		
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		composite.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD | SWT.ITALIC));
@@ -539,7 +539,7 @@ public class Hello {
 		loadHatachi.add(btnAdd);
 		
 		TabItem tbtmStats = new TabItem(tabFolder, SWT.NONE);
-		tbtmStats.setText("Statistical Analysis");
+		tbtmStats.setText("  Statistical Analysis ");
 		
 		Composite composite_1 = new Composite(tabFolder, SWT.NONE);
 		tbtmStats.setControl(composite_1);
@@ -660,7 +660,7 @@ public class Hello {
 		btnLoadGroupsAnd.setText("Load Groups and Conditions");
 		
 		TabItem tbtmMachineLearning = new TabItem(tabFolder, SWT.NONE);
-		tbtmMachineLearning.setText("Data Mining");
+		tbtmMachineLearning.setText("  Data Mining ");
 		
 		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 		tbtmMachineLearning.setControl(composite_2);
@@ -669,7 +669,7 @@ public class Hello {
 		
 		final List list_1 = new List(composite_2, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		list_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		list_1.setBounds(270, 67, 180, 360);
+		list_1.setBounds(30, 120, 180, 308);
 		step2.add(list_1);
 				
 		final ArrayList<Integer> cond_list = new ArrayList<Integer>();
@@ -697,7 +697,7 @@ public class Hello {
 			}
 		});
 		
-		btnNewButton_1.setBounds(270, 433, 180, 25);
+		btnNewButton_1.setBounds(30, 434, 180, 25);
 		btnNewButton_1.setText("Select");
 		step2.add(btnNewButton_1);
 		
@@ -705,19 +705,19 @@ public class Hello {
 		
 		final Button btnHb_1 = new Button(composite_2, SWT.CHECK);
 		btnHb_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		btnHb_1.setBounds(30, 163, 93, 25);
+		btnHb_1.setBounds(440, 30, 61, 25);
 		btnHb_1.setText("Hb");
 		step1.add(btnHb_1);
 		
 		final Button btnHbO_1 = new Button(composite_2, SWT.CHECK);
 		btnHbO_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnHbO_1.setText("HbO");
-		btnHbO_1.setBounds(30, 194, 93, 25);
+		btnHbO_1.setBounds(490, 30, 69, 25);
 		step1.add(btnHbO_1);
 		
 		text_dm_sub = new Text(composite_2, SWT.BORDER);
 		text_dm_sub.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		text_dm_sub.setBounds(30, 109, 180, 25);
+		text_dm_sub.setBounds(143, 30, 255, 25);
 		step1.add(text_dm_sub);
 		
 		list.addSelectionListener(new SelectionAdapter() {
@@ -730,21 +730,6 @@ public class Hello {
 				}
 			} 
 		});
-		
-		Label lblStep = new Label(composite_2, SWT.NONE);
-		lblStep.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD | SWT.ITALIC));
-		lblStep.setBounds(30, 30, 55, 25);
-		lblStep.setText("Step 1");
-		
-		Label lblStep_1 = new Label(composite_2, SWT.NONE);
-		lblStep_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD | SWT.ITALIC));
-		lblStep_1.setText("Step 2");
-		lblStep_1.setBounds(270, 30, 55, 25);
-		
-		Label lblStep_2 = new Label(composite_2, SWT.NONE);
-		lblStep_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD | SWT.ITALIC));
-		lblStep_2.setText("Step 3");
-		lblStep_2.setBounds(510, 30, 55, 25);
 		
 		Button btnRun = new Button(composite_2, SWT.NONE);
 		btnRun.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -789,7 +774,7 @@ public class Hello {
 				
 			}
 		});
-		btnRun.setBounds(510, 148, 180, 180);
+		btnRun.setBounds(521, 120, 180, 180);
 		btnRun.setText("Run");
 		
 		Button btnNext = new Button(composite_2, SWT.NONE);
@@ -823,14 +808,19 @@ public class Hello {
 				}
 			}
 		});
-		btnNext.setBounds(93, 278, 75, 25);
+		btnNext.setBounds(575, 30, 126, 25);
 		btnNext.setText("Next");
 		step1.add(btnNext);
 		
 		Label lblSubjectName_1 = new Label(composite_2, SWT.NONE);
 		lblSubjectName_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		lblSubjectName_1.setBounds(30, 71, 138, 25);
+		lblSubjectName_1.setBounds(30, 30, 106, 25);
 		lblSubjectName_1.setText("Subject Name:");
+		
+		Label lblNewLabel_1 = new Label(composite_2, SWT.NONE);
+		lblNewLabel_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		lblNewLabel_1.setBounds(30, 90, 126, 25);
+		lblNewLabel_1.setText("Select Conditions:");
 
 		/*
 		Button for filtering
