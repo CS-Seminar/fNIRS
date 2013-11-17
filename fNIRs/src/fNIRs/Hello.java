@@ -172,7 +172,7 @@ public class Hello {
 		btnClear.setText("Clear Selections");
 		
 		TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
-		tabFolder.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
+		tabFolder.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
 		tabFolder.setBounds(242, 10, 742, 522);
 		
 		TabItem tbtmLoadFiles = new TabItem(tabFolder, SWT.NONE);
@@ -451,6 +451,7 @@ public class Hello {
 		lblNumberOfSessions.setText("Number of Sessions:");
 		
 		Button button_3 = new Button(composite_3, SWT.NONE);
+		button_3.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		button_3.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -662,7 +663,8 @@ public class Hello {
 		final ArrayList<Control> step2 = new ArrayList<Control>();
 		
 		final List list_1 = new List(composite_2, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
-		list_1.setBounds(306, 52, 160, 395);
+		list_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		list_1.setBounds(270, 67, 180, 360);
 		step2.add(list_1);
 				
 		final ArrayList<Integer> cond_list = new ArrayList<Integer>();
@@ -690,24 +692,27 @@ public class Hello {
 			}
 		});
 		
-		btnNewButton_1.setBounds(340, 453, 84, 25);
+		btnNewButton_1.setBounds(270, 433, 180, 25);
 		btnNewButton_1.setText("Select");
 		step2.add(btnNewButton_1);
 		
 		final ArrayList<Control> step1 = new ArrayList<Control>();
 		
 		final Button btnHb_1 = new Button(composite_2, SWT.CHECK);
-		btnHb_1.setBounds(93, 178, 93, 16);
+		btnHb_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		btnHb_1.setBounds(30, 163, 93, 25);
 		btnHb_1.setText("Hb");
 		step1.add(btnHb_1);
 		
 		final Button btnHbO_1 = new Button(composite_2, SWT.CHECK);
+		btnHbO_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnHbO_1.setText("HbO");
-		btnHbO_1.setBounds(93, 216, 93, 16);
+		btnHbO_1.setBounds(30, 194, 93, 25);
 		step1.add(btnHbO_1);
 		
 		text_dm_sub = new Text(composite_2, SWT.BORDER);
-		text_dm_sub.setBounds(88, 120, 122, 21);
+		text_dm_sub.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		text_dm_sub.setBounds(30, 109, 180, 25);
 		step1.add(text_dm_sub);
 		
 		list.addSelectionListener(new SelectionAdapter() {
@@ -722,18 +727,22 @@ public class Hello {
 		});
 		
 		Label lblStep = new Label(composite_2, SWT.NONE);
-		lblStep.setBounds(76, 31, 55, 15);
+		lblStep.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD | SWT.ITALIC));
+		lblStep.setBounds(30, 30, 55, 25);
 		lblStep.setText("Step 1");
 		
 		Label lblStep_1 = new Label(composite_2, SWT.NONE);
+		lblStep_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD | SWT.ITALIC));
 		lblStep_1.setText("Step 2");
-		lblStep_1.setBounds(295, 31, 55, 15);
+		lblStep_1.setBounds(270, 30, 55, 25);
 		
 		Label lblStep_2 = new Label(composite_2, SWT.NONE);
+		lblStep_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD | SWT.ITALIC));
 		lblStep_2.setText("Step 3");
-		lblStep_2.setBounds(489, 31, 55, 15);
+		lblStep_2.setBounds(510, 30, 55, 25);
 		
 		Button btnRun = new Button(composite_2, SWT.NONE);
+		btnRun.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnRun.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -775,10 +784,11 @@ public class Hello {
 				
 			}
 		});
-		btnRun.setBounds(530, 163, 75, 25);
+		btnRun.setBounds(510, 148, 180, 180);
 		btnRun.setText("Run");
 		
 		Button btnNext = new Button(composite_2, SWT.NONE);
+		btnNext.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnNext.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -808,9 +818,14 @@ public class Hello {
 				}
 			}
 		});
-		btnNext.setBounds(111, 275, 75, 25);
+		btnNext.setBounds(93, 278, 75, 25);
 		btnNext.setText("Next");
 		step1.add(btnNext);
+		
+		Label lblSubjectName_1 = new Label(composite_2, SWT.NONE);
+		lblSubjectName_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		lblSubjectName_1.setBounds(30, 71, 138, 25);
+		lblSubjectName_1.setText("Subject Name:");
 
 		/*
 		Button for filtering
@@ -1067,18 +1082,18 @@ public class Hello {
 		btnBrowse_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnBrowse_2.addSelectionListener(new SelectionAdapter() {
 ======= */
-		Button button_1 = new Button(composite_4, SWT.NONE);
-		button_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		button_1.setBounds(548, 270, 127, 25);
-		button_1.addSelectionListener(new SelectionAdapter() {
+		Button btnBrowse_2 = new Button(composite_4, SWT.NONE);
+		btnBrowse_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		btnBrowse_2.setBounds(548, 270, 127, 25);
+		btnBrowse_2.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				browse(text_7);
 			}
 		});
 
-		button_1.setText("Browse");
-		loadHatachi.add(button_1);
+		btnBrowse_2.setText("Browse...");
+		loadHatachi.add(btnBrowse_2);
 		
 		Label label_2 = new Label(composite_4, SWT.NONE);
 		label_2.setText("Preprocessing Options:");
