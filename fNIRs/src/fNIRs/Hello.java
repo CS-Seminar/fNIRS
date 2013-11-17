@@ -581,13 +581,11 @@ public class Hello {
 		final List list_2 = new List(composite_1, SWT.BORDER);
 		list_2.setEnabled(false);
 		list_2.setBounds(30, 182, 188, 278);
-<<<<<<< Updated upstream
-=======
+
 		// for (String groupName : statsData.getGroupNames()) // populate group names list
 		//     list_2.add(groupName);
 
->>>>>>> Stashed changes
-		
+	
 		final List list_3 = new List(composite_1, SWT.BORDER);
 		list_3.setEnabled(false);
 		list_3.setBounds(240, 182, 188, 278);
@@ -652,20 +650,7 @@ public class Hello {
 		btnLoadGroupsAnd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-<<<<<<< Updated upstream
-				grouplbl.setEnabled(true);
-				condlbl.setEnabled(true);
-				list_2.setEnabled(true);
-				list_3.setEnabled(true);
-				chunking.setEnabled(true);
-				aprecision.setEnabled(true);
-				dplace.setEnabled(true);
-				chunks.setEnabled(true);
-				run.setEnabled(true);
-				text_9.setEnabled(true);
-				text_10.setEnabled(true);
-				anovabtn.setEnabled(true);
-=======
+
 			    // prepare to do stats things!
 			    // gotta worry about whether to do Hb data, HbO data, or both:
 			    // THIS CAN PROBABLY ALL BE REWRITTEN AS A METHOD THAT DOES EITHER HB OR
@@ -743,11 +728,10 @@ public class Hello {
 			    text_9.setEnabled(true);
 			    text_10.setEnabled(true);
 			    anovabtn.setEnabled(true);
->>>>>>> Stashed changes
 			}
-		});
+	});
 		btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		btnLoadGroupsAnd.setBounds(240, 115, 276, 25);
+	btnLoadGroupsAnd.setBounds(240, 115, 276, 25);
 		btnLoadGroupsAnd.setText("Load Groups and Conditions");
 		
 		TabItem tbtmMachineLearning = new TabItem(tabFolder, SWT.NONE);
