@@ -252,7 +252,7 @@ public class Hello {
 				
 				subjectName = text_subName.getText();
 				
-				if (subjectName == "" || Arrays.asList(list.getItems()).contains(subjectName)) {
+				if (subjectName == "" || subjectName == subjectNameH || Arrays.asList(list.getItems()).contains(subjectName)) {
 					MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
 				    messageDialog.setText("Warning!");
 				    messageDialog.setMessage("Please enter a new name");
@@ -592,12 +592,12 @@ public class Hello {
 		final List list_2 = new List(composite_1, SWT.BORDER);
 		list_2.setEnabled(false);
 		list_2.setBounds(30, 182, 188, 278);
-<<<<<<< Updated upstream
+/*<<<<<<< Updated upstream
 =======
 		// for (String groupName : statsData.getGroupNames()) // populate group names list
 		//     list_2.add(groupName);
 
->>>>>>> Stashed changes
+>>>>>>> Stashed changes */
 		
 		final List list_3 = new List(composite_1, SWT.BORDER);
 		list_3.setEnabled(false);
@@ -663,7 +663,7 @@ public class Hello {
 		btnLoadGroupsAnd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-<<<<<<< Updated upstream
+//<<<<<<< Updated upstream
 				grouplbl.setEnabled(true);
 				condlbl.setEnabled(true);
 				list_2.setEnabled(true);
@@ -676,7 +676,7 @@ public class Hello {
 				text_9.setEnabled(true);
 				text_10.setEnabled(true);
 				anovabtn.setEnabled(true);
-=======
+//=======
 			    // prepare to do stats things!
 			    // gotta worry about whether to do Hb data, HbO data, or both:
 			    // THIS CAN PROBABLY ALL BE REWRITTEN AS A METHOD THAT DOES EITHER HB OR
@@ -754,7 +754,7 @@ public class Hello {
 			    text_9.setEnabled(true);
 			    text_10.setEnabled(true);
 			    anovabtn.setEnabled(true);
->>>>>>> Stashed changes
+//>>>>>>> Stashed changes
 			}
 		});
 		btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -1019,7 +1019,9 @@ public class Hello {
 			public void widgetSelected(SelectionEvent e) {
 				subjectNameH = text_subName2.getText();
 				
-				if (subjectNameH == "" || Arrays.asList(list.getItems()).contains(subjectNameH)) {
+				System.out.println(subjectName);
+				
+				if (subjectNameH == "" || subjectNameH == subjectName || Arrays.asList(list.getItems()).contains(subjectNameH)) {
 					MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
 				    messageDialog.setText("Warning!");
 				    messageDialog.setMessage("Please enter a new name");
