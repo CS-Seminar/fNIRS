@@ -859,6 +859,7 @@ public class Hello {
 				}
 				
 				enableList(step1);
+				list_1.removeAll();
 			}
 		});
 		btnRun.setBounds(216, 120, 485, 339);
@@ -935,9 +936,13 @@ public class Hello {
 		btnRemove.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				
+				for (String subject : list.getSelection()) {
+					workspace.removeSubject(subject);
+				}
+				
 				for (Integer item: list.getSelectionIndices())
 					indexList.add(item);
-					//workspace.removeSubject(list.getItem((int)item));
 				int[] indices = new int[indexList.size()];
 				for (int i=0; i<indexList.size();i++)
 					indices[i] = indexList.get(i);
