@@ -133,6 +133,17 @@ public class Hello {
 			text.setText(fileName);
 	}
 	
+	void enableList(ArrayList<Control> lst) {
+		for (Control item : lst) {
+			item.setEnabled(true);
+		}
+	}
+	
+	void disableList(ArrayList<Control> lst) {
+		for (Control item : lst) {
+			item.setEnabled(false);
+		}
+	}
 
 	/**
 	 * Create contents of the window.
@@ -246,7 +257,7 @@ public class Hello {
 				
 				subjectName = text_subName.getText();
 				
-				if (subjectName == "" || Arrays.asList(list.getItems()).contains(subjectName)) {
+				if (subjectName == "" || subjectName == subjectNameH || Arrays.asList(list.getItems()).contains(subjectName)) {
 					MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
 				    messageDialog.setText("Warning!");
 				    messageDialog.setMessage("Please enter a new name");
@@ -568,12 +579,17 @@ public class Hello {
 		btnNewButton_2.setBounds(590, 70, 116, 25);
 		btnNewButton_2.setText("Browse...");
 		
-		Button HbCheck = new Button(composite_1, SWT.CHECK);
+		final Button HbCheck = new Button(composite_1, SWT.CHECK);
+		HbCheck.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+			}
+		});
 		HbCheck.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		HbCheck.setBounds(30, 70, 48, 25);
 		HbCheck.setText("Hb");
 		
-		Button HbOCheck = new Button(composite_1, SWT.CHECK);
+		final Button HbOCheck = new Button(composite_1, SWT.CHECK);
 		HbOCheck.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		HbOCheck.setBounds(80, 70, 64, 25);
 		HbOCheck.setText("HbO");
@@ -581,7 +597,7 @@ public class Hello {
 		final List list_2 = new List(composite_1, SWT.BORDER);
 		list_2.setEnabled(false);
 		list_2.setBounds(30, 182, 188, 278);
-		
+
 		final List list_3 = new List(composite_1, SWT.BORDER);
 		list_3.setEnabled(false);
 		list_3.setBounds(240, 182, 188, 278);
@@ -640,8 +656,8 @@ public class Hello {
 		anovabtn.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				File newFile = new File(text_11.getText());
-				if (!setExists(newFile))
+				String newFile = text_11.getText();
+				if (newFile == "")
 					return;
 			}
 		});
@@ -684,10 +700,73 @@ public class Hello {
 					lblOutputFile.setEnabled(true);
 					
 				}
+			    // prepare to do stats things!
+			    // gotta worry about whether to do Hb data, HbO data, or both:
+			    // THIS CAN PROBABLY ALL BE REWRITTEN AS A METHOD THAT DOES EITHER HB OR
+			    //    HBO
+			    String outputDirectoryName = null; // GET FROM GUI ELSEWHERE & SAVE
+			    File groupFile = null; // GET FROM GUI ELSEWHERE & SAVE
+			    ArrayList<String> subjects = new ArrayList<String>(); // REMOVE THIS 
+			    ArrayList<File> hbFiles = null;
+			    ArrayList<File> hbOFiles = null;
+			    // IT SEEMS WE NEED TO SAVE THE VALUE OF HbCheck.getSelection() and
+			    //    HbOCheck.getSelection() GLOBALLY OR SOMETHING IN ORDER TO ACCESS
+			    //    THEM HERE
+			    // if (HbCheck.getSelection()) { // if Hb box is checked,
+			    // 	hbFiles = new ArrayList<File>(); // create an ArrayList for the 
+                            //                                      //    selected subjects' Hb files
+			    // }
+			    // if (HBOCheck.getSelection()) { // if HbO box is checked,
+			    // 	hbOFiles = new ArrayList<File>(); // create an ArrayList for the 
+                            //                                       //    selected subjects' HbO files
+			    // }
+			    if (hbFiles == null && hbOFiles == null) { // if neither box was checked
+				// UNCOMMENT errorBox(...) WHEN THAT CODE EXISTS (AFTER PULLING)
+				//errorBox("Error", "Please select Hb, HbO, or both.");
+				return;				
+			    }
+			    // iterate through the List of selected subjects:
+			    for (String subject: list.getSelection()) {
+				subjects.add(subject); // WE WON'T ACTUALLY USE THESE
+				if (hbFiles != null) { // if we want to analyze Hb files,
+				    hbFiles.add(workspace.getHb(subject)); // store this subject's
+				}
+				if (hbOFiles != null) { // if we want to analyze HbO files, 
+				    hbOFiles.add(workspace.getHbO(subject)); // store this subject's
+				}
+			    }
+			    //FNIRsStats.printList(subjects); // VERIFICATION--REMOVE LATER
+			    // output!
+			    // UNCOMMENT ONCE IT EXISTS:
+			    // File statsOutputDirectory = new File(getStatsPath() + "\\" +
+			    // 					 outputDirectoryName);
+			    // CHECK THE DIRECTORY DOES NOT EXIST??
+			    // UNCOMMENT ONCE IT EXISTS:
+			    // statsOutputDirectory.mkdir(); // create new directory with name given
+			    if (hbFiles != null) { // if we're analyzing Hb data
+				// UNCOMMENT ONCE IT EXISTS:				
+				// File statsHbOutputFile = new File(getStatsPath() + "\\" +
+				// 				  outputDirectoryName + "\\Hb");
+				FNIRsStats.GroupedChannels statsHb =
+				    FNIRsStats.processAllSubjectData(hbFiles, groupFile);
+				// writeANOVAs(statsHbOutputFile,
+				// 	    statsHb,
+				// 	    ...
+			    }
+			    if (hbOFiles != null) { // if we're analyzing HbO data
+				// UNCOMMENT ONCE IT EXISTS:
+				// File statsHbOOutputFile = new File(getStatsPath() + "\\" +
+				// 				   outputDirectoryName + "\\HbO");
+				FNIRsStats.GroupedChannels statsHb =
+				    FNIRsStats.processAllSubjectData(hbFiles, groupFile);
+				// writeANOVAs(statsHbOutputFile,
+				// 	    statsHb,
+				// 	    ...
+			    }
 			}
-		});
+	});
 		btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		btnLoadGroupsAnd.setBounds(240, 115, 276, 25);
+	btnLoadGroupsAnd.setBounds(240, 115, 276, 25);
 		btnLoadGroupsAnd.setText("Load Groups and Conditions");
 		
 		TabItem tbtmMachineLearning = new TabItem(tabFolder, SWT.NONE);
@@ -697,6 +776,7 @@ public class Hello {
 		tbtmMachineLearning.setControl(composite_2);
 		
 		final ArrayList<Control> step2 = new ArrayList<Control>();
+		final ArrayList<Control> step3 = new ArrayList<Control>();
 		
 		final List list_1 = new List(composite_2, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		list_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -723,14 +803,18 @@ public class Hello {
 				for (Integer item: list_1.getSelectionIndices())
 					cond_list.add(item);
 				System.out.println(cond_list);
-				for (Control item: step2)
-					item.setEnabled(false);
+				disableList(step2);
+				enableList(step3);
 			}
 		});
 		
 		btnNewButton_1.setBounds(30, 434, 180, 25);
 		btnNewButton_1.setText("Select");
 		step2.add(btnNewButton_1);
+		
+		for (Control item : step2) {
+			item.setEnabled(false);
+		}
 		
 		final ArrayList<Control> step1 = new ArrayList<Control>();
 		
@@ -743,7 +827,7 @@ public class Hello {
 		final Button btnHbO_1 = new Button(composite_2, SWT.CHECK);
 		btnHbO_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnHbO_1.setText("HbO");
-		btnHbO_1.setBounds(490, 30, 69, 25);
+		btnHbO_1.setBounds(490, 30, 54, 25);
 		step1.add(btnHbO_1);
 		
 		text_dm_sub = new Text(composite_2, SWT.BORDER);
@@ -767,6 +851,7 @@ public class Hello {
 		btnRun.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+/*<<<<<<< HEAD
 				final String name = text_dm_sub.getText();
 				ProgressMonitorDialog dialog = new ProgressMonitorDialog(shlFnirsDataProcessing);
 				try {
@@ -815,10 +900,53 @@ public class Hello {
 					e2.getCause();
 					e2.printStackTrace();
 				} 
+=======*/
+				disableList(step3);
+				String name = text_dm_sub.getText();
+				if (btnHb_1.getSelection()) {
+					rapidDriver.filter(cond_list, workspace.getHb(name), workspace.getHbOutput(name));
+				}
+				else {
+					rapidDriver.empty(workspace.getHbOutput(name));
+				}
+				
+				if (btnHbO_1.getSelection()) {
+					rapidDriver.filter(cond_list, workspace.getHbO(name), workspace.getHbOOutput(name));
+				}
+				else {
+					rapidDriver.empty(workspace.getHbOOutput(name));
+				}
+				
+				boolean done = false;
+				
+				try {
+					pre.rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath());
+					done = true;
+				}
+				catch(MWException mwe) {
+					mwe.printStackTrace();
+					done = false;
+				}
+				
+				if (done) {
+					try {
+						rapidDriver.run(workspace.getRMInput(name));
+					} catch (OperatorException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				
+				enableList(step1);
 			}
 		});
 		btnRun.setBounds(216, 120, 485, 308);
 		btnRun.setText("Run");
+		step3.add(btnRun);
+		
+		for (Control item : step3) {
+			item.setEnabled(false);
+		}
 		
 		Button btnNext = new Button(composite_2, SWT.NONE);
 		btnNext.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -839,9 +967,8 @@ public class Hello {
 				    messageDialog.open();
 					return;
 				}
-				for (Control item : step1) {
-					item.setEnabled(false);
-				}
+				disableList(step1);
+				enableList(step2);
 				
 				int n = workspace.getMaxCond(text_dm_sub.getText());
 				
@@ -953,7 +1080,9 @@ public class Hello {
 			public void widgetSelected(SelectionEvent e) {
 				subjectNameH = text_subName2.getText();
 				
-				if (subjectNameH == "" || Arrays.asList(list.getItems()).contains(subjectNameH)) {
+				System.out.println(subjectName);
+				
+				if (subjectNameH == "" || subjectNameH == subjectName || Arrays.asList(list.getItems()).contains(subjectNameH)) {
 					MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
 				    messageDialog.setText("Warning!");
 				    messageDialog.setMessage("Please enter a new name");
