@@ -252,7 +252,7 @@ public class Hello {
 				
 				subjectName = text_subName.getText();
 				
-				if (subjectName == "" || subjectName == subjectNameH || Arrays.asList(list.getItems()).contains(subjectName)) {
+				if (subjectName == "" || subjectName.matches(subjectNameH) || Arrays.asList(list.getItems()).contains(subjectName)) {
 					MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
 				    messageDialog.setText("Warning!");
 				    messageDialog.setMessage("Please enter a new name");
@@ -1006,7 +1006,7 @@ public class Hello {
 				
 				System.out.println(subjectName);
 				
-				if (subjectNameH == "" || subjectNameH == subjectName || Arrays.asList(list.getItems()).contains(subjectNameH)) {
+				if (subjectNameH == "" || subjectNameH.matches(subjectName) || Arrays.asList(list.getItems()).contains(subjectNameH)) {
 					MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
 				    messageDialog.setText("Warning!");
 				    messageDialog.setMessage("Please enter a new name");
