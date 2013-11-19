@@ -937,6 +937,7 @@ public class Hello {
 			public void widgetSelected(SelectionEvent e) {
 				for (Integer item: list.getSelectionIndices())
 					indexList.add(item);
+					//workspace.removeSubject(list.getItem((int)item));
 				int[] indices = new int[indexList.size()];
 				for (int i=0; i<indexList.size();i++)
 					indices[i] = indexList.get(i);
