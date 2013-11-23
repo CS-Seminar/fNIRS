@@ -54,6 +54,7 @@ public class RapidDriver {
 			fwriter.newLine();	
 			fwriter.write("0");
 			fwriter.newLine();
+			fwriter.close();
 		} catch (IOException ie) {
 			// TODO Auto-generated catch block
 			ie.printStackTrace();
