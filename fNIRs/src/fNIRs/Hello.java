@@ -37,7 +37,8 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.mathworks.toolbox.javabuilder.*;
 
-import preprocess_2.Preprocess;
+import zombie.DataMining;
+import zombie.Preprocess;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
@@ -59,14 +60,15 @@ public class Hello {
 	private Text text_5;
 	private Text text_subName;
 	private static Preprocess pre;
+	private static DataMining dm;
 	private Text text_subName2;
 	private Text text_6;
 	private FileDialog fileDialog;
 	private Text text_7;
 	private Text text_dm_sub;
 	
-	private String subjectName = null;  // make sure these are different before adding new subject!
-	private String subjectNameH = null;
+	private String subjectName = "";
+	private String subjectNameH = "";
 	private int sessionNum;
 	private int sessionNumH;
 
@@ -87,6 +89,7 @@ public class Hello {
 			Hello window = new Hello();
 			indexList = new ArrayList<Integer>();
 			pre = new Preprocess();
+			dm = new DataMining();
 			//pre.rapidFormatConversion("Hb_output.txt", "HbO_output.txt", "rapid_output.xls");
 			//workspace = new Workspace("C:\\Users\\shammond\\Desktop\\CS_Seminar\\fNIRs\\workspace", pre);
 			rapidDriver = new RapidDriver();
@@ -920,7 +923,10 @@ public class Hello {
 				boolean done = false;
 				
 				try {
-					pre.rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath());
+					File rminput = workspace.getRMInput(name);
+					if (rminput.exists())
+						rminput.delete();
+					dm.rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1);
 					done = true;
 				}
 				catch(MWException mwe) {
@@ -1306,9 +1312,6 @@ public class Hello {
 		btnCancel.setBounds(411, 390, 84, 25);
 		btnCancel.setText("Cancel");
 		loadHatachi.add(btnCancel);
-		
-		TabItem tbtmOther = new TabItem(tabFolder_1, SWT.NONE);
-		tbtmOther.setText("Other");
 		
 		for (Control item : loadHatachi) {
 			item.setVisible(false);
