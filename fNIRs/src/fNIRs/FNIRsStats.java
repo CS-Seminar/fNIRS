@@ -200,12 +200,12 @@ public class FNIRsStats {
 				       " c" + first.getCondition() + " and " +
 				       second.getGroupName() + " c" +
 				       second.getCondition());
-		    System.out.println("first");
-		    for (int i = 0; i < 4; i++)
-			System.out.println(i + " " + dataSets.get(0)[i]);
-		    System.out.println("second");
-		    for (int i = 0; i < 4; i++)
-			System.out.println(i + " " + dataSets.get(1)[i]);
+		    // System.out.println("first");
+		    // for (int i = 0; i < 4; i++)
+		    // 	System.out.println(i + " " + dataSets.get(0)[i]);
+		    // System.out.println("second");
+		    // for (int i = 0; i < 4; i++)
+		    // 	System.out.println(i + " " + dataSets.get(1)[i]);
 		}
 		// AGAIN, SEE IF "PRECISON" == "NUMBER OF DECIMAL PLACES"
 		// APPARENTLY THE 1 IS COMPULSORY....
@@ -685,29 +685,29 @@ public class FNIRsStats {
             ArrayList<ArrayList<TaggedDataSequence>> result =
                 new ArrayList<ArrayList<TaggedDataSequence>>();
 
-            // Iterate through groups:
-            for (int i = 0; i < GroupList.size(); i++){
-                Group group = GroupList.get(i);
-                // Initialize the new one-dimensional array of tagged
+            // Iterate through selected groups:
+	    for (String groupName : groupNames) {
+                Group group = getGroup(groupName);
+                // Declare the new one-dimensional array of tagged
                 //    sequences:
                 ArrayList<TaggedDataSequence> temp =
                     new ArrayList<TaggedDataSequence>();
                 // Iterate through conditions:
-                for (int j = 0; j < conditions.size(); j++){
-                    int condition = conditions.get(j);
+		for (Integer condition : conditions) {
                     // get the data from the group for the given condition,
                     //    adding it to the temporary 1D result list
                     temp.add(new TaggedDataSequence(group,
                                                     condition,
                                                     group.getData(condition
                                                                   )));
-                }
+		    
+		}
                 // put list of results for this group in the result 2D list
-                result.add(temp); 
-            }
-            return result;
-        }
-        class TaggedDataSequence{
+		result.add(temp); 		
+	    }
+	    return result;
+	}
+	class TaggedDataSequence{
             TaggedDataSequence(Group sourceGroup,
                                int condition,
                                ArrayList<Double> data){
