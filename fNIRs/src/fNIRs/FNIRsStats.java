@@ -138,6 +138,106 @@ public class FNIRsStats {
 
 	//chunkData(allTDSs, numChunks); // COMMENT THIS LATER
 	
+	int idFieldWidth = getIdFieldWidth(groupNames, conditions, precision);
+	String idFieldFormat = "%-" + idFieldWidth + "s"; // format string
+	String separator = "  "; // what goes between columns of output
+	
+	// output the first row, containing identifying information for each 
+	//    group-condition combination:
+	// first, output proper-width placeholder for the identifier column:
+	ostream.printf("%" + idFieldWidth + "s" + separator, ""); // TOO HACKY??
+	// then, output all tds identifiers:
+	for (GroupedChannels.TaggedDataSequence tds : allTDSs) {
+	    ostream.printf(idFieldFormat + separator,
+			   tds.getGroupName() + " c" + tds.getCondition()); 
+	    // ostream.printf(idFieldFormat + separator,
+	    // 		      tds.getGroupName(),
+	    // 		      tds.getCondition()); 
+	}
+	ostream.println(); // print newline
+	// output ANOVA values line by line:
+	OneWayAnova myANOVA = new OneWayAnova(); // this object will do the
+                                                 //    ANOVAs
+	for (GroupedChannels.TaggedDataSequence first : allTDSs) {
+	    // output tds identifier in first column:
+	    ostream.printf(idFieldFormat + separator,
+			   first.getGroupName() +
+			   " c" + first.getCondition());
+	    // create Collection to send to the ANOVA object:
+	    LinkedList<double[]> dataSets = new LinkedList<double[]>();
+	    // convert first's data sequence to an array, then add it to
+	    //    dataSets
+	    dataSets.add(toPrimitiveDoubleArray(first.getData()));
+	    dataSets.add(null); // placeholder for second's data sequence
+	    for (GroupedChannels.TaggedDataSequence second : allTDSs) {
+		// convert and add second's data sequence to position one in
+		//    dataSets:
+		dataSets.set(1, toPrimitiveDoubleArray(second.getData()));
+		double result = 0;
+		try {
+		    result = myANOVA.anovaPValue(dataSets);
+		    // if (first == second) { // if the two TDSs are the same TDS,
+		    // 	result = 1; // then the ANOVA value should be 1, even
+			// though a divide-by-zero
+		    //		    }
+		} catch (Exception ex) {
+		    ostream.println();
+		    error(ex.getMessage());
+		}
+		if (result != result) { // if result is NaN
+		    System.out.println("NaN on " + first.getGroupName() +
+				       " c" + first.getCondition() + " and " +
+				       second.getGroupName() + " c" +
+				       second.getCondition());
+		    // System.out.println("first");
+		    // for (int i = 0; i < 4; i++)
+		    // 	System.out.println(i + " " + dataSets.get(0)[i]);
+		    // System.out.println("second");
+		    // for (int i = 0; i < 4; i++)
+		    // 	System.out.println(i + " " + dataSets.get(1)[i]);
+		}
+		// AGAIN, SEE IF "PRECISON" == "NUMBER OF DECIMAL PLACES"
+		// APPARENTLY THE 1 IS COMPULSORY....
+		ostream.printf("%-"+idFieldWidth+"."+precision+"f"+separator,
+			       result);
+	    }
+	    ostream.println(); // print newline
+	}
+	ostream.close();
+    }
+    private static int getIdFieldWidth(List<String> groupNames,
+				       List<Integer> conditions,
+				       int precision) {
+	// calculate required widths for printed names and condition numbers:
+	int nameWidth = longestLength(groupNames); // length of longest name
+	int conditionWidth = // number of digits in the largest condition number
+	    String.valueOf(Collections.max(conditions)).length();
+	// make sure the fields will be wide enough to hold the ANOVA values,
+	//    which will consist of a 0 or 1 followed by a . and precision 0s:
+	// AM I USING "PRECISION" RIGHT?
+	int result = nameWidth + 2 + conditionWidth; // 2 == " c".length()
+	if (result < precision + 2) { // 2 == "1.".length()
+	    // if not, increase the condition width so the total field width is
+	    //    large enough:
+	    //System.out.println("ANOVA values are wider than identifiers.");
+	    result = precision + 2;
+	}
+	return result;
+    }
+    public static void oldWriteANOVAs(File outFile,
+				   GroupedChannels data,
+				   List<String> groupNames,
+				   List<Integer> conditions,
+				   int numChunks,
+				   int precision) {
+	// open file for writing with a nice print stream object:
+	PrintWriter ostream = makePWriter(outFile); // OKAY VAR NAME?
+	// get all condition-group sequences:
+	ArrayList<GroupedChannels.TaggedDataSequence> allTDSs =
+	    data.getAllSelectedTDSs(groupNames, conditions);
+
+	//chunkData(allTDSs, numChunks); // COMMENT THIS LATER
+	
 	// calculate required widths for printed names and condition numbers:
 	int nameWidth = longestLength(groupNames); // length of longest name
 	int conditionWidth = // number of digits in the largest condition number
