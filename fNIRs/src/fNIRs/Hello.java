@@ -1033,15 +1033,15 @@ public class Hello {
 			mwe.printStackTrace();
 			done = false;
 		    }
-                                
+            /*                  
 		    if (done) {
 			try {
-			    rapidDriver.run(workspace.getRMInput(name));
+			    //rapidDriver.run(workspace.getRMInput(name));
 			} catch (OperatorException e1) {
 			    // TODO Auto-generated catch block
 			    e1.printStackTrace();
 			}
-		    }
+		    }*/
                                 
 		    enableList(step1);
 		    list_1.removeAll();
