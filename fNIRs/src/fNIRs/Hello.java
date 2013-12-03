@@ -723,7 +723,7 @@ public class Hello {
                     // actually do the requested ANOVAs and write them to the output file(s):
                     if (doHb) {
                         File outputFileHb =
-                            new File(outputDirectoryPath + "\\" + "p-values_Hb.txt");
+                            new File(outputDirectoryPath + "\\" + "p-values_Hb.csv");
                         // calculate ANOVAs and write them to the output file!!!
                         FNIRsStats.writeANOVAs(outputFileHb,
                                                StatsHb,
@@ -732,7 +732,7 @@ public class Hello {
                     }
                     if (doHbO) {
                         File outputFileHbO =
-                            new File(outputDirectoryPath + "\\" + "p-values_HbO.txt");
+                            new File(outputDirectoryPath + "\\" + "p-values_HbO.csv");
                         FNIRsStats.writeANOVAs(outputFileHbO,
                                                StatsHbO,
 					       groupsAryLst, conditionsAryLst,
@@ -789,7 +789,7 @@ public class Hello {
 		    // }
 		    // otherwise, create the group file object:
 		    File groupingsFile = new File(groupFilePath);
-		    if (!setExists(groupingsFile)) {
+		    if (!groupingsFile.exists()) {
 			errorBox("Error", "Please specify a valid channel groupings file.");
 			return;
 		    }
@@ -831,6 +831,10 @@ public class Hello {
 
 		    // RESUME HERE NICK WORK DO KEEP GOING ETC ETC YOU'LL 
 		    //    FIND THIS MARKER I'M SURE
+		    
+		    // clear lists to prepare for new data:
+		    groupsList.removeAll();
+		    conditionsList.removeAll();
 
 		    // Now, we can populate the group and condition names lists:
 		    // first, figure out from where the group names can be obtained:
@@ -1033,9 +1037,11 @@ public class Hello {
 			mwe.printStackTrace();
 			done = false;
 		    }
-                                
+		 // UNCOMMENT THIS --Nick
+                       /*         
 		    if (done) {
 			try {
+				
 			    rapidDriver.run(workspace.getRMInput(name));
 			} catch (OperatorException e1) {
 			    // TODO Auto-generated catch block
@@ -1045,8 +1051,9 @@ public class Hello {
                                 
 		    enableList(step1);
 		    list_1.removeAll();
+		    */
 		}
-	    });
+	});
 	btnRun.setBounds(216, 120, 485, 308);
 	btnRun.setText("Run");
 	step3.add(btnRun);

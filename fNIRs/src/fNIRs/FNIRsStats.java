@@ -1,5 +1,5 @@
 /******************************************************************************
- * File: FNIRsStats.java                                              *
+ * File: FNIRsStats.java                                                      *
  * Author: Nicholas Kolesar                                                   *
  * Hamilton College                                                           *
  * Fall 2013                                                                  *
@@ -140,19 +140,16 @@ public class FNIRsStats {
 	
 	int idFieldWidth = getIdFieldWidth(groupNames, conditions, precision);
 	String idFieldFormat = "%-" + idFieldWidth + "s"; // format string
-	String separator = "  "; // what goes between columns of output
+	String separator = " , "; // what goes between columns of output
 	
 	// output the first row, containing identifying information for each 
 	//    group-condition combination:
-	// first, output proper-width placeholder for the identifier column:
+	// first, output spaces to take the place of the identifier column:
 	ostream.printf("%" + idFieldWidth + "s" + separator, ""); // TOO HACKY??
 	// then, output all tds identifiers:
 	for (GroupedChannels.TaggedDataSequence tds : allTDSs) {
 	    ostream.printf(idFieldFormat + separator,
 			   tds.getGroupName() + " c" + tds.getCondition()); 
-	    // ostream.printf(idFieldFormat + separator,
-	    // 		      tds.getGroupName(),
-	    // 		      tds.getCondition()); 
 	}
 	ostream.println(); // print newline
 	// output ANOVA values line by line:
@@ -224,6 +221,79 @@ public class FNIRsStats {
 	}
 	return result;
     }
+    // COULD OPTIMIZE BY HARDCODING THE REFLEXIVE ANOVAs
+    // http://stackoverflow.com/questions/12375768/java-equivalent-to-printf-f/12375811#12375811
+    // this should chunk the data, too
+    public static void outputANOVAs(GroupedChannels data,
+				    List<String> groupNames,
+				    List<Integer> conditions,
+				    int numChunks,			    
+				    int precision) {
+	// get all condition-group sequences:
+	ArrayList<GroupedChannels.TaggedDataSequence> allTDSs =
+	    data.getAllSelectedTDSs(groupNames, conditions);
+
+	chunkData(allTDSs, numChunks); // COMMENT THIS LATER
+
+	int idFieldWidth = getIdFieldWidth(groupNames, conditions, precision);
+	// create a format string for the group/condition combination identifier
+	//    fields in the output:
+	String idFieldFormat = "%-" + idFieldWidth + "s"; // format string
+	String separator = " , "; // what goes between columns of output
+	
+	// output the first row, containing identifying information for each 
+	//    group-condition combination:
+	// first, output proper-width placeholder for the identifier column:
+	System.out.printf("%" + idFieldWidth + "s" + separator, ""); // TOO HACKY??
+	// then, output all tds identifiers:
+	for (GroupedChannels.TaggedDataSequence tds : allTDSs) {
+	    System.out.printf(idFieldFormat + separator,
+			      tds.getGroupName() + " c" + tds.getCondition()); 
+	    // System.out.printf(idFieldFormat + "  ",
+	    // 		      tds.getGroupName(),
+	    // 		      tds.getCondition()); 
+	}
+	System.out.println(); // print newline
+	// output ANOVA values line by line:
+	OneWayAnova myANOVA = new OneWayAnova();
+	for (GroupedChannels.TaggedDataSequence first : allTDSs) {
+	    // output tds identifier in first column:
+	    System.out.printf(idFieldFormat + separator,
+			      first.getGroupName() +
+			      " c" + first.getCondition());
+	    // create Collection to send to the ANOVA object:
+	    LinkedList<double[]> dataSets = new LinkedList<double[]>();
+	    // convert first's data sequence to an array, then add it to
+	    //    dataSets
+	    dataSets.add(toPrimitiveDoubleArray(first.getData()));
+	    dataSets.add(null); // placeholder for second's data sequence
+	    for (GroupedChannels.TaggedDataSequence second : allTDSs) {
+		// convert and add second's data sequence to position one in
+		//    dataSets:
+		//dataSets.add(second.getData().toArray());
+		dataSets.set(1, toPrimitiveDoubleArray(second.getData()));
+		double result = 0;
+		try {
+		    result = myANOVA.anovaPValue(dataSets);
+		} catch (Exception ex) {
+		    System.out.println();
+		    error(ex.getMessage());
+		}
+		// AGAIN, SEE IF "PRECISON" == "NUMBER OF DECIMAL PLACES"
+		// APPARENTLY THE 1 IS COMPULSORY....
+		System.out.printf("%-" + idFieldWidth + "." + precision +
+				  "f" + separator,
+				  result);
+		// System.out.printf("%-1." + precision + "f" +
+		// 		  "%" + (idFieldWidth - precision) + "s",
+		// 		  result,
+		// 		  "");
+		//dataSets.remove(1); // remove second's data from dataSets
+	    }
+	    System.out.println(); // print newline
+	}
+    }
+    
     public static void oldWriteANOVAs(File outFile,
 				   GroupedChannels data,
 				   List<String> groupNames,
@@ -319,7 +389,7 @@ public class FNIRsStats {
     // COULD OPTIMIZE BY HARDCODING THE REFLEXIVE ANOVAs
     // http://stackoverflow.com/questions/12375768/java-equivalent-to-printf-f/12375811#12375811
     // this should chunk the data, too
-    public static void outputANOVAs(GroupedChannels data,
+    public static void oldOutputANOVAs(GroupedChannels data,
 				    List<String> groupNames,
 				    List<Integer> conditions,
 				    int numChunks,			    
@@ -1293,7 +1363,7 @@ public class FNIRsStats {
 		     legitGroups.getGroupNames(), legitGroups.getConditions(),
 		     numChunks, precision);
 
-	File outFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/outputFile.txt");
+	File outFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/outputFile.csv");
 	writeANOVAs(outFile, legitGroups,
 		    legitGroups.getGroupNames(), legitGroups.getConditions(),
 		    // groupNames, conditions,
