@@ -1034,9 +1034,10 @@ public class Hello {
 			mwe.printStackTrace();
 			done = false;
 		    }
-                                
+            /*                  
 		    if (done) {
 			try {
+<<<<<<< HEAD
 				// input file, process file, output file
 				File inputFile = workspace.getRMInput(name);
 			    try {
@@ -1045,11 +1046,14 @@ public class Hello {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+=======
+			    //rapidDriver.run(workspace.getRMInput(name));
+>>>>>>> branch 'dev' of https://github.com/CS-Seminar/fNIRS.git
 			} catch (OperatorException e1) {
 			    // TODO Auto-generated catch block
 			    e1.printStackTrace();
 			}
-		    }
+		    }*/
                                 
 		    enableList(step1);
 		    list_1.removeAll();
