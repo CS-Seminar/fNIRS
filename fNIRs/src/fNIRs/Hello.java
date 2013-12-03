@@ -1059,7 +1059,7 @@ public class Hello {
 		    list_1.removeAll();
 		}
 	    });
-	btnRun.setBounds(216, 120, 485, 308);
+	btnRun.setBounds(216, 346, 485, 82);
 	btnRun.setText("Run");
 	step3.add(btnRun);
                 
@@ -1113,6 +1113,27 @@ public class Hello {
                 
 	ProgressBar pbar = new ProgressBar(composite_2, SWT.NONE);
 	pbar.setBounds(216, 434, 485, 25);
+	
+	Button btnRadioButton = new Button(composite_2, SWT.RADIO);
+	btnRadioButton.setBounds(261, 133, 212, 25);
+	btnRadioButton.setText("Averaged Segments");
+	
+	Button btnRadioButton_1 = new Button(composite_2, SWT.RADIO);
+	btnRadioButton_1.setBounds(261, 171, 270, 25);
+	btnRadioButton_1.setText("Symbolic Aggregate Approximation Segments");
+	
+	Button btnRadioButton_2 = new Button(composite_2, SWT.RADIO);
+	btnRadioButton_2.addSelectionListener(new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+		}
+	});
+	btnRadioButton_2.setBounds(261, 211, 223, 25);
+	btnRadioButton_2.setText("Feature-based Segments");
+	
+	Label lblDataRepresentation = new Label(composite_2, SWT.NONE);
+	lblDataRepresentation.setBounds(260, 95, 196, 25);
+	lblDataRepresentation.setText("Data Representation:");
 
 	/*
 	  Button for filtering
