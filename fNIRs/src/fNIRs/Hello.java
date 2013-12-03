@@ -1,6 +1,7 @@
 package fNIRs;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
@@ -1036,7 +1037,14 @@ public class Hello {
                                 
 		    if (done) {
 			try {
-			    rapidDriver.run(workspace.getRMInput(name));
+				// input file, process file, output file
+				File inputFile = workspace.getRMInput(name);
+			    try {
+					rapidDriver.run(inputFile,rapidDriver.generateProcess(inputFile,workspace.getTemplate("processTemplate")),new File("processOutput.xls"));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			} catch (OperatorException e1) {
 			    // TODO Auto-generated catch block
 			    e1.printStackTrace();

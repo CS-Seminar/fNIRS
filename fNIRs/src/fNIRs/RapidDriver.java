@@ -110,7 +110,7 @@ public class RapidDriver {
 		
 	}
 	
-	static File generateProcess(File input, File template) throws FileNotFoundException, IOException{
+	File generateProcess(File input, File template) throws FileNotFoundException, IOException{
 	//Input: input file and process template
 	//Count the number of parameter cols in xls input file.
 	//Generate and return the correct process file
@@ -142,7 +142,7 @@ public class RapidDriver {
 
 	}
 	
-	static void run(File input, File processFile, File output) throws OperatorException{
+	void run(File input, File processFile, File output) throws OperatorException{
 		
 		
 		try {
@@ -157,7 +157,7 @@ public class RapidDriver {
 		
 			process.run();
 			//IOContainer ioResult = process.run();
-			processFile.delete();
+			//processFile.delete();
 			
 			/* Outputting example set just use RM write file.		
 			if (ioResult.getElementAt(0) instanceof ExampleSet) {
