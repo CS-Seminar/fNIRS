@@ -157,7 +157,7 @@ public class Hello {
     protected void createContents() {
 	shlFnirsDataProcessing = new Shell();
 	shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/logo.png"));
-	shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(255, 255, 255));
+	shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 	shlFnirsDataProcessing.setSize(1000, 600);
 	shlFnirsDataProcessing.setText("Zombie MiNIR - fNIRs Data Processing and Analysis");
                 
@@ -586,11 +586,6 @@ public class Hello {
 	btnNewButton_2.setText("Browse...");
                 
 	final Button HbCheck = new Button(composite_1, SWT.CHECK);
-	HbCheck.addSelectionListener(new SelectionAdapter() {
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-		}
-	    });
 	HbCheck.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 	HbCheck.setBounds(30, 70, 48, 25);
 	HbCheck.setText("Hb");
@@ -749,7 +744,41 @@ public class Hello {
 	run.setEnabled(false);
 	run.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 	run.setBounds(484, 353, 148, 25);
-	run.setText("Processes to Run:");
+	run.setText("Execute ANOVA:");
+	
+	final Button clearBtn = new Button(composite_1, SWT.NONE);
+	clearBtn.addSelectionListener(new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			HbCheck.setSelection(false);
+			HbOCheck.setSelection(false);
+			groupFileBox.setText("");
+			grouplbl.setEnabled(false);
+		    condlbl.setEnabled(false);
+		    groupsList.setEnabled(false);
+		    groupsList.removeAll();
+		    conditionsList.setEnabled(false);
+		    conditionsList.removeAll();
+		    chunking.setEnabled(false);
+		    aprecision.setEnabled(false);
+		    dplace.setEnabled(false);
+		    chunks.setEnabled(false);
+		    run.setEnabled(false);
+		    numChunksBox.setEnabled(false);
+		    numChunksBox.setText("");
+		    decimalPlacesBox.setEnabled(false);
+		    decimalPlacesBox.setText("");
+		    outputFileBox.setEnabled(false);
+		    outputFileBox.setText("");
+		    anovabtn.setEnabled(false);
+		    lblOutputFile.setEnabled(false);
+		    clearBtn.setEnabled(false);
+		}
+	});
+	
+	clearBtn.setEnabled(false);
+	clearBtn.setBounds(484, 415, 130, 25);
+	clearBtn.setText("Clear");
                 
 	outputFileBox = new Text(composite_1, SWT.BORDER);
 	outputFileBox.setEnabled(false);
@@ -868,9 +897,7 @@ public class Hello {
 		    outputFileBox.setEnabled(true);
 		    anovabtn.setEnabled(true);
 		    lblOutputFile.setEnabled(true);
-
 		}
-                        
 	    });
 	btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
         btnLoadGroupsAnd.setBounds(240, 115, 276, 25);
@@ -1043,18 +1070,19 @@ public class Hello {
 			try {
 				
 			    rapidDriver.run(workspace.getRMInput(name));
+
 			} catch (OperatorException e1) {
 			    // TODO Auto-generated catch block
 			    e1.printStackTrace();
 			}
-		    }
+			*/
                                 
 		    enableList(step1);
 		    list_1.removeAll();
-		    */
 		}
-	});
-	btnRun.setBounds(216, 120, 485, 308);
+	    });
+    //	btnRun.setBounds(216, 120, 485, 308);
+	btnRun.setBounds(216, 346, 485, 82);
 	btnRun.setText("Run");
 	step3.add(btnRun);
                 
@@ -1108,6 +1136,27 @@ public class Hello {
                 
 	ProgressBar pbar = new ProgressBar(composite_2, SWT.NONE);
 	pbar.setBounds(216, 434, 485, 25);
+	
+	Button btnRadioButton = new Button(composite_2, SWT.RADIO);
+	btnRadioButton.setBounds(261, 133, 212, 25);
+	btnRadioButton.setText("Averaged Segments");
+	
+	Button btnRadioButton_1 = new Button(composite_2, SWT.RADIO);
+	btnRadioButton_1.setBounds(261, 171, 270, 25);
+	btnRadioButton_1.setText("Symbolic Aggregate Approximation Segments");
+	
+	Button btnRadioButton_2 = new Button(composite_2, SWT.RADIO);
+	btnRadioButton_2.addSelectionListener(new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+		}
+	});
+	btnRadioButton_2.setBounds(261, 211, 223, 25);
+	btnRadioButton_2.setText("Feature-based Segments");
+	
+	Label lblDataRepresentation = new Label(composite_2, SWT.NONE);
+	lblDataRepresentation.setBounds(260, 95, 196, 25);
+	lblDataRepresentation.setText("Data Representation:");
 
 	/*
 	  Button for filtering
