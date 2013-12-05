@@ -878,6 +878,19 @@ public class Hello {
                 
 	Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 	tbtmMachineLearning.setControl(composite_2);
+	
+	final Button radioAS = new Button(composite_2, SWT.RADIO);
+	radioAS.setSelection(true);
+	radioAS.setBounds(261, 133, 212, 25);
+	radioAS.setText("Averaged Segments");
+	
+	final Button radioSAX = new Button(composite_2, SWT.RADIO);
+	radioSAX.setBounds(261, 171, 270, 25);
+	radioSAX.setText("Symbolic Aggregate Approximation Segments");
+	
+	Button radioFBS = new Button(composite_2, SWT.RADIO);
+	radioFBS.setBounds(261, 211, 223, 25);
+	radioFBS.setText("Feature-based Segments");
                 
 	final ArrayList<Control> step2 = new ArrayList<Control>();
 	final ArrayList<Control> step3 = new ArrayList<Control>();
@@ -1008,52 +1021,53 @@ public class Hello {
 		    disableList(step3);
 		    String name = text_dm_sub.getText();
 		    if (btnHb_1.getSelection()) {
-			rapidDriver.filter(cond_list, workspace.getHb(name), workspace.getHbOutput(name));
+		    	rapidDriver.filter(cond_list, workspace.getHb(name), workspace.getHbOutput(name));
 		    }
 		    else {
-			rapidDriver.empty(workspace.getHbOutput(name));
+		    	rapidDriver.empty(workspace.getHbOutput(name));
 		    }
                                 
 		    if (btnHbO_1.getSelection()) {
-			rapidDriver.filter(cond_list, workspace.getHbO(name), workspace.getHbOOutput(name));
+		    	rapidDriver.filter(cond_list, workspace.getHbO(name), workspace.getHbOOutput(name));
 		    }
 		    else {
-			rapidDriver.empty(workspace.getHbOOutput(name));
+		    	rapidDriver.empty(workspace.getHbOOutput(name));
 		    }
                                 
 		    boolean done = false;
                                 
 		    try {
-			File rminput = workspace.getRMInput(name);
-			if (rminput.exists())
-			    rminput.delete();
-			dm.rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1);
-			done = true;
+		    	File rminput = workspace.getRMInput(name);
+		    	if (rminput.exists())
+		    		rminput.delete();
+		    	if (radioAS.getSelection())
+		    		dm.rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1);
+		    	else if (radioSAX.getSelection())
+		    		dm.SAX_RapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1,1);
+		    	else
+		    		dm.features_rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1);
+		    	done = true;
 		    }
 		    catch(MWException mwe) {
-			mwe.printStackTrace();
-			done = false;
+		    	mwe.printStackTrace();
+		    	done = false;
 		    }
-            /*                  
+                            
 		    if (done) {
-			try {
-<<<<<<< HEAD
-				// input file, process file, output file
-				File inputFile = workspace.getRMInput(name);
-			    try {
-					rapidDriver.run(inputFile,rapidDriver.generateProcess(inputFile,workspace.getTemplate("processTemplate")),new File("processOutput.xls"));
-				} catch (IOException e1) {
+		    	try {
+		    		// input file, process file, output file
+		    		File inputFile = workspace.getRMInput(name);
+		    		try {
+		    			rapidDriver.run(inputFile,rapidDriver.generateProcess(inputFile,workspace.getTemplate("processTemplate")),new File("processOutput.xls"));
+		    		} catch (IOException e1) {
+		    			// TODO Auto-generated catch block
+		    			e1.printStackTrace();
+		    		}
+				} catch (OperatorException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-=======
-			    //rapidDriver.run(workspace.getRMInput(name));
->>>>>>> branch 'dev' of https://github.com/CS-Seminar/fNIRS.git
-			} catch (OperatorException e1) {
-			    // TODO Auto-generated catch block
-			    e1.printStackTrace();
-			}
-		    }*/
+		    }
                                 
 		    enableList(step1);
 		    list_1.removeAll();
@@ -1113,23 +1127,6 @@ public class Hello {
                 
 	ProgressBar pbar = new ProgressBar(composite_2, SWT.NONE);
 	pbar.setBounds(216, 434, 485, 25);
-	
-	Button btnRadioButton = new Button(composite_2, SWT.RADIO);
-	btnRadioButton.setBounds(261, 133, 212, 25);
-	btnRadioButton.setText("Averaged Segments");
-	
-	Button btnRadioButton_1 = new Button(composite_2, SWT.RADIO);
-	btnRadioButton_1.setBounds(261, 171, 270, 25);
-	btnRadioButton_1.setText("Symbolic Aggregate Approximation Segments");
-	
-	Button btnRadioButton_2 = new Button(composite_2, SWT.RADIO);
-	btnRadioButton_2.addSelectionListener(new SelectionAdapter() {
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-		}
-	});
-	btnRadioButton_2.setBounds(261, 211, 223, 25);
-	btnRadioButton_2.setText("Feature-based Segments");
 	
 	Label lblDataRepresentation = new Label(composite_2, SWT.NONE);
 	lblDataRepresentation.setBounds(260, 95, 196, 25);
