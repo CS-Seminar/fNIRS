@@ -80,7 +80,7 @@ public class Hello {
     private Text groupFileBox;
     private Text numChunksBox;
     private Text decimalPlacesBox;
-    private Text outputFileBox;
+    private Text outputDirectoryBox;
 
 
     /*
@@ -157,7 +157,7 @@ public class Hello {
     protected void createContents() {
 	shlFnirsDataProcessing = new Shell();
 	shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/logo.png"));
-	shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(255, 255, 255));
+	shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 	shlFnirsDataProcessing.setSize(1000, 600);
 	shlFnirsDataProcessing.setText("Zombie MiNIR - fNIRs Data Processing and Analysis");
                 
@@ -586,11 +586,6 @@ public class Hello {
 	btnNewButton_2.setText("Browse...");
                 
 	final Button HbCheck = new Button(composite_1, SWT.CHECK);
-	HbCheck.addSelectionListener(new SelectionAdapter() {
-		@Override
-		public void widgetSelected(SelectionEvent e) {
-		}
-	    });
 	HbCheck.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 	HbCheck.setBounds(30, 70, 48, 25);
 	HbCheck.setText("Hb");
@@ -626,11 +621,11 @@ public class Hello {
 	chunking.setBounds(484, 150, 86, 25);
 	chunking.setText("Chunking:");
                 
-	final Label lblOutputFile = new Label(composite_1, SWT.NONE);
-	lblOutputFile.setText("Output File:");
-	lblOutputFile.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-	lblOutputFile.setEnabled(false);
-	lblOutputFile.setBounds(484, 290, 148, 25);
+	final Label lblOutputDir = new Label(composite_1, SWT.NONE);
+	lblOutputDir.setText("Output Directory:"); // "Folder" ???
+	lblOutputDir.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+	lblOutputDir.setEnabled(false);
+	lblOutputDir.setBounds(484, 290, 148, 25);
                 
 	numChunksBox = new Text(composite_1, SWT.BORDER);
 	numChunksBox.setEnabled(false);
@@ -714,9 +709,8 @@ public class Hello {
                     }
                     int numPlaces = Integer.parseInt(numPlacesStr);
 
-                    // HAVE DUO MAKE AN OUTPUT FILENAME BOX!!
-                    // AND CHANGE "ANOVA" TO "ANOVA P-VALUE"
-                    String outputDirectoryName = "insertOutputDirNameHere";
+                    // CHANGE "ANOVA" TO "ANOVA P-VALUE"
+                    String outputDirectoryName = outputDirectoryBox.getText();
                     String outputDirectoryPath =
                         workspace.getStatsPath() + "\\" + outputDirectoryName;
                     File statsOutputDirectory = new File(outputDirectoryPath);
@@ -741,6 +735,7 @@ public class Hello {
 					       groupsAryLst, conditionsAryLst,
                                                numChunks, numPlaces);
                     }
+		    System.out.println("Done writing ANOVAs!");
 		}
 	    });
 	anovabtn.setEnabled(false);
@@ -752,11 +747,44 @@ public class Hello {
 	run.setEnabled(false);
 	run.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 	run.setBounds(484, 353, 148, 25);
-	run.setText("Processes to Run:");
+	run.setText("Execute ANOVA:");
+	
+	final Button clearBtn = new Button(composite_1, SWT.NONE);
+	clearBtn.addSelectionListener(new SelectionAdapter() {
+		@Override
+		public void widgetSelected(SelectionEvent e) {
+			HbCheck.setSelection(false);
+			HbOCheck.setSelection(false);
+			groupFileBox.setText("");
+			grouplbl.setEnabled(false);
+		    condlbl.setEnabled(false);
+		    groupsList.setEnabled(false);
+		    groupsList.removeAll();
+		    conditionsList.setEnabled(false);
+		    conditionsList.removeAll();
+		    chunking.setEnabled(false);
+		    aprecision.setEnabled(false);
+		    dplace.setEnabled(false);
+		    chunks.setEnabled(false);
+		    run.setEnabled(false);
+		    numChunksBox.setEnabled(false);
+		    numChunksBox.setText("");
+		    decimalPlacesBox.setEnabled(false);
+		    decimalPlacesBox.setText("");
+		    outputDirectoryBox.setEnabled(false);
+		    outputDirectoryBox.setText("");
+		    anovabtn.setEnabled(false);
+		    lblOutputDir.setEnabled(false);
+		}
+	});
+	
+	clearBtn.setEnabled(true);
+	clearBtn.setBounds(484, 415, 130, 25);
+	clearBtn.setText("Clear");
                 
-	outputFileBox = new Text(composite_1, SWT.BORDER);
-	outputFileBox.setEnabled(false);
-	outputFileBox.setBounds(484, 320, 222, 25);
+	outputDirectoryBox = new Text(composite_1, SWT.BORDER);
+	outputDirectoryBox.setEnabled(false);
+	outputDirectoryBox.setBounds(484, 320, 222, 25);
                 
 	Button btnLoadGroupsAnd = new Button(composite_1, SWT.NONE);
 	btnLoadGroupsAnd.addSelectionListener(new SelectionAdapter() {
@@ -864,12 +892,10 @@ public class Hello {
 		    run.setEnabled(true);
 		    numChunksBox.setEnabled(true);
 		    decimalPlacesBox.setEnabled(true);
-		    outputFileBox.setEnabled(true);
+		    outputDirectoryBox.setEnabled(true);
 		    anovabtn.setEnabled(true);
-		    lblOutputFile.setEnabled(true);
-
+		    lblOutputDir.setEnabled(true);
 		}
-                        
 	    });
 	btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
         btnLoadGroupsAnd.setBounds(240, 115, 276, 25);
