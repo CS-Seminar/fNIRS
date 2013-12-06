@@ -80,7 +80,7 @@ public class Hello {
     private Text groupFileBox;
     private Text numChunksBox;
     private Text decimalPlacesBox;
-    private Text outputFileBox;
+    private Text outputDirectoryBox;
 
 
     /*
@@ -621,11 +621,11 @@ public class Hello {
 	chunking.setBounds(484, 150, 86, 25);
 	chunking.setText("Chunking:");
                 
-	final Label lblOutputFile = new Label(composite_1, SWT.NONE);
-	lblOutputFile.setText("Output File:");
-	lblOutputFile.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-	lblOutputFile.setEnabled(false);
-	lblOutputFile.setBounds(484, 290, 148, 25);
+	final Label lblOutputDir = new Label(composite_1, SWT.NONE);
+	lblOutputDir.setText("Output Directory:"); // "Folder" ???
+	lblOutputDir.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+	lblOutputDir.setEnabled(false);
+	lblOutputDir.setBounds(484, 290, 148, 25);
                 
 	numChunksBox = new Text(composite_1, SWT.BORDER);
 	numChunksBox.setEnabled(false);
@@ -656,6 +656,9 @@ public class Hello {
 	final Button anovabtn = new Button(composite_1, SWT.NONE);
 	anovabtn.addSelectionListener(new SelectionAdapter() {
 		@Override
+		/* widgetSelected
+		 * ANOVA button handler
+		 */
 		public void widgetSelected(SelectionEvent e) {
 		    // get the list of selected groups as a string array:                    
                     String[] groupsAry = groupsList.getSelection();
@@ -706,9 +709,8 @@ public class Hello {
                     }
                     int numPlaces = Integer.parseInt(numPlacesStr);
 
-                    // HAVE DUO MAKE AN OUTPUT FILENAME BOX!!
-                    // AND CHANGE "ANOVA" TO "ANOVA P-VALUE"
-                    String outputDirectoryName = "insertOutputDirNameHere";
+                    // CHANGE "ANOVA" TO "ANOVA P-VALUE"
+                    String outputDirectoryName = outputDirectoryBox.getText();
                     String outputDirectoryPath =
                         workspace.getStatsPath() + "\\" + outputDirectoryName;
                     File statsOutputDirectory = new File(outputDirectoryPath);
@@ -718,7 +720,7 @@ public class Hello {
                     // actually do the requested ANOVAs and write them to the output file(s):
                     if (doHb) {
                         File outputFileHb =
-                            new File(outputDirectoryPath + "\\" + "p-values_Hb.txt");
+                            new File(outputDirectoryPath + "\\" + "p-values_Hb.csv");
                         // calculate ANOVAs and write them to the output file!!!
                         FNIRsStats.writeANOVAs(outputFileHb,
                                                StatsHb,
@@ -727,12 +729,13 @@ public class Hello {
                     }
                     if (doHbO) {
                         File outputFileHbO =
-                            new File(outputDirectoryPath + "\\" + "p-values_HbO.txt");
+                            new File(outputDirectoryPath + "\\" + "p-values_HbO.csv");
                         FNIRsStats.writeANOVAs(outputFileHbO,
                                                StatsHbO,
 					       groupsAryLst, conditionsAryLst,
                                                numChunks, numPlaces);
                     }
+		    System.out.println("Done writing ANOVAs!");
 		}
 	    });
 	anovabtn.setEnabled(false);
@@ -768,21 +771,20 @@ public class Hello {
 		    numChunksBox.setText("");
 		    decimalPlacesBox.setEnabled(false);
 		    decimalPlacesBox.setText("");
-		    outputFileBox.setEnabled(false);
-		    outputFileBox.setText("");
+		    outputDirectoryBox.setEnabled(false);
+		    outputDirectoryBox.setText("");
 		    anovabtn.setEnabled(false);
-		    lblOutputFile.setEnabled(false);
-		    clearBtn.setEnabled(false);
+		    lblOutputDir.setEnabled(false);
 		}
 	});
 	
-	clearBtn.setEnabled(false);
+	clearBtn.setEnabled(true);
 	clearBtn.setBounds(484, 415, 130, 25);
 	clearBtn.setText("Clear");
                 
-	outputFileBox = new Text(composite_1, SWT.BORDER);
-	outputFileBox.setEnabled(false);
-	outputFileBox.setBounds(484, 320, 222, 25);
+	outputDirectoryBox = new Text(composite_1, SWT.BORDER);
+	outputDirectoryBox.setEnabled(false);
+	outputDirectoryBox.setBounds(484, 320, 222, 25);
                 
 	Button btnLoadGroupsAnd = new Button(composite_1, SWT.NONE);
 	btnLoadGroupsAnd.addSelectionListener(new SelectionAdapter() {
@@ -809,16 +811,12 @@ public class Hello {
 			return;
 		    }
 
-		    // get channel grouping file to apply to data:
+		    // get path to channel grouping file to apply to data:
 		    String groupFilePath = groupFileBox.getText();
-		    // if (groupFilePath.equals("")) { // if no group file path has been entered,
-		    // 	// display an error and return:
-		    // 	errorBox("Error", "Please enter a channel groupings file.");
-		    // 	return;
-		    // }
-		    // otherwise, create the group file object:
+		    // create the group file object:
 		    File groupingsFile = new File(groupFilePath);
-		    if (!setExists(groupingsFile)) {
+		    if (!groupingsFile.exists()) { // if the file does not exist,
+			// display an error and return:
 			errorBox("Error", "Please specify a valid channel groupings file.");
 			return;
 		    }
@@ -861,6 +859,10 @@ public class Hello {
 		    // RESUME HERE NICK WORK DO KEEP GOING ETC ETC YOU'LL 
 		    //    FIND THIS MARKER I'M SURE
 
+		    // clear lists to prepare for new data:
+		    groupsList.removeAll();
+		    conditionsList.removeAll();
+
 		    // Now, we can populate the group and condition names lists:
 		    // first, figure out from where the group names can be obtained:
 		    FNIRsStats.GroupedChannels statsData = null;
@@ -890,9 +892,9 @@ public class Hello {
 		    run.setEnabled(true);
 		    numChunksBox.setEnabled(true);
 		    decimalPlacesBox.setEnabled(true);
-		    outputFileBox.setEnabled(true);
+		    outputDirectoryBox.setEnabled(true);
 		    anovabtn.setEnabled(true);
-		    lblOutputFile.setEnabled(true);
+		    lblOutputDir.setEnabled(true);
 		}
 	    });
 	btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
