@@ -661,6 +661,9 @@ public class Hello {
 	final Button anovabtn = new Button(composite_1, SWT.NONE);
 	anovabtn.addSelectionListener(new SelectionAdapter() {
 		@Override
+		/* widgetSelected
+		 * ANOVA button handler
+		 */
 		public void widgetSelected(SelectionEvent e) {
 		    // get the list of selected groups as a string array:                    
                     String[] groupsAry = groupsList.getSelection();
@@ -723,7 +726,7 @@ public class Hello {
                     // actually do the requested ANOVAs and write them to the output file(s):
                     if (doHb) {
                         File outputFileHb =
-                            new File(outputDirectoryPath + "\\" + "p-values_Hb.txt");
+                            new File(outputDirectoryPath + "\\" + "p-values_Hb.csv");
                         // calculate ANOVAs and write them to the output file!!!
                         FNIRsStats.writeANOVAs(outputFileHb,
                                                StatsHb,
@@ -732,7 +735,7 @@ public class Hello {
                     }
                     if (doHbO) {
                         File outputFileHbO =
-                            new File(outputDirectoryPath + "\\" + "p-values_HbO.txt");
+                            new File(outputDirectoryPath + "\\" + "p-values_HbO.csv");
                         FNIRsStats.writeANOVAs(outputFileHbO,
                                                StatsHbO,
 					       groupsAryLst, conditionsAryLst,
@@ -780,16 +783,12 @@ public class Hello {
 			return;
 		    }
 
-		    // get channel grouping file to apply to data:
+		    // get path to channel grouping file to apply to data:
 		    String groupFilePath = groupFileBox.getText();
-		    // if (groupFilePath.equals("")) { // if no group file path has been entered,
-		    // 	// display an error and return:
-		    // 	errorBox("Error", "Please enter a channel groupings file.");
-		    // 	return;
-		    // }
-		    // otherwise, create the group file object:
+		    // create the group file object:
 		    File groupingsFile = new File(groupFilePath);
-		    if (!setExists(groupingsFile)) {
+		    if (!groupingsFile.exists()) { // if the file does not exist,
+			// display an error and return:
 			errorBox("Error", "Please specify a valid channel groupings file.");
 			return;
 		    }
@@ -831,6 +830,10 @@ public class Hello {
 
 		    // RESUME HERE NICK WORK DO KEEP GOING ETC ETC YOU'LL 
 		    //    FIND THIS MARKER I'M SURE
+
+		    // clear lists to prepare for new data:
+		    groupsList.removeAll();
+		    conditionsList.removeAll();
 
 		    // Now, we can populate the group and condition names lists:
 		    // first, figure out from where the group names can be obtained:
