@@ -81,7 +81,7 @@ public class Hello {
     private Text groupFileBox;
     private Text numChunksBox;
     private Text decimalPlacesBox;
-    private Text outputFileBox;
+    private Text outputDirectoryBox;
 
 
     /*
@@ -622,11 +622,11 @@ public class Hello {
 	chunking.setBounds(484, 150, 86, 25);
 	chunking.setText("Chunking:");
                 
-	final Label lblOutputFile = new Label(composite_1, SWT.NONE);
-	lblOutputFile.setText("Output File:");
-	lblOutputFile.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-	lblOutputFile.setEnabled(false);
-	lblOutputFile.setBounds(484, 290, 148, 25);
+	final Label lblOutputDir = new Label(composite_1, SWT.NONE);
+	lblOutputDir.setText("Output Directory:"); // "Folder" ???
+	lblOutputDir.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+	lblOutputDir.setEnabled(false);
+	lblOutputDir.setBounds(484, 290, 148, 25);
                 
 	numChunksBox = new Text(composite_1, SWT.BORDER);
 	numChunksBox.setEnabled(false);
@@ -657,6 +657,9 @@ public class Hello {
 	final Button anovabtn = new Button(composite_1, SWT.NONE);
 	anovabtn.addSelectionListener(new SelectionAdapter() {
 		@Override
+		/* widgetSelected
+		 * ANOVA button handler
+		 */
 		public void widgetSelected(SelectionEvent e) {
 		    // get the list of selected groups as a string array:                    
                     String[] groupsAry = groupsList.getSelection();
@@ -707,9 +710,8 @@ public class Hello {
                     }
                     int numPlaces = Integer.parseInt(numPlacesStr);
 
-                    // HAVE DUO MAKE AN OUTPUT FILENAME BOX!!
-                    // AND CHANGE "ANOVA" TO "ANOVA P-VALUE"
-                    String outputDirectoryName = "insertOutputDirNameHere";
+                    // CHANGE "ANOVA" TO "ANOVA P-VALUE"
+                    String outputDirectoryName = outputDirectoryBox.getText();
                     String outputDirectoryPath =
                         workspace.getStatsPath() + "\\" + outputDirectoryName;
                     File statsOutputDirectory = new File(outputDirectoryPath);
@@ -719,7 +721,7 @@ public class Hello {
                     // actually do the requested ANOVAs and write them to the output file(s):
                     if (doHb) {
                         File outputFileHb =
-                            new File(outputDirectoryPath + "\\" + "p-values_Hb.txt");
+                            new File(outputDirectoryPath + "\\" + "p-values_Hb.csv");
                         // calculate ANOVAs and write them to the output file!!!
                         FNIRsStats.writeANOVAs(outputFileHb,
                                                StatsHb,
@@ -728,12 +730,13 @@ public class Hello {
                     }
                     if (doHbO) {
                         File outputFileHbO =
-                            new File(outputDirectoryPath + "\\" + "p-values_HbO.txt");
+                            new File(outputDirectoryPath + "\\" + "p-values_HbO.csv");
                         FNIRsStats.writeANOVAs(outputFileHbO,
                                                StatsHbO,
 					       groupsAryLst, conditionsAryLst,
                                                numChunks, numPlaces);
                     }
+		    System.out.println("Done writing ANOVAs!");
 		}
 	    });
 	anovabtn.setEnabled(false);
@@ -769,21 +772,20 @@ public class Hello {
 		    numChunksBox.setText("");
 		    decimalPlacesBox.setEnabled(false);
 		    decimalPlacesBox.setText("");
-		    outputFileBox.setEnabled(false);
-		    outputFileBox.setText("");
+		    outputDirectoryBox.setEnabled(false);
+		    outputDirectoryBox.setText("");
 		    anovabtn.setEnabled(false);
-		    lblOutputFile.setEnabled(false);
-		    clearBtn.setEnabled(false);
+		    lblOutputDir.setEnabled(false);
 		}
 	});
 	
-	clearBtn.setEnabled(false);
+	clearBtn.setEnabled(true);
 	clearBtn.setBounds(484, 415, 130, 25);
 	clearBtn.setText("Clear");
                 
-	outputFileBox = new Text(composite_1, SWT.BORDER);
-	outputFileBox.setEnabled(false);
-	outputFileBox.setBounds(484, 320, 222, 25);
+	outputDirectoryBox = new Text(composite_1, SWT.BORDER);
+	outputDirectoryBox.setEnabled(false);
+	outputDirectoryBox.setBounds(484, 320, 222, 25);
                 
 	Button btnLoadGroupsAnd = new Button(composite_1, SWT.NONE);
 	btnLoadGroupsAnd.addSelectionListener(new SelectionAdapter() {
@@ -799,110 +801,102 @@ public class Hello {
 		 */
 		public void widgetSelected(SelectionEvent e) {
 		    // get list of subjects to analyze data for:
-			if(!groupsList.isEnabled()) {
-			    ArrayList<String> subjects = new ArrayList<String>();
-			    for (String s : list.getSelection()) {
-			    	subjects.add(s);
-			    } 
-			    // and make sure at least one subject has been selected:
-			    if (subjects.isEmpty()) { // if not,
-				// display an error and return:
-				errorBox("Error", "Please select at least one subject to analyze.");
-				return;
-			    }
-	
-			    // get channel grouping file to apply to data:
-			    String groupFilePath = groupFileBox.getText();
-			    // if (groupFilePath.equals("")) { // if no group file path has been entered,
-			    // 	// display an error and return:
-			    // 	errorBox("Error", "Please enter a channel groupings file.");
-			    // 	return;
-			    // }
-			    // otherwise, create the group file object:
-			    File groupingsFile = new File(groupFilePath);
-			    if (!setExists(groupingsFile)) {
-			    	errorBox("Error", "Please specify a valid channel groupings file.");
-			    	return;
-			    }
-	
-			    // determine and remember whether Hb is checked:
-			    doHb = HbCheck.getSelection(); 
-			    doHbO = HbOCheck.getSelection(); // and the same for HbO
-			    // make sure Hb, HbO, or both are checked:
-			    if (!doHb && !doHbO) { // if neither box was checked,
-				// display error message and return:
-			    	errorBox("Error", "Please select Hb, HbO, or both.");
-			    	return;                                
-			    }
-	                    
-			    // Otherwise, we can build lists of Hb and/or HbO files:
-			    //    and populate them if the corresponding box was checked:
-			    if (doHb) { // if Hb box was checked,
-				// create an ArrayList for the selected subjects' Hb files:
-				ArrayList<File> hbFiles = new ArrayList<File>();
-				// and add each subject's Hb file to the ArrayList:
-				for (String subject: subjects) {
-				    hbFiles.add(workspace.getHb(subject));
-				}
-				// then produce a GroupedChannels object from those files and the
-				//    groupings file:
-				StatsHb = FNIRsStats.processAllSubjectData(hbFiles, groupingsFile);
-			    }
-			    if (doHbO) { // if HbO box was checked,
-				// create an ArrayList for the selected subjects' HbO files:
-			    ArrayList<File> hbOFiles = new ArrayList<File>();
-				// and add each subject's HbO file to the ArrayList:
-				for (String subject: subjects) {
-				    hbOFiles.add(workspace.getHbO(subject));
-				}
-				// then produce a GroupedChannels object from those files and the
-				//    groupings file:
-					StatsHbO = FNIRsStats.processAllSubjectData(hbOFiles, groupingsFile); 
-			    }
-	
-			    // RESUME HERE NICK WORK DO KEEP GOING ETC ETC YOU'LL 
-			    //    FIND THIS MARKER I'M SURE
-	
-			    // Now, we can populate the group and condition names lists:
-			    // first, figure out from where the group names can be obtained:
-			    FNIRsStats.GroupedChannels statsData = null;
-			    if (doHb) { // If the Hb data is defined,
-			    	statsData = StatsHb; // then we can get the lists from it.
-			    } else { // Otherwise, the HbO data must be defined,
-			    	statsData = StatsHbO; // so we can get the lists from it instead.
-			    }
-			    // now actually populate the GUI's groups list:
-			    
-			    for (String groupName : statsData.getGroupNames()) {
-			    	groupsList.add(groupName);
-			    }        
-			    // and the condition numbers list:
-			    for (Integer condition : statsData.getConditions()) {
-			    	conditionsList.add(condition.toString());
-			    }
-	
-			    // auto-generated:
-			    grouplbl.setEnabled(true);
-			    condlbl.setEnabled(true);
-			    groupsList.setEnabled(true);
-			    conditionsList.setEnabled(true);
-			    chunking.setEnabled(true);
-			    aprecision.setEnabled(true);
-			    dplace.setEnabled(true);
-			    chunks.setEnabled(true);
-			    run.setEnabled(true);
-			    numChunksBox.setEnabled(true);
-			    decimalPlacesBox.setEnabled(true);
-			    outputFileBox.setEnabled(true);
-			    anovabtn.setEnabled(true);
-			    lblOutputFile.setEnabled(true);
-			    clearBtn.setEnabled(true);
-			} else {
-				errorBox("Error", "Please clear current selection before running stats again");
-			}
+		    ArrayList<String> subjects = new ArrayList<String>();
+		    for (String s : list.getSelection()) {
+			subjects.add(s);
+		    } 
+		    // and make sure at least one subject has been selected:
+		    if (subjects.isEmpty()) { // if not,
+			// display an error and return:
+			errorBox("Error", "Please select at least one subject to analyze.");
+			return;
+		    }
 
+		    // get path to channel grouping file to apply to data:
+		    String groupFilePath = groupFileBox.getText();
+		    // create the group file object:
+		    File groupingsFile = new File(groupFilePath);
+		    if (!groupingsFile.exists()) { // if the file does not exist,
+			// display an error and return:
+			errorBox("Error", "Please specify a valid channel groupings file.");
+			return;
+		    }
+
+		    // determine and remember whether Hb is checked:
+		    doHb = HbCheck.getSelection(); 
+		    doHbO = HbOCheck.getSelection(); // and the same for HbO
+		    // make sure Hb, HbO, or both are checked:
+		    if (!doHb && !doHbO) { // if neither box was checked,
+			// display error message and return:
+			errorBox("Error", "Please select Hb, HbO, or both.");
+			return;                                
+		    }
+                    
+		    // Otherwise, we can build lists of Hb and/or HbO files:
+		    //    and populate them if the corresponding box was checked:
+		    if (doHb) { // if Hb box was checked,
+			// create an ArrayList for the selected subjects' Hb files:
+			ArrayList<File> hbFiles = new ArrayList<File>();
+			// and add each subject's Hb file to the ArrayList:
+			for (String subject: subjects) {
+			    hbFiles.add(workspace.getHb(subject));
+			}
+			// then produce a GroupedChannels object from those files and the
+			//    groupings file:
+			StatsHb = FNIRsStats.processAllSubjectData(hbFiles, groupingsFile);
+		    }
+		    if (doHbO) { // if HbO box was checked,
+			// create an ArrayList for the selected subjects' HbO files:
+			ArrayList<File> hbOFiles = new ArrayList<File>();
+			// and add each subject's HbO file to the ArrayList:
+			for (String subject: subjects) {
+			    hbOFiles.add(workspace.getHbO(subject));
+			}
+			// then produce a GroupedChannels object from those files and the
+			//    groupings file:
+			StatsHbO = FNIRsStats.processAllSubjectData(hbOFiles, groupingsFile); 
+		    }
+
+		    // RESUME HERE NICK WORK DO KEEP GOING ETC ETC YOU'LL 
+		    //    FIND THIS MARKER I'M SURE
+
+		    // clear lists to prepare for new data:
+		    groupsList.removeAll();
+		    conditionsList.removeAll();
+
+		    // Now, we can populate the group and condition names lists:
+		    // first, figure out from where the group names can be obtained:
+		    FNIRsStats.GroupedChannels statsData = null;
+		    if (doHb) { // If the Hb data is defined,
+			statsData = StatsHb; // then we can get the lists from it.
+		    } else { // Otherwise, the HbO data must be defined,
+			statsData = StatsHbO; // so we can get the lists from it instead.
+		    }
+		    // now actually populate the GUI's groups list:
+		    for (String groupName : statsData.getGroupNames()) {
+			groupsList.add(groupName);
+		    }        
+		    // and the condition numbers list:
+		    for (Integer condition : statsData.getConditions()) {
+			conditionsList.add(condition.toString());
+		    }
+
+		    // auto-generated:
+		    grouplbl.setEnabled(true);
+		    condlbl.setEnabled(true);
+		    groupsList.setEnabled(true);
+		    conditionsList.setEnabled(true);
+		    chunking.setEnabled(true);
+		    aprecision.setEnabled(true);
+		    dplace.setEnabled(true);
+		    chunks.setEnabled(true);
+		    run.setEnabled(true);
+		    numChunksBox.setEnabled(true);
+		    decimalPlacesBox.setEnabled(true);
+		    outputDirectoryBox.setEnabled(true);
+		    anovabtn.setEnabled(true);
+		    lblOutputDir.setEnabled(true);
 		}
-                        
 	    });
 	btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
         btnLoadGroupsAnd.setBounds(240, 115, 276, 25);
@@ -1003,56 +997,6 @@ public class Hello {
 	btnRun.addSelectionListener(new SelectionAdapter() {
 		@Override
 		public void widgetSelected(SelectionEvent e) {
-		    /*<<<<<<< HEAD
-		      final String name = text_dm_sub.getText();
-		      ProgressMonitorDialog dialog = new ProgressMonitorDialog(shlFnirsDataProcessing);
-		      try {
-		      dialog.run(true, true, new IRunnableWithProgress(){
-		      public void run(IProgressMonitor monitor) {
-		      monitor.beginTask("Mining your brain data...", 100);
-		      //task goes here
-		      if (btnHb_1.getSelection()) {
-		      rapidDriver.filter(cond_list, workspace.getHb(name), workspace.getHbOutput(name));
-		      }
-		      else {
-		      rapidDriver.empty(workspace.getHbOutput(name));
-		      }
-                                                                
-		      if (btnHbO_1.getSelection()) {
-		      rapidDriver.filter(cond_list, workspace.getHbO(name), workspace.getHbOOutput(name));
-		      }
-		      else {
-		      rapidDriver.empty(workspace.getHbOOutput(name));
-		      }
-                                                                
-		      boolean done = false;
-                                                                
-		      try {
-		      pre.rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath());
-		      done = true;
-		      }
-		      catch(MWException mwe) {
-		      mwe.printStackTrace();
-		      done = false;
-		      }
-                                                                
-		      if (done) {
-		      try {
-		      rapidDriver.run(workspace.getRMInput(name));
-		      } catch (OperatorException e1) {
-		      // TODO Auto-generated catch block
-		      e1.printStackTrace();
-		      }
-		      }
-		      monitor.done();
-		      }
-		      });
-		      } catch (InvocationTargetException | InterruptedException e2) {
-		      // TODO Auto-generated catch block
-		      e2.getCause();
-		      e2.printStackTrace();
-		      } 
-		      =======*/
 		    disableList(step3);
 		    String name = text_dm_sub.getText();
 		    if (btnHb_1.getSelection()) {
@@ -1087,7 +1031,7 @@ public class Hello {
 		    	mwe.printStackTrace();
 		    	done = false;
 		    }
-                            
+		    
 		    if (done) {
 		    	try {
 		    		// input file, process file, output file
@@ -1103,11 +1047,11 @@ public class Hello {
 					e1.printStackTrace();
 				}
 		    }
-                                
 		    enableList(step1);
 		    list_1.removeAll();
 		}
 	    });
+	// btnRun.setBounds(216, 120, 485, 308);
 	btnRun.setBounds(216, 346, 485, 82);
 	btnRun.setText("Run");
 	step3.add(btnRun);
@@ -1141,7 +1085,7 @@ public class Hello {
 		    int n = workspace.getMaxCond(text_dm_sub.getText());
                                 
 		    for (int i=0; i<=n; i++) {
-			String strI = "Condition #" + i;
+			String strI = "" + i;
 			list_1.add(strI);
 		    }
 		}

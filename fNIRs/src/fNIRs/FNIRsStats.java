@@ -1,5 +1,5 @@
 /******************************************************************************
- * File: FNIRsStats.java                                              *
+ * File: FNIRsStats.java                                                      *
  * Author: Nicholas Kolesar                                                   *
  * Hamilton College                                                           *
  * Fall 2013                                                                  *
@@ -53,8 +53,15 @@ import java.util.List; // for generalized findNextOccurrence method
 // import HelloWorldNick.GroupedChannels; // WUT
 
 public class FNIRsStats {
+    private static void error2(String title, String errMsg){
+	localError(title + " " + errMsg);
+	// ADD FINAL ERROR BOX FUNCTION CALL HERE
+    }
     private static void error(String errMsg){
-        System.out.println("Error: " + errMsg + ".");
+	localError(errMsg);
+    }
+    private static void localError(String errMsg){
+	System.out.println("Error: " + errMsg + ".");
         System.exit(1); // PROBABLY DON'T WANT THIS IN FINAL PROGRAM--
                         //    HANDLE THE EXCEPTION SOME OTHER WAY<
     }
@@ -140,19 +147,16 @@ public class FNIRsStats {
 	
 	int idFieldWidth = getIdFieldWidth(groupNames, conditions, precision);
 	String idFieldFormat = "%-" + idFieldWidth + "s"; // format string
-	String separator = "  "; // what goes between columns of output
+	String separator = " , "; // what goes between columns of output
 	
 	// output the first row, containing identifying information for each 
 	//    group-condition combination:
-	// first, output proper-width placeholder for the identifier column:
+	// first, output spaces to take the place of the identifier column:
 	ostream.printf("%" + idFieldWidth + "s" + separator, ""); // TOO HACKY??
 	// then, output all tds identifiers:
 	for (GroupedChannels.TaggedDataSequence tds : allTDSs) {
 	    ostream.printf(idFieldFormat + separator,
 			   tds.getGroupName() + " c" + tds.getCondition()); 
-	    // ostream.printf(idFieldFormat + separator,
-	    // 		      tds.getGroupName(),
-	    // 		      tds.getCondition()); 
 	}
 	ostream.println(); // print newline
 	// output ANOVA values line by line:
@@ -224,6 +228,79 @@ public class FNIRsStats {
 	}
 	return result;
     }
+    // COULD OPTIMIZE BY HARDCODING THE REFLEXIVE ANOVAs
+    // http://stackoverflow.com/questions/12375768/java-equivalent-to-printf-f/12375811#12375811
+    // this should chunk the data, too
+    public static void outputANOVAs(GroupedChannels data,
+				    List<String> groupNames,
+				    List<Integer> conditions,
+				    int numChunks,			    
+				    int precision) {
+	// get all condition-group sequences:
+	ArrayList<GroupedChannels.TaggedDataSequence> allTDSs =
+	    data.getAllSelectedTDSs(groupNames, conditions);
+
+	chunkData(allTDSs, numChunks); // COMMENT THIS LATER
+
+	int idFieldWidth = getIdFieldWidth(groupNames, conditions, precision);
+	// create a format string for the group/condition combination identifier
+	//    fields in the output:
+	String idFieldFormat = "%-" + idFieldWidth + "s"; // format string
+	String separator = " , "; // what goes between columns of output
+	
+	// output the first row, containing identifying information for each 
+	//    group-condition combination:
+	// first, output proper-width placeholder for the identifier column:
+	System.out.printf("%" + idFieldWidth + "s" + separator, ""); // TOO HACKY??
+	// then, output all tds identifiers:
+	for (GroupedChannels.TaggedDataSequence tds : allTDSs) {
+	    System.out.printf(idFieldFormat + separator,
+			      tds.getGroupName() + " c" + tds.getCondition()); 
+	    // System.out.printf(idFieldFormat + "  ",
+	    // 		      tds.getGroupName(),
+	    // 		      tds.getCondition()); 
+	}
+	System.out.println(); // print newline
+	// output ANOVA values line by line:
+	OneWayAnova myANOVA = new OneWayAnova();
+	for (GroupedChannels.TaggedDataSequence first : allTDSs) {
+	    // output tds identifier in first column:
+	    System.out.printf(idFieldFormat + separator,
+			      first.getGroupName() +
+			      " c" + first.getCondition());
+	    // create Collection to send to the ANOVA object:
+	    LinkedList<double[]> dataSets = new LinkedList<double[]>();
+	    // convert first's data sequence to an array, then add it to
+	    //    dataSets
+	    dataSets.add(toPrimitiveDoubleArray(first.getData()));
+	    dataSets.add(null); // placeholder for second's data sequence
+	    for (GroupedChannels.TaggedDataSequence second : allTDSs) {
+		// convert and add second's data sequence to position one in
+		//    dataSets:
+		//dataSets.add(second.getData().toArray());
+		dataSets.set(1, toPrimitiveDoubleArray(second.getData()));
+		double result = 0;
+		try {
+		    result = myANOVA.anovaPValue(dataSets);
+		} catch (Exception ex) {
+		    System.out.println();
+		    error(ex.getMessage());
+		}
+		// AGAIN, SEE IF "PRECISON" == "NUMBER OF DECIMAL PLACES"
+		// APPARENTLY THE 1 IS COMPULSORY....
+		System.out.printf("%-" + idFieldWidth + "." + precision +
+				  "f" + separator,
+				  result);
+		// System.out.printf("%-1." + precision + "f" +
+		// 		  "%" + (idFieldWidth - precision) + "s",
+		// 		  result,
+		// 		  "");
+		//dataSets.remove(1); // remove second's data from dataSets
+	    }
+	    System.out.println(); // print newline
+	}
+    }
+    
     public static void oldWriteANOVAs(File outFile,
 				   GroupedChannels data,
 				   List<String> groupNames,
@@ -319,7 +396,7 @@ public class FNIRsStats {
     // COULD OPTIMIZE BY HARDCODING THE REFLEXIVE ANOVAs
     // http://stackoverflow.com/questions/12375768/java-equivalent-to-printf-f/12375811#12375811
     // this should chunk the data, too
-    public static void outputANOVAs(GroupedChannels data,
+    public static void oldOutputANOVAs(GroupedChannels data,
 				    List<String> groupNames,
 				    List<Integer> conditions,
 				    int numChunks,			    
@@ -566,7 +643,8 @@ public class FNIRsStats {
             String groupName;
             ArrayList<Integer> channels = new ArrayList<Integer>();
             while(s.hasNext()) { // checks to see there is a token in the input
-                groupName = s.next(); // next() gets the next token 
+                groupName = s.next(); // next() gets the next token
+		//System.out.println(groupName);
                 while (s.hasNextInt()) {
                     channels.add(s.nextInt());
                 }
@@ -602,16 +680,28 @@ public class FNIRsStats {
                 // THIS IS STATISTICALLY PRETTY BAD UNLESS THEY'RE NOT COMPARING
                 //    THOSE TWO GROUPS...WHICH IS TOTALLY POSSIBLE, I GUESS.
                 //    MAYBE THIS IS BEYOND THE SCOPE OF OUR PROJECT TO CHECK?
-                System.out.print("Warning! The following channel(s) are in " +
-                                 "multiple groups! Channel(s) ");
+		// System.out.print("Warning! The following channel(s) are in " +
+                //                  "multiple groups! Channel(s) ");
+                // for (int chan : duplicates) {
+                //     System.out.print(chan);
+                //     if (chan != duplicates.get(duplicates.size()-1))
+                //         System.out.print(", ");
+                // }
+                // System.out.println(".");
+		
+		String warning = "The following channel(s) are in multiple " +
+                                 "groups! Channel(s) ";
                 // IT WOULD BE REALLY NICE OF US TO TELL THEM WHICH GROUPS THE
                 //    CHANNELS ARE IN, TOO, BUT LET'S LEAVE THAT FOR LATER.
+		System.out.println(duplicates);
                 for (int chan : duplicates) {
-                    System.out.print(chan);
-                    if (chan != duplicates.get(duplicates.size()-1))
-                        System.out.print(", ");
+                    warning += chan;
+                    if (chan != duplicates.get(duplicates.size() - 1))
+                        warning += ", ";
                 }
-                System.out.println(".");
+                warning += ".";
+		//System.out.println(warning); // REPLACE WITH ERRORBOX CALL
+		error2("Warning!", warning);
             }
             if (!missing.isEmpty()) {
                 System.out.print("Warning: the following channel(s) are not " +
@@ -717,17 +807,17 @@ public class FNIRsStats {
                 double ourSum =
                     ours.getData().get(i) *
 		    ours.getNumChannels() *
-		    NumSubjects;
+		    ours.NumSubjects;
                 double otherSum =
                     other.getData().get(i) * other.getNumChannels();
-                double totalNumChannels =
-                    ours.getNumChannels() + other.getNumChannels();
+                //double totalNumChannels = ours.getNumChannels() + other.getNumChannels();
+                //Double combinedAverage = (ourSum + otherSum) / totalNumChannels / (ours.NumSubjects + 1);
                 Double combinedAverage =
-		    (ourSum + otherSum) / totalNumChannels / (NumSubjects + 1);
+		    (ourSum + otherSum) / (ours.NumSubjects + 1); 
                 ours.getData().set(i, combinedAverage);
             }
-	    NumSubjects++; // since we've just added another subject's data to
-                           //    this group's
+	    ours.NumSubjects++; // since we've just added another subject's data
+                                //    to this group's
         }
         /* removeAfter
          * IN:  ary, a List to remove elements from
@@ -913,7 +1003,6 @@ public class FNIRsStats {
             }
         }
         private final int NumChannels;
-	private int NumSubjects;
         private ArrayList<Group> GroupList;
 	private ArrayList<Integer> Conditions;
 	
@@ -1212,133 +1301,115 @@ public class FNIRsStats {
                                                   //    row of the time series
             private final int NumChannels; 
             private int NumVals;
+	    private int NumSubjects;
         }
     }
-    public static void main(String[] args) {
-	File legitDataFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/subjects/matlab19/Hb");
-	File legitGroupFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/legitGroups");
+    private static void runChunkTests(){
+	System.out.println("Running chunk averaging tests.");
+	chunkTest("testData1", 3); 
+	chunkTest("testData1", 4);
+	chunkTest("testData2", 3);
+	chunkTest("testData3", 3);
+	chunkTest("testData1", 2);		
+	System.out.println("Done testing.");
+    }
+    private static void chunkTest(String data, int numChunks){
+	File groupFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/ChunkingTests/testGroups");
+	File dataFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/ChunkingTests/" + data);
+        System.out.println("Reading group information from " + data + ".");
+        GroupedChannels groups = new GroupedChannels(dataFile, groupFile);
+	System.out.println("Average sequence before averaging:");
+	ArrayList<Double> output = groups.getGroup("foo").getData(1);
+	printList(output);
 	
-	File dataFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/testHb");
-	File groupFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/groups");
-	File otherDataFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/otherTestHb");
-	File otherOtherDataFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/otherOtherTestHb");
-	
-        System.out.println("Reading group information.");
+	// test: 
+
+	output = averageChunks(groups.getGroup("foo").getData(1), numChunks);
+	System.out.println("Average sequence after averaging " + numChunks +
+			   " chunks together:");
+	printList(output);
+    }
+    private static void runSubjectTests() {
+	// test subject combining functions:
+
+	// test files:
+	File groupFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/SubjectTests/groups");
+	File data1 = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/SubjectTests/testData1");
+	File data2 = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/SubjectTests/testData2");
+	File data3 = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/SubjectTests/testData3");
+
         // read channel grouping information:
-	GroupedChannels legitGroups =
-	    new GroupedChannels(legitDataFile, legitGroupFile);
-        GroupedChannels groups =
-	    new GroupedChannels(dataFile, groupFile);
-	GroupedChannels otherGroups =
-	    new GroupedChannels(otherDataFile, groupFile);
-	GroupedChannels otherOtherGroups =
-	    new GroupedChannels(otherOtherDataFile, groupFile);
-	System.out.println("-------------------------------------------------");
+        System.out.println("Reading group information.");
+        GroupedChannels groups1 = new GroupedChannels(data1, groupFile);
+	GroupedChannels groups2 = new GroupedChannels(data2, groupFile);
+	GroupedChannels groups3 = new GroupedChannels(data3, groupFile);
+        System.out.println("Done reading group information.");
 
-	/*
-        groups.print("groupOne");
-        int cond = 1;
-        System.out.println("Average sequence for condition " + cond + " is:");
-        printList(groups.getGroup("groupOne").getData(cond));
-	*/
-	int numChunks = 3;
-	/*
-	ArrayList<Double> result =
-	    averageChunks(groups.getGroup("groupOne").getData(1), numChunks);
-	System.out.println("Average sequence after averaging " + numChunks +
-			   " chunks together:");
-	printList(result);
+	// display contents of groups before combining:
+	System.out.println("groups1:");
+	printList(groups1.getGroup("foo").getData(1));
+	System.out.println("groups2:");	
+	printList(groups2.getGroup("foo").getData(1));
+	System.out.println("groups3:");	
+	printList(groups3.getGroup("foo").getData(1));
 
-        System.out.println("-------------------------------------------------");
+	// two subject test:
+	File[] dataFileAry = {data1, data2}; // files to combine
+	subjectTestsHelper(dataFileAry, groupFile);
 
-	ArrayList<Double> result2 =
-	    averageChunks(groups.getGroup("groupOne").getData(2), numChunks);
-	System.out.println("Average sequence after averaging " + numChunks +
-			   " chunks together:");
-	printList(result2);
-	*/
-        ArrayList<String> groupNames = new ArrayList<String>();
-	//groupNames.add("first");
-	//groupNames.add("second");
-	/*
-	groupNames.add("groupOne");
-	groupNames.add("secondGroup");
-	groupNames.add("groupThree");
-	groupNames.add("group4");
-	groupNames.add("g5");
-	*/
-	// groupNames.add("all");
-
-        ArrayList<Integer> conditions = new ArrayList<Integer>();
-        conditions.add(1);
-        //conditions.add(2);
-        //conditions.add(3);
-
-        ArrayList<ArrayList<GroupedChannels.TaggedDataSequence>> output =
-            new ArrayList<ArrayList<GroupedChannels.TaggedDataSequence>>();
-        
-        output = groups.selectData(groupNames, conditions);
-	/*
-        for (ArrayList<GroupedChannels.TaggedDataSequence> ary :
-                 output) {
-            for (GroupedChannels.TaggedDataSequence data : ary){
-                data.print();
-            }
-        }
-	*/
-
+	// three subject test:
+	File[] dataFileAry2 = {data1, data2, data3}; // files to combine
+	subjectTestsHelper(dataFileAry2, groupFile);
+    }
+    private static void subjectTestsHelper(File[] dataFileAry, File groupFile) {
+	// create ArrayList of the files:
+	ArrayList<File> dataFileLst = new ArrayList<File>(); 
+	for (File f : dataFileAry){
+	    dataFileLst.add(f);
+	}
+	
+	// Combine groups and display contents of combined group:
+	System.out.println("result of combining groups:");
+	printList(processAllSubjectData(dataFileLst,groupFile
+					).getGroup("foo").getData(1));	
+    }    
+    public static void main(String[] args) {
+	//runChunkTests();
+	//runSubjectTests();
+	
+        File legitGroupsFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/legitGroups");
+	File legitHbFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/legitHb");
 	int precision = 7;
-
+	int numChunks = 10;
+	GroupedChannels legitGroups = new GroupedChannels(legitHbFile,
+							  legitGroupsFile);
+	// ArrayList<String> mylst = legitGroups.getGroupNames();
+	// System.out.println(mylst.size());
+	// String foo = mylst.get(0);
+	// System.out.println(foo);
+        // printList(legitGroups.getGroupNames());
+	// legitGroups.getGroup("groupOne");
+	// legitGroups.getGroup("secondGroup");
+	// legitGroups.getGroup("groupThree");
+	// legitGroups.getGroup("group4");
+	// legitGroups.getGroup("g5");
+	
+	/*
 	outputANOVAs(legitGroups,
 		     legitGroups.getGroupNames(), legitGroups.getConditions(),
 		     numChunks, precision);
-
-	File outFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/outputFile.txt");
+	File outFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/outputFile.csv");
 	writeANOVAs(outFile, legitGroups,
 		    legitGroups.getGroupNames(), legitGroups.getConditions(),
 		    // groupNames, conditions,
 		    numChunks, precision);
-
+	*/
 	// group groupOne condition 0
 	// group groupOne condition 1
 	// --------------------------
 	// ==> ANOVA value of 0.0000...000 (50 decimal places)
 	//  WHY?
 
-	/*
-	// test chunking function some more:
-	// (This results in three groups of two and one of three in a small,
-	//    9-row file.)
-	int numChunks = 4;
-	printList(groups.getGroup("all").getData(1));
-	printList(averageChunks(groups.getGroup("all").getData(1),
-				numChunks
-				)
-		  );
-	*/
-
-	// test subject combining functions:
-	/*
-	System.out.println("groups: (group \"all\", condition \"1\")");
-	printList(groups.getGroup("all").getData(1));
-	System.out.println("otherGroups: (group \"all\", condition \"1\")");	
-	printList(otherGroups.getGroup("all").getData(1));
-	System.out.println("otherOtherGroups: (group \"all\", condition \"1\")"
-			   );	
-	printList(otherOtherGroups.getGroup("all").getData(1));
-	File[] dataFileAry = {dataFile,
-			      otherDataFile,
-			      otherOtherDataFile
-	                      };
-	ArrayList<File> dataFileLst = new ArrayList<File>();
-	for (File f : dataFileAry){
-	    dataFileLst.add(f);
-	}
-	System.out.println("result: (group \"all\", condition \"1\")");
-	printList(processAllSubjectData(dataFileLst,groupFile
-					).getGroup("all").getData(1)
-		  );
-	*/
 	System.exit(0);
     }
 }
