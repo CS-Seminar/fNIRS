@@ -299,6 +299,10 @@ public class Workspace {
 		return stats.getAbsolutePath();
 	}
 	
+	String getDMPath() {
+		return dmining.getAbsolutePath();
+	}
+	
 	File getTemplate(String name) {
 		return new File(templates.getAbsolutePath() + "\\" + name);
 	}
