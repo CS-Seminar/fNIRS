@@ -693,7 +693,7 @@ public class FNIRsStats {
                                  "groups! Channel(s) ";
                 // IT WOULD BE REALLY NICE OF US TO TELL THEM WHICH GROUPS THE
                 //    CHANNELS ARE IN, TOO, BUT LET'S LEAVE THAT FOR LATER.
-		System.out.println(duplicates);
+		//System.out.println(duplicates);
                 for (int chan : duplicates) {
                     warning += chan;
                     if (chan != duplicates.get(duplicates.size() - 1))
