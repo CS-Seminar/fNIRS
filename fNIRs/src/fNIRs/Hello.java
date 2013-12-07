@@ -43,6 +43,8 @@ import zombie.Preprocess;
 
 import org.eclipse.swt.*;
 import org.eclipse.swt.events.*;
+import org.eclipse.swt.*;
+import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.widgets.*;
 
@@ -999,6 +1001,9 @@ public class Hello {
 		public void widgetSelected(SelectionEvent e) {
 		    disableList(step3);
 		    String name = text_dm_sub.getText();
+		    Display display;
+		    display = new Display();
+		    Image image = new Image(display, "C:/eclipse/eclipse/plugins/org.eclipse.platform_2.0.2/eclipse_lg.gif");
 		    if (btnHb_1.getSelection()) {
 		    	rapidDriver.filter(cond_list, workspace.getHb(name), workspace.getHbOutput(name));
 		    }
@@ -1110,6 +1115,9 @@ public class Hello {
 	Label lblDataRepresentation = new Label(composite_2, SWT.NONE);
 	lblDataRepresentation.setBounds(260, 95, 196, 25);
 	lblDataRepresentation.setText("Data Representation:");
+	
+	Composite composite_5 = new Composite(composite_2, SWT.NONE);
+	composite_5.setBounds(544, 120, 126, 120);
 
 	/*
 	  Button for filtering
