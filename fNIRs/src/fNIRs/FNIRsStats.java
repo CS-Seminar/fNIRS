@@ -700,8 +700,9 @@ public class FNIRsStats {
                         warning += ", ";
                 }
                 warning += ".";
-		//System.out.println(warning); // REPLACE WITH ERRORBOX CALL
-		error2("Warning!", warning);
+		System.out.println(warning); // REPLACE WITH ERRORBOX CALL
+		//error2("Warning!", warning);
+		
             }
             if (!missing.isEmpty()) {
                 System.out.print("Warning: the following channel(s) are not " +
@@ -1374,8 +1375,8 @@ public class FNIRsStats {
 					).getGroup("foo").getData(1));	
     }    
     public static void main(String[] args) {
-	//runChunkTests();
-	//runSubjectTests();
+	runChunkTests();
+	runSubjectTests();
 	
         File legitGroupsFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/legitGroups");
 	File legitHbFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/legitHb");

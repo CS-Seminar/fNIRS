@@ -23,6 +23,7 @@ public class Workspace {
 	File subjects;
 	File stats;
 	File dmining;
+	File templates;
 	Preprocess pre; // converted matlab code to be used for preprocessing
 	/* REQUIRES MATLAB COMPILER RUNTIME */
 	
@@ -35,12 +36,24 @@ public class Workspace {
 		subjects = new File(dir.getAbsolutePath() + "\\subjects");
 		stats = new File(dir.getAbsolutePath() + "\\stats");
 		dmining = new File(dir.getAbsolutePath() + "\\dmining");
+		templates = new File(dmining.getAbsolutePath() + "\\templates");
 		
 		// creates a new workspace if space is not already a workspace
 		makeDir(dir);
 		makeDir(subjects);
 		makeDir(stats);
 		makeDir(dmining);
+		makeDir(templates);
+		
+		File pTemp = new File(templates.getAbsolutePath()+"\\processTemplate");
+		if (!pTemp.exists()) {
+			try {
+				Files.copy(new File("src\\fNIRs\\processTemplate").toPath().toAbsolutePath(),pTemp.toPath().toAbsolutePath());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	void makeDir(File direc) {
@@ -284,6 +297,14 @@ public class Workspace {
 	
 	String getStatsPath() {
 		return stats.getAbsolutePath();
+	}
+	
+	String getDMPath() {
+		return dmining.getAbsolutePath();
+	}
+	
+	File getTemplate(String name) {
+		return new File(templates.getAbsolutePath() + "\\" + name);
 	}
 	
 	public static void main(String[] args) {
