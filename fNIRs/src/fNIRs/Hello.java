@@ -263,10 +263,7 @@ public class Hello {
 				 subjectName = text_subName.getText();
 
 				 if (subjectName == "" || subjectName.matches(subjectNameH) || Arrays.asList(list.getItems()).contains(subjectName)) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Please enter a new name");
-					 messageDialog.open();
+					 infoBox("Wait", "Please enter a new name.");
 					 return;
 				 }
 
@@ -311,10 +308,8 @@ public class Hello {
 					 lpf = (Double.valueOf(text_3.getText())).doubleValue();
 				 }
 				 catch (NumberFormatException e1) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Please fill in all frequencies");
-					 messageDialog.open();
+					 infoBox("Wait","Please fill in all frequencies.");
+					 return;
 				 }
 
 				 char slideavg = 'n';
@@ -974,10 +969,7 @@ public class Hello {
 			 public void widgetSelected(SelectionEvent e) {
 				 
 				 if ((list_1.getSelectionIndices()).length<2) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Select at least 2 conditions.");
-					 messageDialog.open();
+					 infoBox("Wait","Select at least 2 conditions.");
 					 return;
 				 }
 
@@ -1214,21 +1206,13 @@ public class Hello {
 			 public void widgetSelected(SelectionEvent e) {
 				 subjectNameH = text_subName2.getText();
 
-				 System.out.println(subjectName);
-
 				 if (subjectNameH == "" || subjectNameH.matches(subjectName) || Arrays.asList(list.getItems()).contains(subjectNameH)) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Please enter a new name");
-					 messageDialog.open();
+					 infoBox("Wait","Please enter a new name.");
 					 return;
 				 }
 
 				 if (!btnHb.getSelection() && !btnHbo.getSelection()) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Select Hb or HbO or both.");
-					 messageDialog.open();
+					 infoBox("Wait","Select Hb or HbO or both.");
 					 return;
 				 }
 
@@ -1276,8 +1260,8 @@ public class Hello {
 				 File Hb = new File(text_4.getText());
 				 File HbO = new File(text_5.getText());
 
-				 File HbFile = new File("HbFile");
-				 File HbOFile = new File("HbOFile");
+				 File HbFile = new File("HbFile.xlsx");
+				 File HbOFile = new File("HbOFile.xlsx");
 
 				 //FileInputStream input = new FileInputStream(HbFile);
 				 //FileOutputStream output = new FileOutputStream(Hb);
