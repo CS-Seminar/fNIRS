@@ -771,7 +771,7 @@ public class Hello {
 			 }
 		 });
 		 // btnRun.setBounds(216, 120, 485, 308);
-		 btnRun.setBounds(399, 428, 175, 31);
+		 btnRun.setBounds(415, 428, 175, 31);
 		 btnRun.setText("Run");
 		 step2.add(btnRun);
 
@@ -1458,7 +1458,7 @@ public class Hello {
 		 Button btnNewButton_1 = new Button(shlFnirsDataProcessing, SWT.NONE);
 		 btnNewButton_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 btnNewButton_1.setBounds(10, 430, 226, 30);
-		 btnNewButton_1.setText("Change Workspace");
+		 btnNewButton_1.setText("Sarah's Button");
 
 		 for (Control item : loadHatachi) {
 			 item.setVisible(false);
