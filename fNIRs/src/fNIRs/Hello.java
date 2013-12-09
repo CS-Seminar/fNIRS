@@ -293,7 +293,7 @@ public class Hello {
 
 		 Button btnEnter = new Button(composite_3, SWT.NONE);
 		 btnEnter.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 btnEnter.setBounds(330, 390, 75, 25);
+		 btnEnter.setBounds(330, 390, 75, 30);
 		 btnEnter.addSelectionListener(new SelectionAdapter() {
 			 public void widgetSelected(SelectionEvent e) {
 				 double freq = 0;
@@ -496,7 +496,8 @@ public class Hello {
 			 }
 		 });
 		 button_3.setText("Cancel");
-		 button_3.setBounds(416, 389, 84, 27);
+		 button_3.setBounds(416, 389, 84, 30);
+//>>>>>>> branch 'dev' of https://github.com/CS-Seminar/fNIRS.git
 		 loadItems.add(button_3);
 
 		 for (Control item : loadItems) {
@@ -1464,7 +1465,7 @@ public class Hello {
 		 Button btnNewButton_1 = new Button(shlFnirsDataProcessing, SWT.NONE);
 		 btnNewButton_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 btnNewButton_1.setBounds(10, 430, 226, 30);
-		 btnNewButton_1.setText("Sarah's Button");
+		 btnNewButton_1.setText("Change Workspace");
 
 		 for (Control item : loadHatachi) {
 			 item.setVisible(false);
