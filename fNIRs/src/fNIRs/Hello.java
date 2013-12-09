@@ -1296,23 +1296,23 @@ public class Hello {
 					 return;
 				 }
 
-				 /*if (HbFile.exists()) {
-		      try {
-		      pre.xlsreadfile(HbFile.getAbsolutePath(), "Hb", channels);
-		      HbFile = new File("Hb");
-		      } catch (MWException e1) {
-		      e1.printStackTrace();
-		      }
-		      }
+				 if (HbFile.exists()) {
+					 try {
+						 pre.xlsreadfile(HbFile.getAbsolutePath(), "Hb", channels);
+						 HbFile = new File("Hb");
+					 } catch (MWException e1) {
+						 e1.printStackTrace();
+					 }
+				 }
 
-		      if (HbOFile.exists()) {
-		      try {
-		      pre.xlsreadfile(HbOFile.getAbsolutePath(), "HbO", channels);
-		      HbOFile = new File("HbO");
-		      } catch (MWException e1) {
-		      e1.printStackTrace();
-		      }
-		      }*/
+				 if (HbOFile.exists()) {
+					 try {
+						 pre.xlsreadfile(HbOFile.getAbsolutePath(), "HbO", channels);
+						 HbOFile = new File("HbO");
+					 } catch (MWException e1) {
+						 e1.printStackTrace();
+					 }
+				 }
 
 				 if (sessionNumH==1) {
 					 workspace.addSubject(subjectNameH, HbFile, HbOFile, condFile);
