@@ -307,6 +307,10 @@ public class Workspace {
 		return new File(templates.getAbsolutePath() + "\\" + name);
 	}
 	
+	String [] getTemplates() {
+		return templates.list();
+	}
+	
 	public static void main(String[] args) {
 		File first = new File("first.txt");
 		File second = new File("second.txt");

@@ -974,6 +974,15 @@ public class Hello {
 				 }
 			 } 
 		 });
+		 
+		 
+		 final List list_2 = new List(composite_2, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+		 list_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		 list_2.setBounds(174, 120, 180, 339);
+		 
+		 for (String template : workspace.getTemplates()) {
+			 list_2.add(template);
+		 }
 
 		 Button btnRun = new Button(composite_2, SWT.NONE);
 		 btnRun.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -986,6 +995,11 @@ public class Hello {
 					 messageDialog.setText("Warning!");
 					 messageDialog.setMessage("Select at least 2 conditions.");
 					 messageDialog.open();
+					 return;
+				 }
+				 
+				 if ((list_2.getSelectionIndices()).length<1) {
+					 infoBox("Wait","Select a process.");
 					 return;
 				 }
 
@@ -1034,7 +1048,7 @@ public class Hello {
 						 File inputFile = workspace.getRMInput(name);
 						 File outputFile = new File(workspace.getDMPath() + "\\" + text_dmoutput.getText() + ".xls");
 						 try {
-							 rapidDriver.run(inputFile,rapidDriver.generateProcess(inputFile,workspace.getTemplate("processTemplate")),outputFile);
+							 rapidDriver.run(inputFile,rapidDriver.generateProcess(inputFile,workspace.getTemplate(list_2.getSelection()[0])),outputFile);
 						 } catch (IOException e1) {
 							 // TODO Auto-generated catch block
 							 e1.printStackTrace();
@@ -1131,11 +1145,7 @@ public class Hello {
 		 lblSelectProcess.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 lblSelectProcess.setBounds(174, 90, 117, 25);
 		 lblSelectProcess.setText("Select Process:");
-		 
-		 List list_2 = new List(composite_2, SWT.BORDER);
-		 list_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 list_2.setBounds(174, 120, 180, 339);
-		 
+
 		 for (Control item : step2) {
 			 item.setEnabled(false);
 		 }
