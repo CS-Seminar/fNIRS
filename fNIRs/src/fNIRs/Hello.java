@@ -1063,7 +1063,7 @@ public class Hello {
 			 }
 		 });
 		 // btnRun.setBounds(216, 120, 485, 308);
-		 btnRun.setBounds(415, 428, 175, 31);
+		 btnRun.setBounds(399, 428, 175, 31);
 		 btnRun.setText("Run");
 		 step2.add(btnRun);
 
