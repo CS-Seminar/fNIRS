@@ -780,7 +780,7 @@ public class Hello {
 			 }
 		 });
 
-		 clearBtn.setEnabled(true);
+		 clearBtn.setEnabled(false);
 		 clearBtn.setBounds(484, 415, 130, 25);
 		 clearBtn.setText("Clear");
 
@@ -897,6 +897,7 @@ public class Hello {
 				 outputDirectoryBox.setEnabled(true);
 				 anovabtn.setEnabled(true);
 				 lblOutputDir.setEnabled(true);
+				 clearBtn.setEnabled(true);
 			 }
 		 });
 		 btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
