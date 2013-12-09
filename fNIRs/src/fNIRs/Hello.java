@@ -172,7 +172,7 @@ public class Hello {
 
 		 final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		 list.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 list.setBounds(10, 10, 226, 460);
+		 list.setBounds(10, 10, 226, 414);
 
 		 workspace.loadSubjects(list);
 
