@@ -86,7 +86,7 @@ public class Hello {
 			splash.setProgress(16, "Chasing down subjects...");
 			Thread.sleep(200);
 			pre = new Preprocess();
-			splash.setProgress(33, "Practicing moans...");
+			splash.setProgress(30, "Practicing moans...");
 			Thread.sleep(200);
 			dm = new DataMining();
 			splash.setProgress(50, "Digging graves...");
@@ -155,13 +155,13 @@ public class Hello {
 	 * Create contents of the window.
 	 */
 	 protected void createContents() {
-		 shlFnirsDataProcessing = new Shell(SWT.ON_TOP | SWT.CLOSE | SWT.TITLE);
-		 shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "fNIRs/src/logo.png"));
+		 shlFnirsDataProcessing = new Shell(SWT.CLOSE | SWT.TITLE);
+		 shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/src/logo.png"));
 		 shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		 shlFnirsDataProcessing.setSize(1000, 600);
 		 shlFnirsDataProcessing.setText("Zombie MiNIR - fNIRs Data Processing and Analysis");
 		 
-		 fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
+		 fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN | SWT.CANCEL);
 		 DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing);
 		 dlg.setText("Select Workspace");
 		 String selected = dlg.open(); // annoying new folder bug
