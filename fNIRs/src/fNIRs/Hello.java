@@ -2,8 +2,6 @@ package fNIRs;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -226,8 +224,8 @@ public class Hello {
 		 final ArrayList<Control> loadItems = new ArrayList<Control>();
 
 		 final Spinner spinner = new Spinner(composite_3, SWT.BORDER);
+		 spinner.setSelection(20);
 		 spinner.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 spinner.setEnabled(false);
 		 spinner.setBounds(568, 228, 47, 25);
 		 loadItems.add(spinner);
 
@@ -239,6 +237,7 @@ public class Hello {
 		 loadItems.add(lblOf);
 
 		 final Button btnCheckButton = new Button(composite_3, SWT.CHECK);
+		 btnCheckButton.setSelection(true);
 		 btnCheckButton.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 btnCheckButton.addSelectionListener(new SelectionAdapter() {
 			 @Override
@@ -1026,7 +1025,7 @@ public class Hello {
 					 if (radioAS.getSelection())
 						 dm.rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1);
 					 else if (radioSAX.getSelection())
-						 dm.SAX_RapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),3,6);
+						 dm.SAX_RapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1,6);
 					 else
 						 dm.features_rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1);
 					 done = true;
@@ -1418,6 +1417,58 @@ public class Hello {
 		 loadHatachi.add(btnCancel);
 		 
 		 Button btnNewButton_1 = new Button(shlFnirsDataProcessing, SWT.NONE);
+		 btnNewButton_1.addSelectionListener(new SelectionAdapter() {
+		 	@Override
+		 	public void widgetSelected(SelectionEvent e) {
+		 		//cancel iss
+				 for (Control item : loadItems) {
+					 item.setVisible(false);
+				 }
+				 text_subName.setEnabled(true);
+				 num_sessions.setEnabled(true);
+				 btnEnter_1.setEnabled(true);
+				 text_subName.setText("");
+				 num_sessions.setSelection(1);
+				 
+				 // cancel hitachi
+				 for (Control item : loadHatachi) {
+					 item.setVisible(false);
+				 }
+				 text_subName2.setEnabled(true);
+				 num_sessions_h.setEnabled(true);
+				 button_2.setEnabled(true);
+
+				 num_channels_H.setEnabled(true);
+				 btnHb.setEnabled(true);
+				 btnHbo.setEnabled(true);
+
+				 text_subName2.setText("");
+				 num_sessions_h.setSelection(1);
+				 
+				 // cancel dm
+				 disableList(step2);
+				 list_1.removeAll();
+				 enableList(step1);
+				 
+				 list.removeAll();
+				 
+				 // new workspace
+				 fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN | SWT.CANCEL);
+				 DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing);
+				 dlg.setText("Select Workspace");
+				 String selected = dlg.open(); // annoying new folder bug
+				 workspace = new Workspace(selected,pre);
+				 
+				 workspace.loadSubjects(list);
+				 
+				 list_2.removeAll();
+
+				 for (String template : workspace.getTemplates()) {
+					 list_2.add(template);
+				 }
+				 
+		 	}
+		 });
 		 btnNewButton_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 btnNewButton_1.setBounds(10, 430, 226, 30);
 		 btnNewButton_1.setText("Change Workspace");
