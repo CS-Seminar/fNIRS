@@ -143,12 +143,12 @@ public class Workspace {
 		if (HbFile != null) {
 			File tempFile = addConditions(HbFile, condFile);
 			HbFile.delete();
-			tempFile.renameTo(new File(path + "\\" + name + "\\Hb.xlsx"));
+			tempFile.renameTo(new File(path + "\\" + name + "\\Hb"));
 		}
 		if (HbOFile != null) {
 			File tempFile = addConditions(HbOFile, condFile);
 			HbOFile.delete();
-			tempFile.renameTo(new File(path + "\\" + name + "\\HbO.xlsx"));
+			tempFile.renameTo(new File(path + "\\" + name + "\\HbO"));
 		}
 		return;
 	}
@@ -166,16 +166,16 @@ public class Workspace {
 	void addSubject(String name, File origFile, File condFile, double freq, double hpf, double lpf, char slideavg, int interval) {
 		// adds an ISS Oxyplex subject which requires preprocessing
 		preprocess(origFile, freq, hpf, lpf, slideavg, interval);
-		File hbFile = new File("Hb.xlsx");
-		File hboFile = new File("HbO.xlsx");
+		File hbFile = new File("Hb");
+		File hboFile = new File("HbO");
 		addSubject(name, hbFile, hboFile, condFile);
 	}
 	
 	void concatSession(String name, File origFile, File condFile, double freq, double hpf, double lpf, char slideavg, int interval) {
 		// run preprocess on the iss file and concatenate to already existing hb/hbo file
 		preprocess(origFile, freq, hpf, lpf, slideavg, interval);
-		File hbFile = new File("Hb.xlsx");
-		File hboFile = new File("HbO.xlsx");
+		File hbFile = new File("Hb");
+		File hboFile = new File("HbO");
 		File tempFile;
 		if (hbFile.exists()) {
 			tempFile = addConditions(hbFile, condFile);
@@ -225,7 +225,7 @@ public class Workspace {
 
 	File getHb(String name) {
 		// returns the Hb file for subject name
-		File HbPath = new File(subjects.getAbsolutePath() + "\\" + name + "\\Hb.xlsx");
+		File HbPath = new File(subjects.getAbsolutePath() + "\\" + name + "\\Hb");
 		if (HbPath.exists())
 			return HbPath;
 		else
@@ -234,7 +234,7 @@ public class Workspace {
 	
 	File getHbO(String name) {
 		// returns the HbO file for subject name
-		File HbOPath = new File(subjects.getAbsolutePath() + "\\" + name + "\\HbO.xlsx");
+		File HbOPath = new File(subjects.getAbsolutePath() + "\\" + name + "\\HbO");
 		if (HbOPath.exists())
 			return HbOPath;
 		else

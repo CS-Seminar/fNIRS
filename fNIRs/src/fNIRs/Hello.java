@@ -1260,8 +1260,8 @@ public class Hello {
 				 File Hb = new File(text_4.getText());
 				 File HbO = new File(text_5.getText());
 
-				 File HbFile = new File("HbFile.xlsx");
-				 File HbOFile = new File("HbOFile.xlsx");
+				 File HbFile = new File("HbFile");
+				 File HbOFile = new File("HbOFile");
 
 				 //FileInputStream input = new FileInputStream(HbFile);
 				 //FileOutputStream output = new FileOutputStream(Hb);
