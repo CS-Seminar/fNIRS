@@ -38,7 +38,31 @@
 	<parameter key="21" value="22.true.real.attribute"/>
 	<parameter key="22" value="23.true.real.attribute"/>
 	<parameter key="23" value="24.true.real.attribute"/>
-	<parameter key="24" value="label.true.polynominal.label"/>
+	<parameter key="24" value="25.true.real.attribute"/>
+	<parameter key="25" value="26.true.real.attribute"/>
+	<parameter key="26" value="27.true.real.attribute"/>
+	<parameter key="27" value="28.true.real.attribute"/>
+	<parameter key="28" value="29.true.real.attribute"/>
+	<parameter key="29" value="30.true.real.attribute"/>
+	<parameter key="30" value="31.true.real.attribute"/>
+	<parameter key="31" value="32.true.real.attribute"/>
+	<parameter key="32" value="33.true.real.attribute"/>
+	<parameter key="33" value="34.true.real.attribute"/>
+	<parameter key="34" value="35.true.real.attribute"/>
+	<parameter key="35" value="36.true.real.attribute"/>
+	<parameter key="36" value="37.true.real.attribute"/>
+	<parameter key="37" value="38.true.real.attribute"/>
+	<parameter key="38" value="39.true.real.attribute"/>
+	<parameter key="39" value="40.true.real.attribute"/>
+	<parameter key="40" value="41.true.real.attribute"/>
+	<parameter key="41" value="42.true.real.attribute"/>
+	<parameter key="42" value="43.true.real.attribute"/>
+	<parameter key="43" value="44.true.real.attribute"/>
+	<parameter key="44" value="45.true.real.attribute"/>
+	<parameter key="45" value="46.true.real.attribute"/>
+	<parameter key="46" value="47.true.real.attribute"/>
+	<parameter key="47" value="48.true.real.attribute"/>
+	<parameter key="48" value="label.true.polynominal.label"/>
 	</list>
       </operator>
       <operator activated="true" class="neural_net" compatibility="5.3.013" expanded="true" height="76" name="Neural Net (2)" width="90" x="112" y="210">
