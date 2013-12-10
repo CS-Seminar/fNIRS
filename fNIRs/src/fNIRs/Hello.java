@@ -1285,42 +1285,10 @@ public class Hello {
 
 				 int channels = (Integer.valueOf(num_channels_H.getText())).intValue();
 
-				 File Hb = new File(text_4.getText());
-				 File HbO = new File(text_5.getText());
+				 File HbFile = new File(text_4.getText());
+				 File HbOFile = new File(text_5.getText());
 
-				 File HbFile = new File("HbFile");
-				 File HbOFile = new File("HbOFile");
-
-				 //FileInputStream input = new FileInputStream(HbFile);
-				 //FileOutputStream output = new FileOutputStream(Hb);
-
-				 if (text_4.getText()!="") {
-					 try {
-						 Files.copy(Hb.toPath(),HbFile.toPath().toAbsolutePath(),StandardCopyOption.REPLACE_EXISTING);
-					 } catch (IOException e2) {
-						 // TODO Auto-generated catch block
-						 e2.printStackTrace();
-						 return;
-					 }
-				 }
-				 else {
-					 HbFile = null;
-				 }
-
-				 if (text_5.getText()!="") {                                
-					 try {
-						 Files.copy(HbO.toPath(),HbOFile.toPath().toAbsolutePath(),StandardCopyOption.REPLACE_EXISTING);
-					 } catch (IOException e2) {
-						 // TODO Auto-generated catch block
-						 e2.printStackTrace();
-						 return;
-					 }
-				 }
-				 else {
-					 HbOFile = null;
-				 }
-
-				 if (HbFile==null && HbOFile==null) {
+				 if (!HbFile.exists() && !HbOFile.exists()) {
 					 return;
 				 }
 				 
@@ -1330,6 +1298,7 @@ public class Hello {
 						 HbFile = new File("Hb");
 					 } catch (MWException e1) {
 						 e1.printStackTrace();
+						 return;
 					 }
 				 }
 
@@ -1339,6 +1308,7 @@ public class Hello {
 						 HbOFile = new File("HbO");
 					 } catch (MWException e1) {
 						 e1.printStackTrace();
+						 return;
 					 }
 				 }
 
