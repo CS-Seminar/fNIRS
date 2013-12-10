@@ -156,7 +156,7 @@ public class Hello {
 	 */
 	 protected void createContents() {
 		 shlFnirsDataProcessing = new Shell(SWT.CLOSE | SWT.TITLE);
-		 shlFnirsDataProcessing.setImage(SWTResourceManager.getImage("C:\\Users\\dgong\\Desktop\\CS410\\fNIRs\\src\\logo.png"));
+		 shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/logo.png"));
 		 shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		 shlFnirsDataProcessing.setSize(1000, 600);
 		 shlFnirsDataProcessing.setText("Zombie MiNIR - fNIRs Data Processing and Analysis");
