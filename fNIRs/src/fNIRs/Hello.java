@@ -125,7 +125,7 @@ public class Hello {
 	}
 
 	void infoBox(String title,String message) {
-		MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing);
+		MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.COLOR_BLACK);
 		messageDialog.setText(title);
 		messageDialog.setMessage(message);
 		messageDialog.open();
@@ -263,7 +263,7 @@ public class Hello {
 				 subjectName = text_subName.getText();
 
 				 if (subjectName == "" || subjectName.matches(subjectNameH) || Arrays.asList(list.getItems()).contains(subjectName)) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
+					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR | SWT.COLOR_BLACK);
 					 messageDialog.setText("Warning!");
 					 messageDialog.setMessage("Please enter a new name");
 					 messageDialog.open();
@@ -311,7 +311,7 @@ public class Hello {
 					 lpf = (Double.valueOf(text_3.getText())).doubleValue();
 				 }
 				 catch (NumberFormatException e1) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
+					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR | SWT.COLOR_BLACK);
 					 messageDialog.setText("Warning!");
 					 messageDialog.setMessage("Please fill in all frequencies");
 					 messageDialog.open();
@@ -666,7 +666,7 @@ public class Hello {
 						 new ArrayList<String>(Arrays.asList(groupsAry));
 				 if (groupsAryLst.isEmpty()) { // if no groups were selected,
 					 // diplay error message box:
-					 infoBox("Error",
+					 infoBox("Warning!",
 							 "Please select at least one channel grouping to analyze.");
 					 return; // and stop executing the ANOVA stuff.
 				 }
@@ -681,7 +681,7 @@ public class Hello {
 				 }
 				 if (conditionsAryLst.isEmpty()) { // if no conditions were selected,
 					 // diplay error message box:
-					 infoBox("Error",
+					 infoBox("Warning!",
 							 "Please select at least one condition to analyze.");
 					 return; // and stop executing the ANOVA stuff.
 				 }
@@ -691,7 +691,7 @@ public class Hello {
 				 String numChunksStr = numChunksBox.getText();
 				 if (numChunksStr.equals("")) {
 					 // diplay error message box:
-					 infoBox("Error", "Please enter a number of \"chunks\" to split the " +
+					 infoBox("Warning!", "Please enter a number of \"chunks\" to split the " +
 							 "data into and average before calculating ANOVA p-values.");
 					 return; // and stop executing the ANOVA stuff.
 				 }
@@ -702,7 +702,7 @@ public class Hello {
 				 String numPlacesStr = decimalPlacesBox.getText();
 				 if (numPlacesStr.equals("")) {
 					 // diplay error message box:
-					 infoBox("Error", "Please enter a number of decimal places to output " +
+					 infoBox("Warning!", "Please enter a number of decimal places to output " +
 							 "for the p-values.");
 					 return; // and stop executing the ANOVA stuff.
 				 }
@@ -806,7 +806,7 @@ public class Hello {
 				 // and make sure at least one subject has been selected:
 				 if (subjects.isEmpty()) { // if not,
 					 // display an error and return:
-					 infoBox("Error", "Please select at least one subject to analyze.");
+					 infoBox("Warning!", "Please select at least one subject to analyze.");
 					 return;
 				 }
 
@@ -816,7 +816,7 @@ public class Hello {
 				 File groupingsFile = new File(groupFilePath);
 				 if (!groupingsFile.exists()) { // if the file does not exist,
 					 // display an error and return:
-					 infoBox("Error", "Please specify a valid channel groupings file.");
+					 infoBox("Warning!", "Please specify a valid channel groupings file.");
 					 return;
 				 }
 
@@ -826,7 +826,7 @@ public class Hello {
 				 // make sure Hb, HbO, or both are checked:
 				 if (!doHb && !doHbO) { // if neither box was checked,
 					 // display error message and return:
-					 infoBox("Error", "Please select Hb, HbO, or both.");
+					 infoBox("Warning!", "Please select Hb, HbO, or both.");
 					 return;                                
 				 }
 
@@ -1061,22 +1061,22 @@ public class Hello {
 				 
 				 // check that the users choices are valid
 				 if (subjectName == "" || !Arrays.asList(list.getItems()).contains(subjectName)) {
-					 infoBox("Warning","Subject " + subjectName + " does not exist.");
+					 infoBox("Warning!","Subject " + subjectName + " does not exist.");
 					 return;
 				 }
 				 
 				 if (!btnHb_1.getSelection() && !btnHbO_1.getSelection()) {
-					 infoBox("Warning","Select Hb or HbO or both.");
+					 infoBox("Warning!","Select Hb or HbO or both.");
 					 return;
 				 }
 				 
 				 if (btnHb_1.getSelection() && workspace.getHb(subjectName)==null) {
-					 infoBox("Wait","Subject " + subjectName + " does not have an Hb file.");
+					 infoBox("Warning!","Subject " + subjectName + " does not have an Hb file.");
 					 return;
 				 }
 				 
 				 if (btnHbO_1.getSelection() && workspace.getHbO(subjectName)==null) {
-					 infoBox("Wait","Subject " + subjectName + " does not have an HbO file.");
+					 infoBox("Warning!","Subject " + subjectName + " does not have an HbO file.");
 					 return;
 				 }
 				 
@@ -1231,7 +1231,7 @@ public class Hello {
 				 System.out.println(subjectName);
 
 				 if (subjectNameH == "" || subjectNameH.matches(subjectName) || Arrays.asList(list.getItems()).contains(subjectNameH)) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
+					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR | SWT.COLOR_BLACK);
 					 messageDialog.setText("Warning!");
 					 messageDialog.setMessage("Please enter a new name");
 					 messageDialog.open();
@@ -1239,7 +1239,7 @@ public class Hello {
 				 }
 
 				 if (!btnHb.getSelection() && !btnHbo.getSelection()) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR);
+					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR | SWT.COLOR_BLACK);
 					 messageDialog.setText("Warning!");
 					 messageDialog.setMessage("Select Hb or HbO or both.");
 					 messageDialog.open();
