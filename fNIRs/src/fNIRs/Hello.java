@@ -1,25 +1,14 @@
 package fNIRs;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DragDetectEvent;
-import org.eclipse.swt.events.DragDetectListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.FileDialog;
@@ -27,10 +16,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -41,14 +28,10 @@ import com.mathworks.toolbox.javabuilder.*;
 import zombie.DataMining;
 import zombie.Preprocess;
 
-import org.eclipse.swt.*;
-import org.eclipse.swt.events.*;
-import org.eclipse.swt.*;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.layout.*;
-import org.eclipse.swt.widgets.*;
-
 import com.rapidminer.operator.OperatorException;
+import com.thehowtotutorial.splashscreen.JSplash;
+
+import java.awt.Color;
 
 public class Hello {
 
@@ -93,17 +76,31 @@ public class Hello {
 	 */
 	public static void main(String[] args) {
 		try {
+			System.out.println(Hello.class.getClassLoader().getResource("splash.png"));
+			JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.RED, Color.BLACK);
+			splash.splashOn();
 			Hello window = new Hello();
+			splash.setProgress(8, "Fetching brains...");
+			Thread.sleep(200);
 			indexList = new ArrayList<Integer>();
+			splash.setProgress(16, "Chasing down subjects...");
+			Thread.sleep(200);
 			pre = new Preprocess();
+			splash.setProgress(33, "Practicing moans...");
+			Thread.sleep(200);
 			dm = new DataMining();
+			splash.setProgress(50, "Digging graves...");
+			Thread.sleep(200);
 			rapidDriver = new RapidDriver();
+			splash.setProgress(100, "Zombies loaded!");
+			Thread.sleep(1000);
+			splash.splashOff();
 			window.open();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Open the window.
 	 */
@@ -158,12 +155,12 @@ public class Hello {
 	 * Create contents of the window.
 	 */
 	 protected void createContents() {
-		 shlFnirsDataProcessing = new Shell();
-		 shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/logo.png"));
+		 shlFnirsDataProcessing = new Shell(SWT.ON_TOP | SWT.CLOSE | SWT.TITLE);
+		 shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "fNIRs/src/logo.png"));
 		 shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		 shlFnirsDataProcessing.setSize(1000, 600);
 		 shlFnirsDataProcessing.setText("Zombie MiNIR - fNIRs Data Processing and Analysis");
-
+		 
 		 fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN);
 		 DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing);
 		 dlg.setText("Select Workspace");
@@ -1011,7 +1008,7 @@ public class Hello {
 				 }
 
 				 boolean done = false;
-
+				 
 				 try {
 					 File rminput = workspace.getRMInput(name);
 					 if (rminput.exists())
