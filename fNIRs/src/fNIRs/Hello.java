@@ -125,7 +125,7 @@ public class Hello {
 	}
 
 	void infoBox(String title,String message) {
-		MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.COLOR_BLACK);
+		MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
 		messageDialog.setText(title);
 		messageDialog.setMessage(message);
 		messageDialog.open();
@@ -263,7 +263,7 @@ public class Hello {
 				 subjectName = text_subName.getText();
 
 				 if (subjectName == "" || subjectName.matches(subjectNameH) || Arrays.asList(list.getItems()).contains(subjectName)) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR | SWT.COLOR_BLACK);
+					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
 					 messageDialog.setText("Warning!");
 					 messageDialog.setMessage("Please enter a new name");
 					 messageDialog.open();
@@ -311,7 +311,7 @@ public class Hello {
 					 lpf = (Double.valueOf(text_3.getText())).doubleValue();
 				 }
 				 catch (NumberFormatException e1) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR | SWT.COLOR_BLACK);
+					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
 					 messageDialog.setText("Warning!");
 					 messageDialog.setMessage("Please fill in all frequencies");
 					 messageDialog.open();
@@ -980,7 +980,7 @@ public class Hello {
 			 public void widgetSelected(SelectionEvent e) {
 				 
 				 if ((list_1.getSelectionIndices()).length<2) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing);
+					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
 					 messageDialog.setText("Warning!");
 					 messageDialog.setMessage("Select at least 2 conditions.");
 					 messageDialog.open();
@@ -1231,7 +1231,7 @@ public class Hello {
 				 System.out.println(subjectName);
 
 				 if (subjectNameH == "" || subjectNameH.matches(subjectName) || Arrays.asList(list.getItems()).contains(subjectNameH)) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR | SWT.COLOR_BLACK);
+					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
 					 messageDialog.setText("Warning!");
 					 messageDialog.setMessage("Please enter a new name");
 					 messageDialog.open();
@@ -1239,7 +1239,7 @@ public class Hello {
 				 }
 
 				 if (!btnHb.getSelection() && !btnHbo.getSelection()) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ERROR | SWT.COLOR_BLACK);
+					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
 					 messageDialog.setText("Warning!");
 					 messageDialog.setMessage("Select Hb or HbO or both.");
 					 messageDialog.open();
