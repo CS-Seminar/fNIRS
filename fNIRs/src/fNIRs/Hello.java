@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -22,15 +21,11 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
-
 import com.mathworks.toolbox.javabuilder.*;
-
 import zombie.DataMining;
 import zombie.Preprocess;
-
 import com.rapidminer.operator.OperatorException;
 import com.thehowtotutorial.splashscreen.JSplash;
-
 import java.awt.Color;
 
 public class Hello {
@@ -69,15 +64,42 @@ public class Hello {
 	private Text outputDirectoryBox;
 	private Text text_dmoutput;
 
-
 	/*
 	 * Launch the application.
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		try {
-			System.out.println(Hello.class.getClassLoader().getResource("splash.png"));
-			JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.RED, Color.BLACK);
+			int i = 0;
+			while(i < 5) {
+			JSplash f1 = new JSplash(Hello.class.getClassLoader().getResource("load1.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+			JSplash f2 = new JSplash(Hello.class.getClassLoader().getResource("load2.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+			JSplash f3 = new JSplash(Hello.class.getClassLoader().getResource("load3.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+			JSplash f4 = new JSplash(Hello.class.getClassLoader().getResource("load4.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+			JSplash f5 = new JSplash(Hello.class.getClassLoader().getResource("load5.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+			JSplash f6 = new JSplash(Hello.class.getClassLoader().getResource("load6.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+			f1.splashOn();
+			Thread.sleep(400);
+			f1.splashOff();
+			f2.splashOn();
+			Thread.sleep(400);
+			f2.splashOff();
+			f3.splashOn();
+			Thread.sleep(400);
+			f3.splashOff();
+			f4.splashOn();
+			Thread.sleep(400);
+			f4.splashOff();
+			f5.splashOn();
+			Thread.sleep(400);
+			f5.splashOff();
+			f6.splashOn();
+			Thread.sleep(400);
+			f6.splashOff();
+			i++;
+			}
+			
+			JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
 			splash.splashOn();
 			Hello window = new Hello();
 			splash.setProgress(8, "Fetching brains...");
@@ -125,7 +147,7 @@ public class Hello {
 	}
 
 	void infoBox(String title,String message) {
-		MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK | SWT.BACKGROUND);
+		MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING);
 		messageDialog.setText(title);
 		messageDialog.setMessage(message);
 		messageDialog.open();
