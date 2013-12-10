@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -21,11 +22,15 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
+
 import com.mathworks.toolbox.javabuilder.*;
+
 import zombie.DataMining;
 import zombie.Preprocess;
+
 import com.rapidminer.operator.OperatorException;
 import com.thehowtotutorial.splashscreen.JSplash;
+
 import java.awt.Color;
 
 public class Hello {
@@ -70,35 +75,6 @@ public class Hello {
 	 */
 	public static void main(String[] args) {
 		try {
-			int i = 0;
-			while(i < 5) {
-			JSplash f1 = new JSplash(Hello.class.getClassLoader().getResource("load1.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
-			JSplash f2 = new JSplash(Hello.class.getClassLoader().getResource("load2.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
-			JSplash f3 = new JSplash(Hello.class.getClassLoader().getResource("load3.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
-			JSplash f4 = new JSplash(Hello.class.getClassLoader().getResource("load4.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
-			JSplash f5 = new JSplash(Hello.class.getClassLoader().getResource("load5.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
-			JSplash f6 = new JSplash(Hello.class.getClassLoader().getResource("load6.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
-			f1.splashOn();
-			Thread.sleep(400);
-			f1.splashOff();
-			f2.splashOn();
-			Thread.sleep(400);
-			f2.splashOff();
-			f3.splashOn();
-			Thread.sleep(400);
-			f3.splashOff();
-			f4.splashOn();
-			Thread.sleep(400);
-			f4.splashOff();
-			f5.splashOn();
-			Thread.sleep(400);
-			f5.splashOff();
-			f6.splashOn();
-			Thread.sleep(400);
-			f6.splashOff();
-			i++;
-			}
-			
 			JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
 			splash.splashOn();
 			Hello window = new Hello();
@@ -1014,15 +990,23 @@ public class Hello {
 					 return;
 				 }
 				 
+				 JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+				 splash.splashOn();
+				 splash.setAlwaysOnTop(true);
+				 
 				 if ((list_2.getSelectionIndices()).length<1) {
 					 infoBox("Warning","Select a process.");
 					 return;
 				 }
+				 
+				 splash.setProgress(10, "16");
 
 				 cond_list.clear(); 
 				 for (Integer item: list_1.getSelectionIndices())
 					 cond_list.add(item);
 				 disableList(step2);
+				 
+				 splash.setProgress(20, "26");
 				 
 				 String name = text_dm_sub.getText();
 				 if (btnHb_1.getSelection()) {
@@ -1039,6 +1023,8 @@ public class Hello {
 					 rapidDriver.empty(workspace.getHbOOutput(name));
 				 }
 
+				 splash.setProgress(40, "53");
+				 
 				 boolean done = false;
 				 
 				 try {
@@ -1057,6 +1043,8 @@ public class Hello {
 					 mwe.printStackTrace();
 					 done = false;
 				 }
+				 
+				 splash.setProgress(75, "75");
 
 				 if (done) {
 					 try {
@@ -1074,8 +1062,13 @@ public class Hello {
 						 e1.printStackTrace();
 					 }
 				 }
+				 
+				 splash.setProgress(95, "95");
 				 enableList(step1);
 				 list_1.removeAll();
+				 
+				 splash.setProgress(100, "100");
+				 splash.splashOff();
 			 }
 		 });
 		 // btnRun.setBounds(216, 120, 485, 308);
