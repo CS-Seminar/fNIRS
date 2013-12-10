@@ -30,7 +30,15 @@
 	<parameter key="13" value="14.true.real.attribute"/>
 	<parameter key="14" value="15.true.real.attribute"/>
 	<parameter key="15" value="16.true.real.attribute"/>
-	<parameter key="16" value="label.true.polynominal.label"/>
+	<parameter key="16" value="17.true.real.attribute"/>
+	<parameter key="17" value="18.true.real.attribute"/>
+	<parameter key="18" value="19.true.real.attribute"/>
+	<parameter key="19" value="20.true.real.attribute"/>
+	<parameter key="20" value="21.true.real.attribute"/>
+	<parameter key="21" value="22.true.real.attribute"/>
+	<parameter key="22" value="23.true.real.attribute"/>
+	<parameter key="23" value="24.true.real.attribute"/>
+	<parameter key="24" value="label.true.polynominal.label"/>
 	</list>
       </operator>
       <operator activated="true" class="neural_net" compatibility="5.3.013" expanded="true" height="76" name="Neural Net (2)" width="90" x="112" y="210">

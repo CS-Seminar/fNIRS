@@ -217,7 +217,7 @@ public class Hello {
 				 indexList.clear();
 			 }
 		 });
-		 btnClear.setBounds(10, 466, 226, 30);
+		 btnClear.setBounds(10, 476, 226, 25);
 		 btnClear.setText("Clear Selections");
 
 		 TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
@@ -289,10 +289,7 @@ public class Hello {
 				 subjectName = text_subName.getText();
 
 				 if (subjectName == "" || subjectName.matches(subjectNameH) || Arrays.asList(list.getItems()).contains(subjectName)) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Please enter a new name");
-					 messageDialog.open();
+					 infoBox("Warning", "Please enter a new name.");
 					 return;
 				 }
 
@@ -337,10 +334,8 @@ public class Hello {
 					 lpf = (Double.valueOf(text_3.getText())).doubleValue();
 				 }
 				 catch (NumberFormatException e1) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Please fill in all frequencies");
-					 messageDialog.open();
+					 infoBox("Warning","Please fill in all frequencies.");
+					 return;
 				 }
 
 				 char slideavg = 'n';
@@ -520,6 +515,7 @@ public class Hello {
 		 });
 		 button_3.setText("Cancel");
 		 button_3.setBounds(416, 389, 84, 30);
+//>>>>>>> branch 'dev' of https://github.com/CS-Seminar/fNIRS.git
 		 loadItems.add(button_3);
 
 		 for (Control item : loadItems) {
@@ -803,7 +799,7 @@ public class Hello {
 			 }
 		 });
 
-		 clearBtn.setEnabled(false);
+		 clearBtn.setEnabled(true);
 		 clearBtn.setBounds(484, 415, 130, 25);
 		 clearBtn.setText("Clear");
 
@@ -920,7 +916,6 @@ public class Hello {
 				 outputDirectoryBox.setEnabled(true);
 				 anovabtn.setEnabled(true);
 				 lblOutputDir.setEnabled(true);
-				 clearBtn.setEnabled(true);
 			 }
 		 });
 		 btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -998,6 +993,15 @@ public class Hello {
 				 }
 			 } 
 		 });
+		 
+		 
+		 final List list_2 = new List(composite_2, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
+		 list_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		 list_2.setBounds(174, 120, 180, 339);
+		 
+		 for (String template : workspace.getTemplates()) {
+			 list_2.add(template);
+		 }
 
 		 Button btnRun = new Button(composite_2, SWT.NONE);
 		 btnRun.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -1006,10 +1010,12 @@ public class Hello {
 			 public void widgetSelected(SelectionEvent e) {
 				 
 				 if ((list_1.getSelectionIndices()).length<2) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Select at least 2 conditions.");
-					 messageDialog.open();
+					 infoBox("Warning","Select at least 2 conditions.");
+					 return;
+				 }
+				 
+				 if ((list_2.getSelectionIndices()).length<1) {
+					 infoBox("Warning","Select a process.");
 					 return;
 				 }
 
@@ -1058,7 +1064,7 @@ public class Hello {
 						 File inputFile = workspace.getRMInput(name);
 						 File outputFile = new File(workspace.getDMPath() + "\\" + text_dmoutput.getText() + ".xls");
 						 try {
-							 rapidDriver.run(inputFile,rapidDriver.generateProcess(inputFile,workspace.getTemplate("processTemplate")),outputFile);
+							 rapidDriver.run(inputFile,rapidDriver.generateProcess(inputFile,workspace.getTemplate(list_2.getSelection()[0])),outputFile);
 						 } catch (IOException e1) {
 							 // TODO Auto-generated catch block
 							 e1.printStackTrace();
@@ -1155,11 +1161,7 @@ public class Hello {
 		 lblSelectProcess.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 lblSelectProcess.setBounds(174, 90, 117, 25);
 		 lblSelectProcess.setText("Select Process:");
-		 
-		 List list_2 = new List(composite_2, SWT.BORDER);
-		 list_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 list_2.setBounds(174, 120, 180, 339);
-		 
+
 		 for (Control item : step2) {
 			 item.setEnabled(false);
 		 }
@@ -1200,7 +1202,7 @@ public class Hello {
 				 indexList.clear();
 			 }
 		 });
-		 btnRemove.setBounds(10, 502, 226, 30);
+		 btnRemove.setBounds(10, 507, 226, 25);
 		 btnRemove.setText("Remove Files");
 
 		 Label lblSubjectName2 = new Label(composite_4, SWT.NONE);
@@ -1254,21 +1256,13 @@ public class Hello {
 			 public void widgetSelected(SelectionEvent e) {
 				 subjectNameH = text_subName2.getText();
 
-				 System.out.println(subjectName);
-
 				 if (subjectNameH == "" || subjectNameH.matches(subjectName) || Arrays.asList(list.getItems()).contains(subjectNameH)) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Please enter a new name");
-					 messageDialog.open();
+					 infoBox("Warning","Please enter a new name.");
 					 return;
 				 }
 
 				 if (!btnHb.getSelection() && !btnHbo.getSelection()) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Select Hb or HbO or both.");
-					 messageDialog.open();
+					 infoBox("Warning","Select Hb or HbO or both.");
 					 return;
 				 }
 
@@ -1313,62 +1307,32 @@ public class Hello {
 
 				 int channels = (Integer.valueOf(num_channels_H.getText())).intValue();
 
-				 File Hb = new File(text_4.getText());
-				 File HbO = new File(text_5.getText());
+				 File HbFile = new File(text_4.getText());
+				 File HbOFile = new File(text_5.getText());
 
-				 File HbFile = new File("HbFile");
-				 File HbOFile = new File("HbOFile");
-
-				 //FileInputStream input = new FileInputStream(HbFile);
-				 //FileOutputStream output = new FileOutputStream(Hb);
-
-				 if (text_4.getText()!="") {
-					 try {
-						 Files.copy(Hb.toPath(),HbFile.toPath().toAbsolutePath(),StandardCopyOption.REPLACE_EXISTING);
-					 } catch (IOException e2) {
-						 // TODO Auto-generated catch block
-						 e2.printStackTrace();
-						 return;
-					 }
-				 }
-				 else {
-					 HbFile = null;
-				 }
-
-				 if (text_5.getText()!="") {                                
-					 try {
-						 Files.copy(HbO.toPath(),HbOFile.toPath().toAbsolutePath(),StandardCopyOption.REPLACE_EXISTING);
-					 } catch (IOException e2) {
-						 // TODO Auto-generated catch block
-						 e2.printStackTrace();
-						 return;
-					 }
-				 }
-				 else {
-					 HbOFile = null;
-				 }
-
-				 if (HbFile==null && HbOFile==null) {
+				 if (!HbFile.exists() && !HbOFile.exists()) {
 					 return;
 				 }
+				 
+				 if (HbFile.exists()) {
+					 try {
+						 pre.xlsreadfile(HbFile.getAbsolutePath(), "Hb", channels);
+						 HbFile = new File("Hb");
+					 } catch (MWException e1) {
+						 e1.printStackTrace();
+						 return;
+					 }
+				 }
 
-				 /*if (HbFile.exists()) {
-		      try {
-		      pre.xlsreadfile(HbFile.getAbsolutePath(), "Hb", channels);
-		      HbFile = new File("Hb");
-		      } catch (MWException e1) {
-		      e1.printStackTrace();
-		      }
-		      }
-
-		      if (HbOFile.exists()) {
-		      try {
-		      pre.xlsreadfile(HbOFile.getAbsolutePath(), "HbO", channels);
-		      HbOFile = new File("HbO");
-		      } catch (MWException e1) {
-		      e1.printStackTrace();
-		      }
-		      }*/
+				 if (HbOFile.exists()) {
+					 try {
+						 pre.xlsreadfile(HbOFile.getAbsolutePath(), "HbO", channels);
+						 HbOFile = new File("HbO");
+					 } catch (MWException e1) {
+						 e1.printStackTrace();
+						 return;
+					 }
+				 }
 
 				 if (sessionNumH==1) {
 					 workspace.addSubject(subjectNameH, HbFile, HbOFile, condFile);
