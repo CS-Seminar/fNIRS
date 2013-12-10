@@ -267,10 +267,7 @@ public class Hello {
 				 subjectName = text_subName.getText();
 
 				 if (subjectName == "" || subjectName.matches(subjectNameH) || Arrays.asList(list.getItems()).contains(subjectName)) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Please enter a new name");
-					 messageDialog.open();
+					 infoBox("Warning", "Please enter a new name.");
 					 return;
 				 }
 
@@ -315,10 +312,8 @@ public class Hello {
 					 lpf = (Double.valueOf(text_3.getText())).doubleValue();
 				 }
 				 catch (NumberFormatException e1) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Please fill in all frequencies");
-					 messageDialog.open();
+					 infoBox("Warning","Please fill in all frequencies.");
+					 return;
 				 }
 
 				 char slideavg = 'n';
@@ -993,15 +988,12 @@ public class Hello {
 			 public void widgetSelected(SelectionEvent e) {
 				 
 				 if ((list_1.getSelectionIndices()).length<2) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Select at least 2 conditions.");
-					 messageDialog.open();
+					 infoBox("Warning","Select at least 2 conditions.");
 					 return;
 				 }
 				 
 				 if ((list_2.getSelectionIndices()).length<1) {
-					 infoBox("Wait","Select a process.");
+					 infoBox("Warning","Select a process.");
 					 return;
 				 }
 
@@ -1242,21 +1234,13 @@ public class Hello {
 			 public void widgetSelected(SelectionEvent e) {
 				 subjectNameH = text_subName2.getText();
 
-				 System.out.println(subjectName);
-
 				 if (subjectNameH == "" || subjectNameH.matches(subjectName) || Arrays.asList(list.getItems()).contains(subjectNameH)) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Please enter a new name");
-					 messageDialog.open();
+					 infoBox("Warning","Please enter a new name.");
 					 return;
 				 }
 
 				 if (!btnHb.getSelection() && !btnHbo.getSelection()) {
-					 MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
-					 messageDialog.setText("Warning!");
-					 messageDialog.setMessage("Select Hb or HbO or both.");
-					 messageDialog.open();
+					 infoBox("Warning","Select Hb or HbO or both.");
 					 return;
 				 }
 
@@ -1339,24 +1323,24 @@ public class Hello {
 				 if (HbFile==null && HbOFile==null) {
 					 return;
 				 }
+				 
+				 if (HbFile.exists()) {
+					 try {
+						 pre.xlsreadfile(HbFile.getAbsolutePath(), "Hb", channels);
+						 HbFile = new File("Hb");
+					 } catch (MWException e1) {
+						 e1.printStackTrace();
+					 }
+				 }
 
-				 /*if (HbFile.exists()) {
-		      try {
-		      pre.xlsreadfile(HbFile.getAbsolutePath(), "Hb", channels);
-		      HbFile = new File("Hb");
-		      } catch (MWException e1) {
-		      e1.printStackTrace();
-		      }
-		      }
-
-		      if (HbOFile.exists()) {
-		      try {
-		      pre.xlsreadfile(HbOFile.getAbsolutePath(), "HbO", channels);
-		      HbOFile = new File("HbO");
-		      } catch (MWException e1) {
-		      e1.printStackTrace();
-		      }
-		      }*/
+				 if (HbOFile.exists()) {
+					 try {
+						 pre.xlsreadfile(HbOFile.getAbsolutePath(), "HbO", channels);
+						 HbOFile = new File("HbO");
+					 } catch (MWException e1) {
+						 e1.printStackTrace();
+					 }
+				 }
 
 				 if (sessionNumH==1) {
 					 workspace.addSubject(subjectNameH, HbFile, HbOFile, condFile);

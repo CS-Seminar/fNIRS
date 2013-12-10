@@ -45,6 +45,7 @@ public class Workspace {
 		makeDir(dmining);
 		makeDir(templates);
 		
+		// if not already there, add the default process template
 		File pTemp = new File(templates.getAbsolutePath()+"\\processTemplate");
 		if (!pTemp.exists()) {
 			try {
@@ -57,6 +58,7 @@ public class Workspace {
 	}
 	
 	void makeDir(File direc) {
+		// if not already, make direc a directory
 		if (!direc.exists())
 			direc.mkdir();
 	}
@@ -152,6 +154,7 @@ public class Workspace {
 	}
 
 	void preprocess(File origFile, double freq, double hpf, double lpf, char slideavg, int interval) {
+		// run preprocessing on an issoxyplex file
 		try {
 			Object[] in = { origFile.getAbsolutePath(), freq, hpf, lpf, slideavg, interval };
 			pre.preprocess_2013(in);
@@ -169,6 +172,7 @@ public class Workspace {
 	}
 	
 	void concatSession(String name, File origFile, File condFile, double freq, double hpf, double lpf, char slideavg, int interval) {
+		// run preprocess on the iss file and concatenate to already existing hb/hbo file
 		preprocess(origFile, freq, hpf, lpf, slideavg, interval);
 		File hbFile = new File("Hb");
 		File hboFile = new File("HbO");
@@ -186,6 +190,7 @@ public class Workspace {
 	}
 	
 	void concatSession(String name, File hbFile, File hboFile, File condFile) {
+		// same as above but for hitachi (no preprocessing)
 		File tempFile;
 		if (hbFile.exists()) {
 			tempFile = addConditions(hbFile, condFile);
@@ -200,6 +205,7 @@ public class Workspace {
 	}
 	
 	void concatFiles(File file, File other) {
+		// concatenates other to the bottom of file
 		try {
 			BufferedReader oreader = new BufferedReader(new FileReader(other));
 			BufferedWriter fwriter = new BufferedWriter(new FileWriter(file,true));
@@ -254,12 +260,14 @@ public class Workspace {
 	}
 	
 	void removeSubject(String name) {
+		// deletes entire subject folder
 		String path = subjects.getAbsolutePath();
 		File subject = new File(path + "\\" + name);
 		deleteDirectory(subject);
 	}
 	
 	int getMaxCond(String name) {
+		// returns the maximum condition, default is 0
 		File conditions = new File(subjects.getAbsolutePath() + "\\" + name + "\\conditions");
 		try {
 			BufferedReader cFile = new BufferedReader(new FileReader(conditions));
@@ -278,18 +286,21 @@ public class Workspace {
 	}
 	
 	File getHbOutput(String name) {
+		// necessary for dmining
 		String path = subjects.getAbsolutePath();
 		File HbOutput = new File(path + "\\" + name + "\\Hb_output.txt");
 		return HbOutput;
 	}
 	
 	File getHbOOutput(String name) {
+		// necessary for dmining
 		String path = subjects.getAbsolutePath();
 		File HbOOutput = new File(path + "\\" + name + "\\HbO_output.txt");
 		return HbOOutput;
 	}
 	
 	File getRMInput(String name) {
+		// necessary for dmining
 		String path = subjects.getAbsolutePath();
 		File RMInputFile = new File(path + "\\" + name + "\\rm_input_file.xls");
 		return RMInputFile;
@@ -319,4 +330,5 @@ public class Workspace {
 		
 		w.concatFiles(first,second);
 	}
+
 }
