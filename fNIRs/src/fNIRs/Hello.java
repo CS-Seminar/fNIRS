@@ -125,13 +125,12 @@ public class Hello {
 	}
 
 	void infoBox(String title,String message) {
-		MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK);
+		MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK | SWT.BACKGROUND);
 		messageDialog.setText(title);
 		messageDialog.setMessage(message);
 		messageDialog.open();
 		return;
 	}
-	
 
 	void browse(Text text) {
 		String fileName = fileDialog.open();
@@ -155,7 +154,8 @@ public class Hello {
 	 * Create contents of the window.
 	 */
 	 protected void createContents() {
-		 shlFnirsDataProcessing = new Shell(SWT.CLOSE | SWT.TITLE);
+		 shlFnirsDataProcessing = new Shell(SWT.DIALOG_TRIM);
+		 shlFnirsDataProcessing.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/logo.png"));
 		 shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		 shlFnirsDataProcessing.setSize(1000, 600);
@@ -168,6 +168,7 @@ public class Hello {
 		 workspace = new Workspace(selected,pre);
 
 		 final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		 list.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		 list.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 list.setBounds(10, 10, 226, 414);
 
@@ -198,6 +199,7 @@ public class Hello {
 		 btnClear.setText("Clear Selections");
 
 		 TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
+		 tabFolder.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		 tabFolder.setFont(SWTResourceManager.getFont("Segoe UI", 13, SWT.BOLD));
 		 tabFolder.setBounds(242, 10, 742, 522);
 
@@ -205,10 +207,12 @@ public class Hello {
 		 tbtmLoadFiles.setText("  Load File(s) / Preprocessing  ");
 
 		 Composite composite = new Composite(tabFolder, SWT.NONE);
+		 composite.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
 		 composite.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD | SWT.ITALIC));
 		 tbtmLoadFiles.setControl(composite);
 
 		 TabFolder tabFolder_1 = new TabFolder(composite, SWT.NONE);
+		 tabFolder_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		 tabFolder_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD | SWT.ITALIC));
 		 tabFolder_1.setBounds(10, 10, 718, 474);
 
