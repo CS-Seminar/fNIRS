@@ -999,14 +999,26 @@ public class Hello {
 					 return;
 				 }
 				 
-				 splash.setProgress(10, "16");
+				 splash.setProgress(5, "Searching for brains...");
+				 try {
+						Thread.sleep(500);
+					 } catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					 }
 
 				 cond_list.clear(); 
 				 for (Integer item: list_1.getSelectionIndices())
 					 cond_list.add(item);
 				 disableList(step2);
 				 
-				 splash.setProgress(20, "26");
+				 splash.setProgress(10, "Locating brains...");
+				 try {
+						Thread.sleep(500);
+					 } catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					 }
 				 
 				 String name = text_dm_sub.getText();
 				 if (btnHb_1.getSelection()) {
@@ -1023,8 +1035,7 @@ public class Hello {
 					 rapidDriver.empty(workspace.getHbOOutput(name));
 				 }
 
-				 splash.setProgress(40, "53");
-				 
+				 splash.setProgress(25, "Mining brain data...");
 				 boolean done = false;
 				 
 				 try {
@@ -1044,7 +1055,7 @@ public class Hello {
 					 done = false;
 				 }
 				 
-				 splash.setProgress(75, "75");
+				 splash.setProgress(80, "Processing brain data...");
 
 				 if (done) {
 					 try {
@@ -1063,11 +1074,17 @@ public class Hello {
 					 }
 				 }
 				 
-				 splash.setProgress(95, "95");
+				 splash.setProgress(95, "Gathering brain bits...");
 				 enableList(step1);
 				 list_1.removeAll();
 				 
-				 splash.setProgress(100, "100");
+				 splash.setProgress(100, "Brain data successfully mined...");
+				 try {
+					Thread.sleep(1000);
+				 } catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				 }
 				 splash.splashOff();
 			 }
 		 });
