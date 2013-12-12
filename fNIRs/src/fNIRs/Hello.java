@@ -50,7 +50,7 @@ import com.rapidminer.operator.OperatorException;
 
 public class Hello {
 
-    protected Shell shlFnirsDataProcessing;
+    protected static Shell shlFnirsDataProcessing;
     private static ArrayList<Integer> indexList;
     private static Workspace workspace;
     private Text text;
@@ -124,7 +124,7 @@ public class Hello {
         return true;
     }
 
-    void infoBox(String title,String message) {
+    static void infoBox(String title,String message) {
         MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing);
         messageDialog.setText(title);
         messageDialog.setMessage(message);
@@ -658,6 +658,13 @@ public class Hello {
                  * ANOVA button handler
                  */
                 public void widgetSelected(SelectionEvent e) {
+		    // tell the user we're creating the files:
+		    // MessageBox running = new MessageBox(shlFnirsDataProcessing);
+		    // running.setText("");
+		    // String runningMsg = "Processing files...\n";
+		    // running.setMessage(runningMsg);
+		    // running.open();
+
                     // get the list of selected groups as a string array:                    
                     String[] groupsAry = groupsList.getSelection();
                     // convert it to an ArrayList so we can pass it to writeANOVAs:
@@ -713,8 +720,16 @@ public class Hello {
                         workspace.getStatsPath() + "\\" + outputDirectoryName;
                     File statsOutputDirectory = new File(outputDirectoryPath);
                     // CHECK THE DIRECTORY DOES NOT EXIST?? (AND ASK THEM TO MAKE SURE)
+		    // update message to the user:
+		    // runningMsg += "Creating directory...\n";
+		    // running.setMessage(runningMsg);
+		    
                     statsOutputDirectory.mkdir(); // create new directory with name given
 
+		    // update user:
+		    // runningMsg += "Running ANOVAs...\n";
+		    // running.setMessage(runningMsg);
+		    
                     // actually do the requested ANOVAs and write them to the output file(s):
                     if (doHb) {
                         File outputFileHb =
@@ -733,6 +748,11 @@ public class Hello {
                                                groupsAryLst, conditionsAryLst,
                                                numChunks, numPlaces);
                     }
+		    // update user:
+		    // runningMsg += "Done!";
+		    // running.setMessage(runningMsg);
+		    //running.close();
+		    
                     System.out.println("Done writing ANOVAs!");
                 }
             });
