@@ -67,15 +67,13 @@ public class Hello {
 	private Text outputDirectoryBox;
 	private Text text_dmoutput;
 
-
 	/*
 	 * Launch the application.
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		try {
-			System.out.println(Hello.class.getClassLoader().getResource("splash.png"));
-			JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.RED, Color.BLACK);
+			JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
 			splash.splashOn();
 			Hello window = new Hello();
 			splash.setProgress(8, "Fetching brains...");
@@ -123,7 +121,7 @@ public class Hello {
 	}
 
 	void infoBox(String title,String message) {
-		MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING | SWT.COLOR_BLACK | SWT.BACKGROUND);
+		MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING);
 		messageDialog.setText(title);
 		messageDialog.setMessage(message);
 		messageDialog.open();
@@ -991,15 +989,35 @@ public class Hello {
 					 return;
 				 }
 				 
+				 JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+				 splash.splashOn();
+				 splash.setAlwaysOnTop(true);
+				 
 				 if ((list_2.getSelectionIndices()).length<1) {
 					 infoBox("Warning","Select a process.");
 					 return;
 				 }
+				 
+				 splash.setProgress(5, "Searching for brains...");
+				 try {
+						Thread.sleep(500);
+					 } catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					 }
 
 				 cond_list.clear(); 
 				 for (Integer item: list_1.getSelectionIndices())
 					 cond_list.add(item);
 				 disableList(step2);
+				 
+				 splash.setProgress(10, "Locating brains...");
+				 try {
+						Thread.sleep(500);
+					 } catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					 }
 				 
 				 String name = text_dm_sub.getText();
 				 if (btnHb_1.getSelection()) {
@@ -1016,6 +1034,7 @@ public class Hello {
 					 rapidDriver.empty(workspace.getHbOOutput(name));
 				 }
 
+				 splash.setProgress(25, "Mining brain data...");
 				 boolean done = false;
 				 
 				 try {
@@ -1034,6 +1053,8 @@ public class Hello {
 					 mwe.printStackTrace();
 					 done = false;
 				 }
+				 
+				 splash.setProgress(80, "Processing brain data...");
 
 				 if (done) {
 					 try {
@@ -1051,8 +1072,19 @@ public class Hello {
 						 e1.printStackTrace();
 					 }
 				 }
+				 
+				 splash.setProgress(95, "Gathering brain bits...");
 				 enableList(step1);
 				 list_1.removeAll();
+				 
+				 splash.setProgress(100, "Brain data successfully mined...");
+				 try {
+					Thread.sleep(1000);
+				 } catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				 }
+				 splash.splashOff();
 			 }
 		 });
 		 // btnRun.setBounds(216, 120, 485, 308);
