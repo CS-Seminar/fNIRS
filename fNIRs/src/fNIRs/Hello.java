@@ -168,7 +168,7 @@ public class Hello {
 		 final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		 list.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		 list.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 list.setBounds(10, 10, 226, 414);
+		 list.setBounds(10, 41, 226, 383);
 
 		 workspace.loadSubjects(list);
 
@@ -313,6 +313,11 @@ public class Hello {
 					 infoBox("Warning","Please fill in all frequencies.");
 					 return;
 				 }
+				 
+				 // prog bar begin here
+				 JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+				 splash.splashOn();
+				 splash.setAlwaysOnTop(true);
 
 				 char slideavg = 'n';
 				 int interval = 0;
@@ -321,6 +326,14 @@ public class Hello {
 					 slideavg = 'y';
 					 interval = (Integer.valueOf(spinner.getText())).intValue();
 				 }
+				 
+				 splash.setProgress(7, "Searching for brains...");
+				 try {
+						Thread.sleep(500);
+					 } catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					 }
 
 				 if (sessionNum==1) {
 					 workspace.addSubject(subjectName, newFile, condFile, freq, hpf, lpf, slideavg, interval);
@@ -329,6 +342,14 @@ public class Hello {
 					 workspace.concatSession(subjectName, newFile, condFile, freq, hpf, lpf, slideavg, interval);
 				 }
 				 sessionNum++;
+				 
+				 splash.setProgress(18, "Deep frying grey matter...");
+				 try {
+						Thread.sleep(1000);
+					 } catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					 }
 
 				 if (sessionNum>Integer.valueOf(num_sessions.getText()).intValue()) {
 					 list.add(subjectName);
@@ -347,6 +368,15 @@ public class Hello {
 
 				 text.setText("");
 				 text_6.setText("");
+				 
+				 splash.setProgress(100, "Deep frying grey matter...");
+				 try {
+						Thread.sleep(1000);
+					 } catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					 }
+				 splash.splashOff();
 			 }
 
 		 });
@@ -491,7 +521,6 @@ public class Hello {
 		 });
 		 button_3.setText("Cancel");
 		 button_3.setBounds(416, 389, 84, 30);
-//>>>>>>> branch 'dev' of https://github.com/CS-Seminar/fNIRS.git
 		 loadItems.add(button_3);
 
 		 for (Control item : loadItems) {
@@ -565,7 +594,7 @@ public class Hello {
 
 		 Label lblChannelGrouping = new Label(composite_1, SWT.NONE);
 		 lblChannelGrouping.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD | SWT.ITALIC));
-		 lblChannelGrouping.setBounds(30, 30, 161, 25);
+		 lblChannelGrouping.setBounds(30, 39, 161, 25);
 		 lblChannelGrouping.setText("Channel Grouping:");
 
 		 groupFileBox = new Text(composite_1, SWT.BORDER);
@@ -714,6 +743,8 @@ public class Hello {
 				 // CHECK THE DIRECTORY DOES NOT EXIST?? (AND ASK THEM TO MAKE SURE)
 				 statsOutputDirectory.mkdir(); // create new directory with name given
 
+				 
+				 // PROGRESS BAR - BIG CHUNK HERE
 				 // actually do the requested ANOVAs and write them to the output file(s):
 				 if (doHb) {
 					 File outputFileHb =
@@ -897,6 +928,11 @@ public class Hello {
 		 btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 btnLoadGroupsAnd.setBounds(240, 115, 276, 25);
 		 btnLoadGroupsAnd.setText("Load Groups and Conditions");
+		 
+		 Label lblPleaseSelect = new Label(composite_1, SWT.NONE);
+		 lblPleaseSelect.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		 lblPleaseSelect.setBounds(30, 8, 394, 25);
+		 lblPleaseSelect.setText("<< Please select subject(s) from the subject list to begin");
 
 		 TabItem tbtmMachineLearning = new TabItem(tabFolder, SWT.NONE);
 		 tbtmMachineLearning.setText("  Data Mining ");
@@ -912,8 +948,8 @@ public class Hello {
 
 		 final Button radioSAX = new Button(composite_2, SWT.RADIO);
 		 radioSAX.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 radioSAX.setBounds(415, 166, 270, 25);
-		 radioSAX.setText("Symbolic Aggregate Approximation Segments");
+		 radioSAX.setBounds(415, 166, 142, 25);
+		 radioSAX.setText("SAX Segments");
 
 		 Button radioFBS = new Button(composite_2, SWT.RADIO);
 		 radioFBS.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -1343,6 +1379,8 @@ public class Hello {
 						 return;
 					 }
 				 }
+				 
+				 // begin progress here
 
 				 if (sessionNumH==1) {
 					 workspace.addSubject(subjectNameH, HbFile, HbOFile, condFile);
@@ -1453,6 +1491,10 @@ public class Hello {
 		 btnNewButton_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 btnNewButton_1.setBounds(10, 430, 226, 30);
 		 btnNewButton_1.setText("Change Workspace");
+		 
+		 Label lblSubjectList = new Label(shlFnirsDataProcessing, SWT.NONE);
+		 lblSubjectList.setBounds(41, 10, 146, 25);
+		 lblSubjectList.setText("Subject List:");
 
 		 for (Control item : loadHatachi) {
 			 item.setVisible(false);
