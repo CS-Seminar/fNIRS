@@ -827,6 +827,9 @@ public class Hello {
                         return;                                
                     }
 
+		    // DUO IF YOU WANT TO ADD A PROGRESS BAR MAKE IT AROUND
+		    //    THESE FNIRsStats.processAllSubjectData CALLS!
+		    
                     // Otherwise, we can build lists of Hb and/or HbO files:
                     //    and populate them if the corresponding box was checked:
                     if (doHb) { // if Hb box was checked,
@@ -840,6 +843,7 @@ public class Hello {
                         //    groupings file:
                         StatsHb = FNIRsStats.processAllSubjectData(hbFiles, groupingsFile);
                     }
+		    // DUO YOU COULD MAKE THIS A HALFWAY POINT
                     if (doHbO) { // if HbO box was checked,
                         // create an ArrayList for the selected subjects' HbO files:
                         ArrayList<File> hbOFiles = new ArrayList<File>();
@@ -852,9 +856,10 @@ public class Hello {
                         StatsHbO = FNIRsStats.processAllSubjectData(hbOFiles, groupingsFile); 
                     }
 
-                    // RESUME HERE NICK WORK DO KEEP GOING ETC ETC YOU'LL 
-                    //    FIND THIS MARKER I'M SURE
-
+		    // DUO AND THEN THIS IS THE END OF THE TIME CONSUMING STUFF:
+		    //    EVERYTHING ELSE IS PUTTING STUFF IN THE GROUPS AND 
+		    //    CONDITIONS LISTS, WHICH ISN'T VERY TIME CONSUMING
+		    
                     // clear lists to prepare for new data:
                     groupsList.removeAll();
                     conditionsList.removeAll();
