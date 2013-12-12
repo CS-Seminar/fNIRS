@@ -53,22 +53,17 @@ import java.util.List; // for generalized findNextOccurrence method
 // import HelloWorldNick.GroupedChannels; // WUT
 
 public class FNIRsStats {
-    private static void error(String title, String errMsg){
+    private static void error2(String title, String errMsg){
 	localError(title + " " + errMsg);
-	//externalError(title, errMsg);
+	// ADD FINAL ERROR BOX FUNCTION CALL HERE
     }
-    private static void error(String errMsg) {
+    private static void error(String errMsg){
 	localError(errMsg);
-	//externalError("", errMsg);
     }
     private static void localError(String errMsg){
 	System.out.println("Error: " + errMsg + ".");
         System.exit(1); // PROBABLY DON'T WANT THIS IN FINAL PROGRAM--
                         //    HANDLE THE EXCEPTION SOME OTHER WAY<
-    }
-    private static void externalError(String title, String errMsg){
-	// MEH
-	Hello.infoBox(title, errMsg);
     }
     /* makeScanner
      * IN:  a File object
@@ -1378,47 +1373,38 @@ public class FNIRsStats {
 	System.out.println("result of combining groups:");
 	printList(processAllSubjectData(dataFileLst,groupFile
 					).getGroup("foo").getData(1));	
-    }
-    private static void runANOVATests() {
-	System.out.println("Running ANOVA tests.");
+    }    
+    public static void main(String[] args) {
+	runChunkTests();
+	runSubjectTests();
 	
-	File groupFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/ANOVA Testing/legitGroups");
-	File hbFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/ANOVA Testing/legitHb");
+        File legitGroupsFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/legitGroups");
+	File legitHbFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/legitHb");
 	int precision = 7;
 	int numChunks = 10;
-	
-	GroupedChannels groups1 = new GroupedChannels(hbFile, groupFile);
-
-        // ArrayList<String> mylst = groups1.getGroupNames();
+	GroupedChannels legitGroups = new GroupedChannels(legitHbFile,
+							  legitGroupsFile);
+	// ArrayList<String> mylst = legitGroups.getGroupNames();
 	// System.out.println(mylst.size());
 	// String foo = mylst.get(0);
 	// System.out.println(foo);
-        // printList(groups1.getGroupNames());
-	// groups1.getGroup("groupOne");
-	// groups1.getGroup("secondGroup");
-	// groups1.getGroup("groupThree");
-	// groups1.getGroup("group4");
-	// groups1.getGroup("g5");
-
-	System.out.println("(groupOne, condition 0)");
-	printList(groups1.getGroup("groupOne").getData(0)
-		  );
+        // printList(legitGroups.getGroupNames());
+	// legitGroups.getGroup("groupOne");
+	// legitGroups.getGroup("secondGroup");
+	// legitGroups.getGroup("groupThree");
+	// legitGroups.getGroup("group4");
+	// legitGroups.getGroup("g5");
 	
-	// outputANOVAs(groups1,
-	// 	     groups1.getGroupNames(), groups1.getConditions(),
-	// 	     numChunks, precision);
-	File outFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/ANOVA Testing/outputFile.csv");
-	writeANOVAs(outFile, groups1,
-		    groups1.getGroupNames(), groups1.getConditions(),
+	/*
+	outputANOVAs(legitGroups,
+		     legitGroups.getGroupNames(), legitGroups.getConditions(),
+		     numChunks, precision);
+	File outFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/outputFile.csv");
+	writeANOVAs(outFile, legitGroups,
+		    legitGroups.getGroupNames(), legitGroups.getConditions(),
 		    // groupNames, conditions,
 		    numChunks, precision);
-	System.out.println("Done.");
-    }
-    public static void main(String[] args) {
-	//runChunkTests();
-	//runSubjectTests();
-	runANOVATests();
-	
+	*/
 	// group groupOne condition 0
 	// group groupOne condition 1
 	// --------------------------
