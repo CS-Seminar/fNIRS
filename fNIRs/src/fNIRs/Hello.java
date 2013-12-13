@@ -7,7 +7,6 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeSet;
-
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -23,15 +22,11 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
-
 import com.mathworks.toolbox.javabuilder.*;
-
 import zombie.DataMining;
 import zombie.Preprocess;
-
 import com.rapidminer.operator.OperatorException;
 import com.thehowtotutorial.splashscreen.JSplash;
-
 import java.awt.Color;
 
 public class Hello {
@@ -332,7 +327,6 @@ public class Hello {
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					 }
 
@@ -348,7 +342,6 @@ public class Hello {
 				 try {
 						Thread.sleep(1000);
 					 } catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					 }
 
@@ -374,7 +367,6 @@ public class Hello {
 				 try {
 						Thread.sleep(1000);
 					 } catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					 }
 				 splash.splashOff();
@@ -1040,7 +1032,6 @@ public class Hello {
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					 }
 
@@ -1053,7 +1044,6 @@ public class Hello {
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					 }
 				 
@@ -1102,11 +1092,9 @@ public class Hello {
 						 try {
 							 rapidDriver.run(inputFile,rapidDriver.generateProcess(inputFile,workspace.getTemplate(list_2.getSelection()[0])),outputFile);
 						 } catch (IOException e1) {
-							 // TODO Auto-generated catch block
 							 e1.printStackTrace();
 						 }
 					 } catch (OperatorException e1) {
-						 // TODO Auto-generated catch block
 						 e1.printStackTrace();
 					 }
 				 }
@@ -1119,7 +1107,6 @@ public class Hello {
 				 try {
 					Thread.sleep(1000);
 				 } catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				 }
 				 splash.splashOff();
@@ -1398,7 +1385,6 @@ public class Hello {
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					 }
 
@@ -1426,7 +1412,6 @@ public class Hello {
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					 }
 
@@ -1439,7 +1424,6 @@ public class Hello {
 				 try {
 						Thread.sleep(1000);
 					 } catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					 }
 				 splash.splashOff();
