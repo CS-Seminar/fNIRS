@@ -693,15 +693,16 @@ public class FNIRsStats {
                                  "groups! Channel(s) ";
                 // IT WOULD BE REALLY NICE OF US TO TELL THEM WHICH GROUPS THE
                 //    CHANNELS ARE IN, TOO, BUT LET'S LEAVE THAT FOR LATER.
-		System.out.println(duplicates);
+		//System.out.println(duplicates);
                 for (int chan : duplicates) {
                     warning += chan;
                     if (chan != duplicates.get(duplicates.size() - 1))
                         warning += ", ";
                 }
                 warning += ".";
-		//System.out.println(warning); // REPLACE WITH ERRORBOX CALL
-		error2("Warning!", warning);
+		System.out.println(warning); // REPLACE WITH ERRORBOX CALL
+		//error2("Warning!", warning);
+		
             }
             if (!missing.isEmpty()) {
                 System.out.print("Warning: the following channel(s) are not " +
@@ -1374,8 +1375,8 @@ public class FNIRsStats {
 					).getGroup("foo").getData(1));	
     }    
     public static void main(String[] args) {
-	//runChunkTests();
-	//runSubjectTests();
+	runChunkTests();
+	runSubjectTests();
 	
         File legitGroupsFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/legitGroups");
 	File legitHbFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/legitHb");

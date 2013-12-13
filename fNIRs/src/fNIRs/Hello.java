@@ -34,120 +34,119 @@ import com.thehowtotutorial.splashscreen.JSplash;
 import java.awt.Color;
 
 public class Hello {
+    protected Shell shlFnirsDataProcessing;
+    private static ArrayList<Integer> indexList;
+    private static Workspace workspace;
+    private Text text;
+    private Text text_1;
+    private Text text_2;
+    private Text text_3;
+    private Text text_4;
+    private Text text_5;
+    private Text text_subName;
+    private static Preprocess pre;
+    private static DataMining dm;
+    private Text text_subName2;
+    private Text text_6;
+    private FileDialog fileDialog;
+    private Text text_7;
+    private Text text_dm_sub;
 
-	protected Shell shlFnirsDataProcessing;
-	private static ArrayList<Integer> indexList;
-	private static Workspace workspace;
-	private Text text;
-	private Text text_1;
-	private Text text_2;
-	private Text text_3;
-	private Text text_4;
-	private Text text_5;
-	private Text text_subName;
-	private static Preprocess pre;
-	private static DataMining dm;
-	private Text text_subName2;
-	private Text text_6;
-	private FileDialog fileDialog;
-	private Text text_7;
-	private Text text_dm_sub;
+    private String subjectName = "";
+    private String subjectNameH = "";
+    private int sessionNum;
+    private int sessionNumH;
 
-	private String subjectName = "";
-	private String subjectNameH = "";
-	private int sessionNum;
-	private int sessionNumH;
+    // stats stuff:
+    private FNIRsStats.GroupedChannels StatsHb, StatsHbO;
+    boolean doHb, doHbO;
 
-	// stats stuff:
-	private FNIRsStats.GroupedChannels StatsHb, StatsHbO;
-	boolean doHb, doHbO;
+    private static RapidDriver rapidDriver;
+    private Text groupFileBox;
+    private Text numChunksBox;
+    private Text decimalPlacesBox;
+    private Text outputDirectoryBox;
+    private Text text_dmoutput;
 
-	private static RapidDriver rapidDriver;
-	private Text groupFileBox;
-	private Text numChunksBox;
-	private Text decimalPlacesBox;
-	private Text outputDirectoryBox;
-	private Text text_dmoutput;
+    /*
+     * Launch the application.
+     * @param args
+     */
+    public static void main(String[] args) {
+        try {
+            JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+            splash.splashOn();
+            Hello window = new Hello();
+            splash.setProgress(8, "Fetching brains...");
+            Thread.sleep(200);
+            indexList = new ArrayList<Integer>();
+            splash.setProgress(16, "Chasing down subjects...");
+            Thread.sleep(200);
+            pre = new Preprocess();
+            splash.setProgress(30, "Practicing moans...");
+            Thread.sleep(200);
+            dm = new DataMining();
+            splash.setProgress(50, "Digging graves...");
+            Thread.sleep(200);
+            rapidDriver = new RapidDriver();
+            splash.setProgress(100, "Zombies loaded!");
+            Thread.sleep(1000);
+            splash.splashOff();
+            window.open();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+        
+    /**
+     * Open the window.
+     */
+    public void open() {
+        Display display = Display.getDefault();
+        createContents();
+        shlFnirsDataProcessing.open();
+        shlFnirsDataProcessing.layout();
+        while (!shlFnirsDataProcessing.isDisposed()) {
+            if (!display.readAndDispatch()) {
+                display.sleep();
+            }
+        }
+    }
 
-	/*
-	 * Launch the application.
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
-			splash.splashOn();
-			Hello window = new Hello();
-			splash.setProgress(8, "Fetching brains...");
-			Thread.sleep(200);
-			indexList = new ArrayList<Integer>();
-			splash.setProgress(16, "Chasing down subjects...");
-			Thread.sleep(200);
-			pre = new Preprocess();
-			splash.setProgress(30, "Practicing moans...");
-			Thread.sleep(200);
-			dm = new DataMining();
-			splash.setProgress(50, "Digging graves...");
-			Thread.sleep(200);
-			rapidDriver = new RapidDriver();
-			splash.setProgress(100, "Zombies loaded!");
-			Thread.sleep(1000);
-			splash.splashOff();
-			window.open();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Open the window.
-	 */
-	public void open() {
-		Display display = Display.getDefault();
-		createContents();
-		shlFnirsDataProcessing.open();
-		shlFnirsDataProcessing.layout();
-		while (!shlFnirsDataProcessing.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
-	}
+    boolean setExists(File file) {
+        if (!file.exists()) {
+            infoBox("Warning!","File does not exist");
+            return false;
+        }
+        return true;
+    }
 
-	boolean setExists(File file) {
-		if (!file.exists()) {
-			infoBox("Warning!","File does not exist");
-			return false;
-		}
-		return true;
-	}
+    void infoBox(String title,String message) {
+        MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING);
+        messageDialog.setText(title);
+        messageDialog.setMessage(message);
+        messageDialog.open();
+        return;
+    }
 
-	void infoBox(String title,String message) {
-		MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING);
-		messageDialog.setText(title);
-		messageDialog.setMessage(message);
-		messageDialog.open();
-		return;
-	}
+    void browse(Text text) {
+        String fileName = fileDialog.open();
+        if (fileName!=null)
+            text.setText(fileName);
+    }
 
-	void browse(Text text) {
-		String fileName = fileDialog.open();
-		if (fileName!=null)
-			text.setText(fileName);
-	}
+    void enableList(ArrayList<Control> lst) {
+        for (Control item : lst) {
+            item.setEnabled(true);
+        }
+    }
 
-	void enableList(ArrayList<Control> lst) {
-		for (Control item : lst) {
-			item.setEnabled(true);
-		}
-	}
+    void disableList(ArrayList<Control> lst) {
+        for (Control item : lst) {
+            item.setEnabled(false);
+        }
+    }
 
-	void disableList(ArrayList<Control> lst) {
-		for (Control item : lst) {
-			item.setEnabled(false);
-		}
-	}
-  
 	/**
 	 * Create contents of the window.
 	 */
