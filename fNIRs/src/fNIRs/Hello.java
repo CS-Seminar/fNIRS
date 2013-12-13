@@ -369,7 +369,7 @@ public class Hello {
 				 text.setText("");
 				 text_6.setText("");
 				 
-				 splash.setProgress(100, "Deep frying grey matter...");
+				 splash.setProgress(100, "Brains have been preprocessed!");
 				 try {
 						Thread.sleep(1000);
 					 } catch (InterruptedException e1) {
@@ -1380,7 +1380,10 @@ public class Hello {
 					 }
 				 }
 				 
-				 // begin progress here
+				// prog bar begin here
+				 JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+				 splash.splashOn();
+				 splash.setAlwaysOnTop(true);
 
 				 if (sessionNumH==1) {
 					 workspace.addSubject(subjectNameH, HbFile, HbOFile, condFile);
@@ -1389,6 +1392,14 @@ public class Hello {
 					 workspace.concatSession(subjectNameH, HbFile, HbOFile, condFile);
 				 }
 				 sessionNumH++;
+				 
+				 splash.setProgress(33, "Searching for brains...");
+				 try {
+						Thread.sleep(500);
+					 } catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					 }
 
 				 if (sessionNumH>Integer.valueOf(num_sessions_h.getText()).intValue()) {
 					 list.add(subjectNameH);
@@ -1409,11 +1420,28 @@ public class Hello {
 				 else {
 					 lblOf_H.setText(sessionNumH + " of " + num_sessions_h.getText());
 				 }
+				 
+				 splash.setProgress(68, "Offering Hitachi-san some brains...");
+				 try {
+						Thread.sleep(500);
+					 } catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					 }
 
 				 text_4.setText("");
 				 text_5.setText("");
 				 text_7.setText("");
 				 text_subName2.setText("");
+				 
+				 splash.setProgress(100, "Hitachi likes brains!");
+				 try {
+						Thread.sleep(1000);
+					 } catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					 }
+				 splash.splashOff();
 			 }
 		 });
 		 loadHatachi.add(btnAdd);
