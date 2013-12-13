@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TreeSet;
 
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.SWT;
@@ -859,6 +860,57 @@ public class Hello {
 		    // DUO AND THEN THIS IS THE END OF THE TIME CONSUMING STUFF:
 		    //    EVERYTHING ELSE IS PUTTING STUFF IN THE GROUPS AND 
 		    //    CONDITIONS LISTS, WHICH ISN'T VERY TIME CONSUMING
+		    
+		    // Inform the user of channels that were assigned to more 
+		    //    than one group or not assigned to a group:
+		    FNIRsStats.GroupedChannels temp = null;
+		    // both StatsHb and StatsHbO will contain the groups from 
+		    //    the group file:
+		    if (doHb) {
+			temp = StatsHb; 
+		    } else {
+			temp = StatsHbO;
+		    }
+		    TreeSet<Integer> missing = temp.getMissingChannels();
+		    if (!missing.isEmpty()) {
+			String msg = "";
+			if (missing.size() > 1) {
+			    msg = "Channels ";
+			    for (Integer i : missing) {
+				if (i == missing.last()) {
+				    msg += ", and ";
+				} else if (i != missing.first()) {
+				    msg += ", ";
+				}
+				msg += i;
+			    }
+			    msg += " are";
+			} else {
+			    msg = "Channel " + missing.first() + " is";
+			}
+			msg += " not in any group.";
+			infoBox("Warning", msg);
+		    }
+		    TreeSet<Integer> duplicated = temp.getDuplicatedChannels(); 
+		    if (!duplicated.isEmpty()) {
+			String msg = "";
+			if (duplicated.size() > 1) {
+			    msg = "Channels ";
+			    for (Integer i : duplicated) {
+				if (i == duplicated.last()) {
+				    msg += ", and ";
+				} else if (i != duplicated.first()) {
+				    msg += ", ";
+				}
+				msg += i;
+			    }
+			    msg += " are";
+			} else {
+			    msg = "Channel " + duplicated.first() + " is";
+			}
+			msg += " in multiple groups!";
+			infoBox("Warning!", msg);
+		    }
 		    
                     // clear lists to prepare for new data:
                     groupsList.removeAll();

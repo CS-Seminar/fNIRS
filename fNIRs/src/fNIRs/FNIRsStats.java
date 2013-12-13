@@ -39,6 +39,9 @@ import java.util.InputMismatchException;
 import java.util.ArrayList; // like C++ Vector and like Java Vector, which is
                             //    apparently deprecated
 import java.util.LinkedList; // like C++ Deque; implements List interface
+import java.util.TreeSet; // a sorted tree-based set implementation--for storing
+                          //    the list of channels not in any group and the 
+                          //    list of channels which are in multiple groups
 import java.util.Collections; // for max(Collection) method
 import java.io.File; // included elsewhere in project?
 import java.io.FileReader;  // for making the BufferedReader
@@ -604,10 +607,19 @@ public class FNIRsStats {
             NumChannels = calcNumChannels(data); // find and store the number of
                                                  //    channels in the Hb/HbO
                                                  //    file
-            GroupList = new ArrayList<Group>(); // initialize GroupList
-	    Conditions = new ArrayList<Integer>(); // initialize Conditions 
-            makeGroups(groups);
-            readData(data);
+            GroupList = new ArrayList<Group>(); // initialize the list of Groups
+	    Conditions = new ArrayList<Integer>(); // initialize the list of
+                                                   //    conditions
+	    DuplicatedChannels = new TreeSet<Integer>(); // initialize set of
+                                                        //    channels in
+                                                        //    multiple groups
+	    MissingChannels = new TreeSet<Integer>(); // initialize set of
+                                                      //    channels in no group
+            makeGroups(groups); // create a Group for each name and set of
+                                //    channels in the group file
+            readData(data); // read the data file and store its values as
+                            //    channel grouping average sequences in the
+                            //    groups just created
         }
 	/* calcNumChannels()
 	 * IN:  dataFile, a File containing whitespace-delimited columns of
@@ -714,7 +726,18 @@ public class FNIRsStats {
                 }
                 System.out.println(".");
             }
+	    // store (and sort) the lists of channels so the GUI can display
+	    //    them:
+	    MissingChannels.addAll(missing);
+	    DuplicatedChannels.addAll(duplicates);
+	    // MAKE THIS FUNCTION JUST USE THE TREESETS IF THERE'S TIME
         }
+	TreeSet<Integer> getMissingChannels() {
+	    return MissingChannels;
+	}
+	TreeSet<Integer> getDuplicatedChannels() {
+	    return DuplicatedChannels;
+	}
         /* readData
          * IN:  dataFile, a preprocessed Hb or HbO file
          * Reads all the data from the file, averaging channels' values together
@@ -1003,10 +1026,7 @@ public class FNIRsStats {
                 g.printChannels();
             }
         }
-        private final int NumChannels;
-        private ArrayList<Group> GroupList;
-	private ArrayList<Integer> Conditions;
-	
+
         private class Group {
             public Group(String name, ArrayList<Integer> channels){ 
                 Name = name;
@@ -1292,6 +1312,7 @@ public class FNIRsStats {
 		//System.out.println(startIndex);
                 return startIndex;
             }
+	    // class variables for Group:
             private final String Name; 
             private final ArrayList<Integer> Channels;
             private double Sum;
@@ -1300,10 +1321,17 @@ public class FNIRsStats {
             private ArrayList<Integer> Condition; // stores a condition 
                                                   //    associated with every
                                                   //    row of the time series
-            private final int NumChannels; 
+            private final int NumChannels;
             private int NumVals;
 	    private int NumSubjects;
         }
+	
+	// class variables for GroupedChannels:
+        private final int NumChannels;
+        private ArrayList<Group> GroupList;
+	private ArrayList<Integer> Conditions;
+	private TreeSet<Integer> MissingChannels;
+	private TreeSet<Integer> DuplicatedChannels;
     }
     private static void runChunkTests(){
 	System.out.println("Running chunk averaging tests.");
