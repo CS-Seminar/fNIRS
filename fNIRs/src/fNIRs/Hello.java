@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.TreeSet;
 
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.SWT;
@@ -75,6 +76,7 @@ public class Hello {
     public static void main(String[] args) {
         try {
             JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+            splash.setAlwaysOnTop(true);
             splash.splashOn();
             Hello window = new Hello();
             splash.setProgress(8, "Fetching brains...");

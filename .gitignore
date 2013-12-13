@@ -41,3 +41,11 @@ fNIRs/sub19/subjects/Hb_output.txt
 fNIRs/sub19_/Hb
 fNIRs/sub19_/HbO
 fNIRs/sub19/ANOVA Testing/outputFile.csv
+fNIRs/src/fNIRs/#FNIRsStatsNotes.txt#
+fNIRs/src/fNIRs/FNIRsStatsNotes.txt
+fNIRs/src/fNIRs/FNIRsStatsNotes.txt~
+fNIRs/sub19/channelWarningsTesting/badGroupFile2~
+fNIRs/sub19/channelWarningsTesting/badGroupFile~
+fNIRs/sub19/dmining/betterMatlab19.xls
+*.csv
+fNIRs/sub19/subjects/betterMatlab19/rm_input_file.xls
