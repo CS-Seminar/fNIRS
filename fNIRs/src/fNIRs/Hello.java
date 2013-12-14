@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-
+import java.util.TreeSet;
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -20,132 +20,128 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
-
 import com.mathworks.toolbox.javabuilder.*;
-
 import zombie.DataMining;
 import zombie.Preprocess;
-
 import com.rapidminer.operator.OperatorException;
 import com.thehowtotutorial.splashscreen.JSplash;
-
 import java.awt.Color;
 
 public class Hello {
+    protected Shell shlFnirsDataProcessing;
+    private static ArrayList<Integer> indexList;
+    private static Workspace workspace;
+    private Text text;
+    private Text text_1;
+    private Text text_2;
+    private Text text_3;
+    private Text text_4;
+    private Text text_5;
+    private Text text_subName;
+    private static Preprocess pre;
+    private static DataMining dm;
+    private Text text_subName2;
+    private Text text_6;
+    private FileDialog fileDialog;
+    private Text text_7;
+    private Text text_dm_sub;
 
-	protected Shell shlFnirsDataProcessing;
-	private static ArrayList<Integer> indexList;
-	private static Workspace workspace;
-	private Text text;
-	private Text text_1;
-	private Text text_2;
-	private Text text_3;
-	private Text text_4;
-	private Text text_5;
-	private Text text_subName;
-	private static Preprocess pre;
-	private static DataMining dm;
-	private Text text_subName2;
-	private Text text_6;
-	private FileDialog fileDialog;
-	private Text text_7;
-	private Text text_dm_sub;
+    private String subjectName = "";
+    private String subjectNameH = "";
+    private int sessionNum;
+    private int sessionNumH;
 
-	private String subjectName = "";
-	private String subjectNameH = "";
-	private int sessionNum;
-	private int sessionNumH;
+    // stats stuff:
+    private FNIRsStats.GroupedChannels StatsHb, StatsHbO;
+    boolean doHb, doHbO;
 
-	// stats stuff:
-	private FNIRsStats.GroupedChannels StatsHb, StatsHbO;
-	boolean doHb, doHbO;
+    private static RapidDriver rapidDriver;
+    private Text groupFileBox;
+    private Text numChunksBox;
+    private Text decimalPlacesBox;
+    private Text outputDirectoryBox;
+    private Text text_dmoutput;
 
-	private static RapidDriver rapidDriver;
-	private Text groupFileBox;
-	private Text numChunksBox;
-	private Text decimalPlacesBox;
-	private Text outputDirectoryBox;
-	private Text text_dmoutput;
+    /*
+     * Launch the application.
+     * @param args
+     */
+    public static void main(String[] args) {
+        try {
+            JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+            splash.setAlwaysOnTop(true);
+            splash.splashOn();
+            Hello window = new Hello();
+            splash.setProgress(8, "Fetching brains...");
+            Thread.sleep(200);
+            indexList = new ArrayList<Integer>();
+            splash.setProgress(16, "Chasing down subjects...");
+            Thread.sleep(200);
+            pre = new Preprocess();
+            splash.setProgress(30, "Practicing moans...");
+            Thread.sleep(200);
+            dm = new DataMining();
+            splash.setProgress(50, "Digging graves...");
+            Thread.sleep(200);
+            rapidDriver = new RapidDriver();
+            splash.setProgress(100, "Zombies loaded!");
+            Thread.sleep(1000);
+            splash.splashOff();
+            window.open();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+        
+    /**
+     * Open the window.
+     */
+    public void open() {
+        Display display = Display.getDefault();
+        createContents();
+        shlFnirsDataProcessing.open();
+        shlFnirsDataProcessing.layout();
+        while (!shlFnirsDataProcessing.isDisposed()) {
+            if (!display.readAndDispatch()) {
+                display.sleep();
+            }
+        }
+    }
 
-	/*
-	 * Launch the application.
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
-			splash.splashOn();
-			Hello window = new Hello();
-			splash.setProgress(8, "Fetching brains...");
-			Thread.sleep(200);
-			indexList = new ArrayList<Integer>();
-			splash.setProgress(16, "Chasing down subjects...");
-			Thread.sleep(200);
-			pre = new Preprocess();
-			splash.setProgress(30, "Practicing moans...");
-			Thread.sleep(200);
-			dm = new DataMining();
-			splash.setProgress(50, "Digging graves...");
-			Thread.sleep(200);
-			rapidDriver = new RapidDriver();
-			splash.setProgress(100, "Zombies loaded!");
-			Thread.sleep(1000);
-			splash.splashOff();
-			window.open();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * Open the window.
-	 */
-	public void open() {
-		Display display = Display.getDefault();
-		createContents();
-		shlFnirsDataProcessing.open();
-		shlFnirsDataProcessing.layout();
-		while (!shlFnirsDataProcessing.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
-			}
-		}
-	}
+    boolean setExists(File file) {
+        if (!file.exists()) {
+            infoBox("Warning!","File does not exist");
+            return false;
+        }
+        return true;
+    }
 
-	boolean setExists(File file) {
-		if (!file.exists()) {
-			infoBox("Warning!","File does not exist");
-			return false;
-		}
-		return true;
-	}
+    void infoBox(String title,String message) {
+        MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING);
+        messageDialog.setText(title);
+        messageDialog.setMessage(message);
+        messageDialog.open();
+        return;
+    }
 
-	void infoBox(String title,String message) {
-		MessageBox messageDialog = new MessageBox(shlFnirsDataProcessing, SWT.ICON_WARNING);
-		messageDialog.setText(title);
-		messageDialog.setMessage(message);
-		messageDialog.open();
-		return;
-	}
+    void browse(Text text) {
+        String fileName = fileDialog.open();
+        if (fileName!=null)
+            text.setText(fileName);
+    }
 
-	void browse(Text text) {
-		String fileName = fileDialog.open();
-		if (fileName!=null)
-			text.setText(fileName);
-	}
+    void enableList(ArrayList<Control> lst) {
+        for (Control item : lst) {
+            item.setEnabled(true);
+        }
+    }
 
-	void enableList(ArrayList<Control> lst) {
-		for (Control item : lst) {
-			item.setEnabled(true);
-		}
-	}
+    void disableList(ArrayList<Control> lst) {
+        for (Control item : lst) {
+            item.setEnabled(false);
+        }
+    }
 
-	void disableList(ArrayList<Control> lst) {
-		for (Control item : lst) {
-			item.setEnabled(false);
-		}
-	}
-  
 	/**
 	 * Create contents of the window.
 	 */
@@ -168,7 +164,7 @@ public class Hello {
 		 final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		 list.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		 list.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 list.setBounds(10, 10, 226, 414);
+		 list.setBounds(10, 41, 226, 383);
 
 		 workspace.loadSubjects(list);
 
@@ -314,6 +310,11 @@ public class Hello {
 					 infoBox("Warning","Please fill in all frequencies.");
 					 return;
 				 }
+				 
+				 // prog bar begin here
+				 JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+				 splash.splashOn();
+				 splash.setAlwaysOnTop(true);
 
 				 char slideavg = 'n';
 				 int interval = 0;
@@ -322,6 +323,13 @@ public class Hello {
 					 slideavg = 'y';
 					 interval = (Integer.valueOf(spinner.getText())).intValue();
 				 }
+				 
+				 splash.setProgress(7, "Searching for brains...");
+				 try {
+						Thread.sleep(500);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+					 }
 
 				 if (sessionNum==1) {
 					 workspace.addSubject(subjectName, newFile, condFile, freq, hpf, lpf, slideavg, interval);
@@ -330,6 +338,13 @@ public class Hello {
 					 workspace.concatSession(subjectName, newFile, condFile, freq, hpf, lpf, slideavg, interval);
 				 }
 				 sessionNum++;
+				 
+				 splash.setProgress(18, "Deep frying grey matter...");
+				 try {
+						Thread.sleep(1000);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+					 }
 
 				 if (sessionNum>Integer.valueOf(num_sessions.getText()).intValue()) {
 					 list.add(subjectName);
@@ -348,6 +363,14 @@ public class Hello {
 
 				 text.setText("");
 				 text_6.setText("");
+				 
+				 splash.setProgress(100, "Brains have been preprocessed!");
+				 try {
+						Thread.sleep(1000);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+					 }
+				 splash.splashOff();
 			 }
 
 		 });
@@ -492,7 +515,6 @@ public class Hello {
 		 });
 		 button_3.setText("Cancel");
 		 button_3.setBounds(416, 389, 84, 30);
-//>>>>>>> branch 'dev' of https://github.com/CS-Seminar/fNIRS.git
 		 loadItems.add(button_3);
 
 		 for (Control item : loadItems) {
@@ -566,7 +588,7 @@ public class Hello {
 
 		 Label lblChannelGrouping = new Label(composite_1, SWT.NONE);
 		 lblChannelGrouping.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD | SWT.ITALIC));
-		 lblChannelGrouping.setBounds(30, 30, 161, 25);
+		 lblChannelGrouping.setBounds(30, 39, 161, 25);
 		 lblChannelGrouping.setText("Channel Grouping:");
 
 		 groupFileBox = new Text(composite_1, SWT.BORDER);
@@ -715,6 +737,8 @@ public class Hello {
 				 // CHECK THE DIRECTORY DOES NOT EXIST?? (AND ASK THEM TO MAKE SURE)
 				 statsOutputDirectory.mkdir(); // create new directory with name given
 
+				 
+				 // PROGRESS BAR - BIG CHUNK HERE
 				 // actually do the requested ANOVAs and write them to the output file(s):
 				 if (doHb) {
 					 File outputFileHb =
@@ -898,6 +922,11 @@ public class Hello {
 		 btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 btnLoadGroupsAnd.setBounds(240, 115, 276, 25);
 		 btnLoadGroupsAnd.setText("Load Groups and Conditions");
+		 
+		 Label lblPleaseSelect = new Label(composite_1, SWT.NONE);
+		 lblPleaseSelect.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		 lblPleaseSelect.setBounds(30, 8, 394, 25);
+		 lblPleaseSelect.setText("<< Please select subject(s) from the subject list to begin");
 
 		 TabItem tbtmMachineLearning = new TabItem(tabFolder, SWT.NONE);
 		 tbtmMachineLearning.setText("  Data Mining ");
@@ -913,7 +942,7 @@ public class Hello {
 
 		 final Button radioSAX = new Button(composite_2, SWT.RADIO);
 		 radioSAX.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 radioSAX.setBounds(415, 166, 270, 25);
+		 radioSAX.setBounds(415, 166, 142, 25);
 		 radioSAX.setText("SAX Segments");
 
 		 Button radioFBS = new Button(composite_2, SWT.RADIO);
@@ -1006,7 +1035,6 @@ public class Hello {
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					 }
 
@@ -1019,7 +1047,6 @@ public class Hello {
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					 }
 				 
@@ -1068,11 +1095,9 @@ public class Hello {
 						 try {
 							 rapidDriver.run(inputFile,rapidDriver.generateProcess(inputFile,workspace.getTemplate(list_2.getSelection()[0])),outputFile);
 						 } catch (IOException e1) {
-							 // TODO Auto-generated catch block
 							 e1.printStackTrace();
 						 }
 					 } catch (OperatorException e1) {
-						 // TODO Auto-generated catch block
 						 e1.printStackTrace();
 					 }
 				 }
@@ -1085,7 +1110,6 @@ public class Hello {
 				 try {
 					Thread.sleep(1000);
 				 } catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				 }
 				 splash.splashOff();
@@ -1352,6 +1376,11 @@ public class Hello {
 				 else {
 					 HbOFile = null;
 				 }
+				 
+				// prog bar begin here
+				 JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+				 splash.splashOn();
+				 splash.setAlwaysOnTop(true);
 
 				 if (sessionNumH==1) {
 					 workspace.addSubject(subjectNameH, HbFile, HbOFile, condFile);
@@ -1360,6 +1389,13 @@ public class Hello {
 					 workspace.concatSession(subjectNameH, HbFile, HbOFile, condFile);
 				 }
 				 sessionNumH++;
+				 
+				 splash.setProgress(33, "Searching for brains...");
+				 try {
+						Thread.sleep(500);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+					 }
 
 				 if (sessionNumH>Integer.valueOf(num_sessions_h.getText()).intValue()) {
 					 list.add(subjectNameH);
@@ -1380,11 +1416,26 @@ public class Hello {
 				 else {
 					 lblOf_H.setText(sessionNumH + " of " + num_sessions_h.getText());
 				 }
+				 
+				 splash.setProgress(68, "Offering Hitachi-san some brains...");
+				 try {
+						Thread.sleep(500);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+					 }
 
 				 text_4.setText("");
 				 text_5.setText("");
 				 text_7.setText("");
 				 text_subName2.setText("");
+				 
+				 splash.setProgress(100, "Hitachi likes brains!");
+				 try {
+						Thread.sleep(1000);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+					 }
+				 splash.splashOff();
 			 }
 		 });
 		 loadHatachi.add(btnAdd);
@@ -1433,7 +1484,7 @@ public class Hello {
 		 label_5.setText("Number of Sessions:");
 		 label_5.setBounds(30, 75, 149, 25);
 
-		 Button btnCancel = new Button(composite_4, SWT.NONE);
+		 final Button btnCancel = new Button(composite_4, SWT.NONE);
 		 btnCancel.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 btnCancel.addSelectionListener(new SelectionAdapter() {
 			 @Override
@@ -1463,36 +1514,24 @@ public class Hello {
 		 	@Override
 		 	public void widgetSelected(SelectionEvent e) {
 		 		
-		 		if (button_3.getEnabled()) {
+		 		if (button_3.getVisible()) {
 		 			infoBox("Warning!","Cancel file loading before changing workspace.");
 		 			return;
 		 		}
+
+		 		if (btnCancel.getVisible()) {
+		 			infoBox("Warning!","Cancel file loading before changing workspace.");
+		 			return;
+		 		}
+				 
+		 		// new workspace
+				 fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN | SWT.CANCEL);
+				 DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing);
+				 dlg.setText("Select Workspace");
+				 String selected = dlg.open(); // annoying new folder bug
+				 if (selected == null)
+					 return;
 		 		
-		 		//cancel iss
-				 for (Control item : loadItems) {
-					 item.setVisible(false);
-				 }
-				 text_subName.setEnabled(true);
-				 num_sessions.setEnabled(true);
-				 btnEnter_1.setEnabled(true);
-				 text_subName.setText("");
-				 num_sessions.setSelection(1);
-				 
-				 // cancel hitachi
-				 for (Control item : loadHatachi) {
-					 item.setVisible(false);
-				 }
-				 text_subName2.setEnabled(true);
-				 num_sessions_h.setEnabled(true);
-				 button_2.setEnabled(true);
-
-				 num_channels_H.setEnabled(true);
-				 btnHb.setEnabled(true);
-				 btnHbo.setEnabled(true);
-
-				 text_subName2.setText("");
-				 num_sessions_h.setSelection(1);
-				 
 				 // cancel dm
 				 disableList(step2);
 				 list_1.removeAll();
@@ -1500,15 +1539,8 @@ public class Hello {
 				 
 				 list.removeAll();
 				 
-				 // new workspace
-				 fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN | SWT.CANCEL);
-				 DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing);
-				 dlg.setText("Select Workspace");
-				 String selected = dlg.open(); // annoying new folder bug
-				 if (selected == null)
-					 return;
+				 //set up new workspace
 				 workspace = new Workspace(selected,pre);
-				 
 				 workspace.loadSubjects(list);
 				 
 				 list_2.removeAll();
@@ -1522,6 +1554,10 @@ public class Hello {
 		 btnNewButton_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 btnNewButton_1.setBounds(10, 430, 226, 30);
 		 btnNewButton_1.setText("Change Workspace");
+		 
+		 Label lblSubjectList = new Label(shlFnirsDataProcessing, SWT.NONE);
+		 lblSubjectList.setBounds(41, 10, 146, 25);
+		 lblSubjectList.setText("Subject List:");
 
 		 for (Control item : loadHatachi) {
 			 item.setVisible(false);

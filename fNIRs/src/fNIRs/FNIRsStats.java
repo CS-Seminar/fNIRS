@@ -3,17 +3,17 @@
  * Author: Nicholas Kolesar                                                   *
  * Hamilton College                                                           *
  * Fall 2013                                                                  *
- * Description:                                                               *
+ * Description: Mostly averages data sequences together. Averages             *
+ *    element-wise among different sequences and among chunks of the same     *
+ *    sequences, and calculates average values for all the values contained   *
+ *    in chunks of the same sequence. Once these averages--grouping channels, *
+ *    averaging together all sequences of data for a particular condition     *
+ *    within the average sequence for each particular channel group, and      *
+ *    "chunking" the resulting average sequence--are complete, ANOVA p-values *
+ *    are calculated. This could be supplemented with other statistical       *
+ *    analyses on the same chunked data sets later.                           *
  ******************************************************************************/
 
-// THINK ABOUT SAVING THINGS SO IT WILL BE QUICKER FOR THE USER
-// ARE FINAL THINGS ONLY UNCHANGEABLE REFERENCES OR ACTUALLY UNALTERABLE
-//    OBJECTS???
-// HASNEXTDOUBLE DOES DETECT INTEGERS IN THE FILE, IT JUST READS THEM AS LEGAL
-//    DOUBLE VALUES
-// FIND OUT MORE ABOUT THE STATIC KEYWORD...MAYBE ASK A PROFESSOR
-// * C-x C-u to make region uppercase :D
-// * nkolesar/AppData/Roaming/.emacs
 // SEE ABOUT CATCHING ANY UNFORESEEN INPUTMISMATCHEXCEPTIONS FROM THE
 //    SCANNER READS LATER
 // the static keyword lets me instantiate GroupedChannels without having an 
@@ -21,24 +21,21 @@
 // MAKE A NOTE SOMEWHERE APPROPRIATE THAT WE CALL THE SEQUENCE OF DATA
 //    FROM AN FNIRS CHANNEL A CHANNEL
 // CONVENTION FOR VALUES THAT SHOULD BE A SIZE_T = ?????
-// M-$ IS SPELLCHECK! WHO KNEW?!
 // MAKE EXTRA SURE LATER ON THAT WE USE THE CORRECT LOCALE FOR ALL THE I/O
 
 package fNIRs;
 
-// ASK HOW TO GET THIS TO WORK:
-//import edu.ucla.stat.SOCR.util; // two-way ANOVA capable stats package
 // (MAKE SURE WE INCLUDE THE PROPER LICENSES WITH OUR FINISHED PRODUCT)
 import org.apache.commons.math3.stat.inference.OneWayAnova;
 import java.util.Scanner; // to read doubles simply
-// I found out Locale is apparently for things like what to use for decimal
-//    points, etc. e.g. the European style of writing U.S. "8.5" as "8,5" and v
-//    U.S "8,000" as "8.000"
 import java.util.Locale; // for Scanner (defines character encoding)
 import java.util.InputMismatchException;
 import java.util.ArrayList; // like C++ Vector and like Java Vector, which is
                             //    apparently deprecated
 import java.util.LinkedList; // like C++ Deque; implements List interface
+import java.util.TreeSet; // a sorted tree-based set implementation--for storing
+                          //    the list of channels not in any group and the 
+                          //    list of channels which are in multiple groups
 import java.util.Collections; // for max(Collection) method
 import java.io.File; // included elsewhere in project?
 import java.io.FileReader;  // for making the BufferedReader
@@ -50,20 +47,11 @@ import java.io.PrintWriter;
 //import java.util.Collection; // for sillily general Group constructor
 import java.util.List; // for generalized findNextOccurrence method
 
-// import HelloWorldNick.GroupedChannels; // WUT
-
 public class FNIRsStats {
-    private static void error2(String title, String errMsg){
-	localError(title + " " + errMsg);
-	// ADD FINAL ERROR BOX FUNCTION CALL HERE
-    }
-    private static void error(String errMsg){
-	localError(errMsg);
-    }
     private static void localError(String errMsg){
-	System.out.println("Error: " + errMsg + ".");
-        System.exit(1); // PROBABLY DON'T WANT THIS IN FINAL PROGRAM--
-                        //    HANDLE THE EXCEPTION SOME OTHER WAY<
+	System.out.println("Error: " + errMsg);
+        //System.exit(1); // PROBABLY DON'T WANT THIS IN FINAL PROGRAM--
+                          //    HANDLE THE EXCEPTION SOME OTHER WAY<
     }
     /* makeScanner
      * IN:  a File object
@@ -77,7 +65,7 @@ public class FNIRsStats {
         } catch (FileNotFoundException fnf_exception) {
             // WE WILL PROBABLY WANT TO INTEGRATE THIS INTO THE GUI
             // Print the name of the missing file:
-            error(fnf_exception.getMessage());
+            localError(fnf_exception.getMessage());
             return null; // never executed
         }
         // create Scanner to read easily from the input files:
@@ -93,7 +81,7 @@ public class FNIRsStats {
     	try {
 	    w = new FileWriter(file);
     	} catch (Exception ex) {
-	    error(ex.getMessage());
+	    localError(ex.getMessage());
 	}
     	PrintWriter p = new PrintWriter(w, true); // set autoflush to true
 	return p;
@@ -129,7 +117,6 @@ public class FNIRsStats {
     }
     
     // COULD OPTIMIZE BY HARDCODING THE REFLEXIVE ANOVAs
-    // http://stackoverflow.com/questions/12375768/java-equivalent-to-printf-f/12375811#12375811
     // this should chunk the data, too
     public static void writeANOVAs(File outFile,
 				   GroupedChannels data,
@@ -186,22 +173,15 @@ public class FNIRsStats {
 		    //		    }
 		} catch (Exception ex) {
 		    ostream.println();
-		    error(ex.getMessage());
+		    localError(ex.getMessage());
 		}
 		if (result != result) { // if result is NaN
 		    System.out.println("NaN on " + first.getGroupName() +
 				       " c" + first.getCondition() + " and " +
 				       second.getGroupName() + " c" +
 				       second.getCondition());
-		    // System.out.println("first");
-		    // for (int i = 0; i < 4; i++)
-		    // 	System.out.println(i + " " + dataSets.get(0)[i]);
-		    // System.out.println("second");
-		    // for (int i = 0; i < 4; i++)
-		    // 	System.out.println(i + " " + dataSets.get(1)[i]);
 		}
 		// AGAIN, SEE IF "PRECISON" == "NUMBER OF DECIMAL PLACES"
-		// APPARENTLY THE 1 IS COMPULSORY....
 		ostream.printf("%-"+idFieldWidth+"."+precision+"f"+separator,
 			       result);
 	    }
@@ -228,9 +208,6 @@ public class FNIRsStats {
 	}
 	return result;
     }
-    // COULD OPTIMIZE BY HARDCODING THE REFLEXIVE ANOVAs
-    // http://stackoverflow.com/questions/12375768/java-equivalent-to-printf-f/12375811#12375811
-    // this should chunk the data, too
     public static void outputANOVAs(GroupedChannels data,
 				    List<String> groupNames,
 				    List<Integer> conditions,
@@ -284,17 +261,11 @@ public class FNIRsStats {
 		    result = myANOVA.anovaPValue(dataSets);
 		} catch (Exception ex) {
 		    System.out.println();
-		    error(ex.getMessage());
+		    localError(ex.getMessage());
 		}
-		// AGAIN, SEE IF "PRECISON" == "NUMBER OF DECIMAL PLACES"
-		// APPARENTLY THE 1 IS COMPULSORY....
 		System.out.printf("%-" + idFieldWidth + "." + precision +
 				  "f" + separator,
 				  result);
-		// System.out.printf("%-1." + precision + "f" +
-		// 		  "%" + (idFieldWidth - precision) + "s",
-		// 		  result,
-		// 		  "");
 		//dataSets.remove(1); // remove second's data from dataSets
 	    }
 	    System.out.println(); // print newline
@@ -321,7 +292,6 @@ public class FNIRsStats {
 	    String.valueOf(Collections.max(conditions)).length();
 	// make sure the fields will be wide enough to hold the ANOVA values,
 	//    which will consist of a 0 or 1 followed by a . and precision 0s:
-	      // AM I USING "PRECISION" RIGHT?
 	int idFieldWidth = nameWidth + 2 + conditionWidth; // 2 == " c".length()
 	if (idFieldWidth < precision + 2) { // 2 == "1.".length()
 	    // if not, increase the condition width so the total field width is
@@ -370,22 +340,14 @@ public class FNIRsStats {
 		    //		    }
 		} catch (Exception ex) {
 		    ostream.println();
-		    error(ex.getMessage());
+		    localError(ex.getMessage());
 		}
 		if (result != result) { // if result is NaN
 		    System.out.println("NaN on " + first.getGroupName() +
 				       " c" + first.getCondition() + " and " +
 				       second.getGroupName() + " c" +
 				       second.getCondition());
-		    // System.out.println("first");
-		    // for (int i = 0; i < 4; i++)
-		    // 	System.out.println(i + " " + dataSets.get(0)[i]);
-		    // System.out.println("second");
-		    // for (int i = 0; i < 4; i++)
-		    // 	System.out.println(i + " " + dataSets.get(1)[i]);
 		}
-		// AGAIN, SEE IF "PRECISON" == "NUMBER OF DECIMAL PLACES"
-		// APPARENTLY THE 1 IS COMPULSORY....
 		ostream.printf("%-" + idFieldWidth + "." + precision + "f  ",
 				  result);
 	    }
@@ -393,8 +355,6 @@ public class FNIRsStats {
 	}
 	ostream.close();
     }
-    // COULD OPTIMIZE BY HARDCODING THE REFLEXIVE ANOVAs
-    // http://stackoverflow.com/questions/12375768/java-equivalent-to-printf-f/12375811#12375811
     // this should chunk the data, too
     public static void oldOutputANOVAs(GroupedChannels data,
 				    List<String> groupNames,
@@ -404,11 +364,6 @@ public class FNIRsStats {
 	// get all condition-group sequences:
 	ArrayList<GroupedChannels.TaggedDataSequence> allTDSs =
 	    data.getAllSelectedTDSs(groupNames, conditions);
-	// ArrayList<ArrayList<GroupedChannels.TaggedDataSequence>> processedData =
-	//     data.selectData(groupNames, conditions);
-	// // put them all in one list of tagged data sequences:
-	// ArrayList<GroupedChannels.TaggedDataSequence> allTDSs =
-	//     combineArrayLists(processedData);
 
 	chunkData(allTDSs, numChunks); // COMMENT THIS LATER
 	
@@ -425,14 +380,7 @@ public class FNIRsStats {
 	    //    large enough:
 	    idFieldWidth = precision + 2;
 	}
-	// create a format string for the group/condition combination identifier
-	//    fields in the output:
-	//String nameFormat = "%-" + nameWidth + "s";
-	//String conditionFormat = "%-" + conditionWidth + "d";
-	//String idFieldFormat = nameFormat + " c" + conditionFormat;
-	// calculate the necessary total width for the identifier fields: (based
-	//    on the updated value for conditionWidth)
-	//	idFieldWidth = nameWidth + conditionWidth + 4; // DUPLICATED CODE
+
 	String idFieldFormat = "%-" + idFieldWidth + "s";
 	
 	// output the first row, containing identifying information for each 
@@ -443,15 +391,10 @@ public class FNIRsStats {
 	for (GroupedChannels.TaggedDataSequence tds : allTDSs) {
 	    System.out.printf(idFieldFormat + "  ",
 			      tds.getGroupName() + " c" + tds.getCondition()); 
-	    // System.out.printf(idFieldFormat + "  ",
-	    // 		      tds.getGroupName(),
-	    // 		      tds.getCondition()); 
 	}
 	System.out.println(); // print newline
 	// output ANOVA values line by line:
 	OneWayAnova myANOVA = new OneWayAnova();
-	// IS THE BEST WAY TO FIX THIS double[]/Double[] BS TO JUST CHANGE THE
-	//    COMMONS MATH METHOD????
 	for (GroupedChannels.TaggedDataSequence first : allTDSs) {
 	    // output tds identifier in first column:
 	    System.out.printf(idFieldFormat + "  ",
@@ -466,7 +409,6 @@ public class FNIRsStats {
 	    for (GroupedChannels.TaggedDataSequence second : allTDSs) {
 		// convert and add second's data sequence to position one in
 		//    dataSets:
-		//dataSets.add(second.getData().toArray());
 		dataSets.set(1,
 			     toPrimitiveDoubleArray(second.getData())
 			     );
@@ -475,17 +417,10 @@ public class FNIRsStats {
 		    result = myANOVA.anovaPValue(dataSets);
 		} catch (Exception ex) {
 		    System.out.println();
-		    error(ex.getMessage());
+		    localError(ex.getMessage());
 		}
-		// AGAIN, SEE IF "PRECISON" == "NUMBER OF DECIMAL PLACES"
-		// APPARENTLY THE 1 IS COMPULSORY....
 		System.out.printf("%-" + idFieldWidth + "." + precision + "f  ",
 				  result);
-
-		// System.out.printf("%-1." + precision + "f" +
-		// 		  "%" + (idFieldWidth - precision) + "s",
-		// 		  result,
-		// 		  "");
 		//dataSets.remove(1); // remove second's data from dataSets
 	    }
 	    System.out.println(); // print newline
@@ -536,14 +471,6 @@ public class FNIRsStats {
      * IN:  lst_of_lsts, a List of Lists
      * OUT: returns a list containing all the elements in lst_of_lsts's sublists
      */
-    // private <T> ArrayList<T> combineLists(List<List<T>> lst_of_lsts) {
-    // 	ArrayList<T> output = new ArrayList<T>();
-    // 	for (List<T> lst : lst_of_lsts) {
-    // 	    output.addAll(lst);
-    // 	}
-    // 	return output;
-    // }
-    // I HATE JAVA A:LFHGLKEGWIURH:FALEB:J"WWR::TH:AHTL
     private static double[] toPrimitiveDoubleArray(ArrayList<Double> lst){
 	double[] result = new double[lst.size()];
 	for (int i = 0; i < lst.size(); i++) {
@@ -551,42 +478,32 @@ public class FNIRsStats {
 	}
 	return result;
     }
-    // TESTED THIS FOR TWO CHUNKS, WHICH IS THEORETICALLY SUFFICIENT(?), BUT
-    //    IT SHOULD PROBABLY BE TESTED FURTHER
     // CALL THIS "BLOCK AVERAGE" OR SOMETHING?
     public static ArrayList<Double> averageChunks(List<Double> ary,
 						  int numChunks){
 	ArrayList<Double> result = new ArrayList<Double>();
 	double chunkSize = ((double) ary.size()) / (double) numChunks;
-	//System.out.println("chunkSize = " + chunkSize);
 	int start = 0; // index of start of current chunk
 	double bound = 0; // decimal value of upper bound for current chunk
 	while(start < ary.size()){ // REDUNDANT??
-	    //System.out.println("Got here.");
 	    bound += chunkSize; // get upper bound for next chunk
 	    double sum = 0; // to store sum of values in the chunk
 	    double numValues = 0; // number of values in the chunk (to divide by
                                   //    to get the average value for the chunk)
-	    //System.out.println("bound = " + bound);
 	    for (int i = start; i < bound && i < ary.size(); i++){
 		sum += ary.get(i);
-		//System.out.println("the " + i + "th sum is " + sum);
 		numValues++;
-		//System.out.println("Sum = " + sum);
 	    }
-	    //System.out.println("Sum: " + sum);
 	    result.add(sum / numValues);
-	    //printList(ary);
 	    start += numValues;
 	}
-	//System.out.println(result.size());
 	return result;
     }
+    /* GroupedChannels class
+     * This class is a container for all the data read from an Hb or HbO file,
+     *    organized within channel groupings represented by Group objects.
+     */
     public static class GroupedChannels { // BETTER NAME PROBABLY
-
-        // PUT ANALYSIS FUNCTION IN THIS CLASS? GOTTA FIGURE OUT HOW TO RETURN
-        //    SOMETHING FROM IT....
-
         /* GroupedChannels
          * IN:  groupFile, a File specifying channel groupings for statistical 
          *         analysis. Format is a string to name the grouping, then 
@@ -604,10 +521,19 @@ public class FNIRsStats {
             NumChannels = calcNumChannels(data); // find and store the number of
                                                  //    channels in the Hb/HbO
                                                  //    file
-            GroupList = new ArrayList<Group>(); // initialize GroupList
-	    Conditions = new ArrayList<Integer>(); // initialize Conditions 
-            makeGroups(groups);
-            readData(data);
+            GroupList = new ArrayList<Group>(); // initialize the list of Groups
+	    Conditions = new ArrayList<Integer>(); // initialize the list of
+                                                   //    conditions
+	    DuplicatedChannels = new TreeSet<Integer>(); // initialize set of
+                                                        //    channels in
+                                                        //    multiple groups
+	    MissingChannels = new TreeSet<Integer>(); // initialize set of
+                                                      //    channels in no group
+            makeGroups(groups); // create a Group for each name and set of
+                                //    channels in the group file
+            readData(data); // read the data file and store its values as
+                            //    channel grouping average sequences in the
+                            //    groups just created
         }
 	/* calcNumChannels()
 	 * IN:  dataFile, a File containing whitespace-delimited columns of
@@ -639,12 +565,10 @@ public class FNIRsStats {
          */
         private void makeGroups(File groupFile){
             Scanner s = makeScanner(groupFile);
-            //int groupNum = 0; //to keep track of Group to put the chans in
             String groupName;
             ArrayList<Integer> channels = new ArrayList<Integer>();
             while(s.hasNext()) { // checks to see there is a token in the input
                 groupName = s.next(); // next() gets the next token
-		//System.out.println(groupName);
                 while (s.hasNextInt()) {
                     channels.add(s.nextInt());
                 }
@@ -655,9 +579,7 @@ public class FNIRsStats {
                        //    close its underlying stream
             checkForMissingChannels();
         }
-        private void checkForMissingChannels(){ // ANOTHER GUI THING
-            ArrayList<Integer> missing = new ArrayList<Integer>();
-            ArrayList<Integer> duplicates = new ArrayList<Integer>();
+        private void checkForMissingChannels(){
             for (int chan = 1; chan <= NumChannels; chan++) {
                 int found = 0;  // number of the Groups that contain the channel
                 for (Group g : GroupList) {
@@ -667,53 +589,76 @@ public class FNIRsStats {
                 }
                 switch (found) {
                 case 0: // channel is missing from all groups
-                    missing.add(chan);
+                    MissingChannels.add(chan);
                     break;
                 case 1: // all is well
                     break;
                 default:
-                    duplicates.add(chan);
+                    DuplicatedChannels.add(chan);
                     break;
                 }
             }
-            if (!duplicates.isEmpty()) {
+	    // output errors if the program is running with a console:
+            if (!DuplicatedChannels.isEmpty()) {
                 // THIS IS STATISTICALLY PRETTY BAD UNLESS THEY'RE NOT COMPARING
                 //    THOSE TWO GROUPS...WHICH IS TOTALLY POSSIBLE, I GUESS.
                 //    MAYBE THIS IS BEYOND THE SCOPE OF OUR PROJECT TO CHECK?
-		// System.out.print("Warning! The following channel(s) are in " +
-                //                  "multiple groups! Channel(s) ");
-                // for (int chan : duplicates) {
-                //     System.out.print(chan);
-                //     if (chan != duplicates.get(duplicates.size()-1))
-                //         System.out.print(", ");
-                // }
-                // System.out.println(".");
-		
-		String warning = "The following channel(s) are in multiple " +
-                                 "groups! Channel(s) ";
-                // IT WOULD BE REALLY NICE OF US TO TELL THEM WHICH GROUPS THE
-                //    CHANNELS ARE IN, TOO, BUT LET'S LEAVE THAT FOR LATER.
-		System.out.println(duplicates);
-                for (int chan : duplicates) {
-                    warning += chan;
-                    if (chan != duplicates.get(duplicates.size() - 1))
-                        warning += ", ";
-                }
-                warning += ".";
-		//System.out.println(warning); // REPLACE WITH ERRORBOX CALL
-		error2("Warning!", warning);
+		localError(getDuplicatedChannelsMsg());
             }
-            if (!missing.isEmpty()) {
-                System.out.print("Warning: the following channel(s) are not " +
-                                 "in any group: ");
-                for (int chan : missing) {
-                    System.out.print(chan);
-                    if (chan != missing.get(missing.size()-1))
-                        System.out.print(", ");
-                }
-                System.out.println(".");
-            }
-        }
+            if (!MissingChannels.isEmpty()) {
+		localError(getMissingChannelsMsg());
+	    }
+	}
+	TreeSet<Integer> getMissingChannels() {
+	    return MissingChannels;
+	}
+	TreeSet<Integer> getDuplicatedChannels() {
+	    return DuplicatedChannels;
+	}
+	String getMissingChannelsMsg() {
+	    if (MissingChannels.isEmpty()) {
+		return null;
+	    }
+	    String msg = null;
+	    if (MissingChannels.size() == 1) {
+		msg = "Channel " + MissingChannels.first() + " is";
+	    } else {
+		msg = "Channels ";
+		for (Integer i : MissingChannels) {
+		    if (i == MissingChannels.last()) {
+			msg += ", and ";
+		    } else if (i != MissingChannels.first()) {
+			msg += ", ";
+		    }
+		    msg += i;
+		}
+		msg += " are";
+	    }
+	    msg += " not in any group.";
+	    return msg;
+	}
+	String getDuplicatedChannelsMsg() {
+	    if (DuplicatedChannels.isEmpty()) {
+		return null;
+	    }
+	    String msg = null;
+	    if (DuplicatedChannels.size() == 1) {	    
+		msg = "Channel " + DuplicatedChannels.first() + " is";	    
+	    } else {
+		msg = "Channels ";
+		for (Integer i : DuplicatedChannels) {
+		    if (i == DuplicatedChannels.last()) {
+			msg += ", and ";
+		    } else if (i != DuplicatedChannels.first()) {
+			msg += ", ";
+		    }
+		    msg += i;
+		}
+		msg += " are";
+	    }
+	    msg += " in multiple groups!";
+	    return msg;
+	}
         /* readData
          * IN:  dataFile, a preprocessed Hb or HbO file
          * Reads all the data from the file, averaging channels' values together
@@ -740,9 +685,9 @@ public class FNIRsStats {
                     }
                 }
             } catch (InputMismatchException e) {
-                error(e.getMessage());
+                localError(e.getMessage());
             } catch (Exception e){
-                error(e.getMessage());
+                localError(e.getMessage());
             } finally {
                 s.close(); // scanner must be closed to signal it's okay to 
                            //    close its underlying stream
@@ -769,7 +714,7 @@ public class FNIRsStats {
          */
         public void combineGroups(GroupedChannels other){
 	    if (other == this)
-		error("?????"); // MAYBE FIX THIS OR SOMETHING
+		localError("?????"); // MAYBE FIX THIS OR SOMETHING
 	    for (Group g : other.getGroups()) {
 		// add g's data to the average sequence in the group that
 		//    matches g in this object:
@@ -794,7 +739,7 @@ public class FNIRsStats {
             Group ours = getGroup(other.getChannels());
 	    // (MAKE THIS ERROR BETTER)
             if (ours == null)
-                error("No other group contains those channels.");
+                localError("No other group contains those channels.");
             // See which group has a shorter data sequence:
             int combinedSize;
             if (other.getData().size() > ours.getData().size())
@@ -960,7 +905,7 @@ public class FNIRsStats {
             if (1 <= groupNum && groupNum <= GroupList.size())
                 return GroupList.get(groupNum - 1);
             else {
-                error("Group number " + groupNum + " not found");
+                localError("Group number " + groupNum + " not found");
                 return null; // never executed
             }
         }
@@ -974,7 +919,7 @@ public class FNIRsStats {
                     return g;
                 }
             }
-            error("Group \"" + name + "\" not found");
+            localError("Group \"" + name + "\" not found");
             return null; // never executed
         }
         public void print(){
@@ -1002,10 +947,7 @@ public class FNIRsStats {
                 g.printChannels();
             }
         }
-        private final int NumChannels;
-        private ArrayList<Group> GroupList;
-	private ArrayList<Integer> Conditions;
-	
+
         private class Group {
             public Group(String name, ArrayList<Integer> channels){ 
                 Name = name;
@@ -1291,6 +1233,7 @@ public class FNIRsStats {
 		//System.out.println(startIndex);
                 return startIndex;
             }
+	    // class variables for Group:
             private final String Name; 
             private final ArrayList<Integer> Channels;
             private double Sum;
@@ -1299,10 +1242,17 @@ public class FNIRsStats {
             private ArrayList<Integer> Condition; // stores a condition 
                                                   //    associated with every
                                                   //    row of the time series
-            private final int NumChannels; 
+            private final int NumChannels;
             private int NumVals;
 	    private int NumSubjects;
         }
+	
+	// class variables for GroupedChannels:
+        private final int NumChannels;
+        private ArrayList<Group> GroupList;
+	private ArrayList<Integer> Conditions;
+	private TreeSet<Integer> MissingChannels;
+	private TreeSet<Integer> DuplicatedChannels;
     }
     private static void runChunkTests(){
 	System.out.println("Running chunk averaging tests.");
@@ -1372,10 +1322,67 @@ public class FNIRsStats {
 	System.out.println("result of combining groups:");
 	printList(processAllSubjectData(dataFileLst,groupFile
 					).getGroup("foo").getData(1));	
-    }    
+    }
+    private static void runANOVATests() {
+	System.out.println("Running ANOVA tests.");
+	
+	File groupFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/ANOVA Testing/legitGroups");
+	File hbFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/ANOVA Testing/legitHb");
+	int precision = 7;
+	int numChunks = 10;
+	
+	GroupedChannels groups1 = new GroupedChannels(hbFile, groupFile);
+
+	String groupName = "groupOne";
+	runANOVATestsHelper(groups1, groupName, 0); 
+	runANOVATestsHelper(groups1, groupName, 1); 
+
+	LinkedList<double[]> container = new LinkedList<double[]>();
+	container.add(toPrimitiveDoubleArray(groups1.getGroup(groupName).getData(0)));
+	container.add(toPrimitiveDoubleArray(groups1.getGroup(groupName).getData(1)));
+
+	OneWayAnova myANOVA = new OneWayAnova();
+	double result = myANOVA.anovaPValue(container);
+	System.out.println("Result: " + result);
+	
+	// outputANOVAs(groups1,
+	// 	     groups1.getGroupNames(), groups1.getConditions(),
+	// 	     numChunks, precision);
+	File outFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/ANOVA Testing/outputFile.csv");
+	writeANOVAs(outFile, groups1,
+		    groups1.getGroupNames(), groups1.getConditions(),
+		    // groupNames, conditions,
+		    numChunks, precision);
+	System.out.println("Done.");
+    }
+    private static void runANOVATestsHelper(GroupedChannels groups,
+					    String groupName,
+					    int condition) {
+	System.out.println("(" + groupName + ", condition " + condition + ")");
+	printList(groups.getGroup(groupName).getData(condition)
+		  );
+    }
+    private static void runChannelsTests() {
+	System.out.println("Running channel grouping warnings tests.");
+	File hbFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/channelWarningsTesting/legitHb");
+
+	// test 1:
+	File groupFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/channelWarningsTesting/badGroupFile");
+	GroupedChannels foo = new GroupedChannels(hbFile, groupFile);
+
+	System.out.println("------------------------------------------");
+	
+	// test 2:
+	groupFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/channelWarningsTesting/badGroupFile2");
+	foo = new GroupedChannels(hbFile, groupFile);
+	
+	System.out.println("Done.");	
+    }
     public static void main(String[] args) {
 	//runChunkTests();
 	//runSubjectTests();
+	//runANOVATests();
+	runChannelsTests();
 	
         File legitGroupsFile = new File("c:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/legitGroups");
 	File legitHbFile = new File("C:/Users/nkolesar/Desktop/CS Seminar/fNIRs/sub19/legitHb");
