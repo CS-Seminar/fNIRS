@@ -70,7 +70,8 @@ public class Hello {
         try {
             JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
             splash.setAlwaysOnTop(true);
-            splash.splashOn();
+			splash.splashOn();
+			splash.setAlwaysOnTop(false);
             splash.setProgress(0, "Animating zombies...");
             Thread.sleep(200);
             Hello window = new Hello();
@@ -150,7 +151,7 @@ public class Hello {
 	 * Create contents of the window.
 	 */
 	 protected int createContents() {
-		 shlFnirsDataProcessing = new Shell(SWT.DIALOG_TRIM | SWT.ON_TOP);
+		 shlFnirsDataProcessing = new Shell(SWT.DIALOG_TRIM | SWT.MIN);
 		 shlFnirsDataProcessing.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/logo.png"));
 		 shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -158,13 +159,13 @@ public class Hello {
 		 shlFnirsDataProcessing.setText("Zombie MiNIR - fNIRs Data Processing and Analysis");
 		 
 		 fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN | SWT.CANCEL);
-		 DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing, SWT.ON_TOP);
-		 dlg.setText("Select Workspace");
-		 String selected = dlg.open(); // annoying new folder bug
+		 DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing);
+		 dlg.setText("Select a workspace");
+		 String selected = dlg.open();
 		 if (selected == null)
 			 return 1;
 		 workspace = new Workspace(selected,pre);
-
+		 
 		 final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		 list.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		 list.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -316,13 +317,15 @@ public class Hello {
 				 }
 				 
 				 JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
-				 splash.splashOn();
 				 splash.setAlwaysOnTop(true);
+				 splash.splashOn();
+				 splash.setAlwaysOnTop(false);
 				 splash.setProgress(0, "Zombies have arrived...");
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
 						e1.printStackTrace();
+						return;
 					 }
 
 				 char slideavg = 'n';
@@ -337,8 +340,9 @@ public class Hello {
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
-						e1.printStackTrace();
-					 }
+							e1.printStackTrace();
+							return;
+						 }
 
 				 if (sessionNum==1) {
 					 workspace.addSubject(subjectName, newFile, condFile, freq, hpf, lpf, slideavg, interval);
@@ -352,8 +356,9 @@ public class Hello {
 				 try {
 						Thread.sleep(1000);
 					 } catch (InterruptedException e1) {
-						e1.printStackTrace();
-					 }
+							e1.printStackTrace();
+							return;
+						 }
 
 				 if (sessionNum>Integer.valueOf(num_sessions.getText()).intValue()) {
 					 list.add(subjectName);
@@ -377,8 +382,9 @@ public class Hello {
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
-						e1.printStackTrace();
-					 }
+							e1.printStackTrace();
+							return;
+						 }
 				 splash.splashOff();
 			 }
 
@@ -737,6 +743,20 @@ public class Hello {
 					 return; // and stop executing the ANOVA stuff.
 				 }
 				 int numPlaces = Integer.parseInt(numPlacesStr);
+				 
+				 // INIT PROGRESS BAR
+				 
+				 JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+				 splash.setAlwaysOnTop(true);
+				 splash.splashOn();
+				 splash.setAlwaysOnTop(false);
+		         splash.setProgress(0, "Searching for brains...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+						return;
+					 }
 
 				 // CHANGE "ANOVA" TO "ANOVA P-VALUE"
 				 String outputDirectoryName = outputDirectoryBox.getText();
@@ -746,9 +766,14 @@ public class Hello {
 				 // CHECK THE DIRECTORY DOES NOT EXIST?? (AND ASK THEM TO MAKE SURE)
 				 statsOutputDirectory.mkdir(); // create new directory with name given
 
+				 splash.setProgress(10, "Running Hb ANOVA...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+						return;
+					 }
 				 
-				 // PROGRESS BAR - BIG CHUNK HERE
-				 // actually do the requested ANOVAs and write them to the output file(s):
 				 if (doHb) {
 					 File outputFileHb =
 							 new File(outputDirectoryPath + "\\" + "p-values_Hb.csv");
@@ -758,6 +783,15 @@ public class Hello {
 							 groupsAryLst, conditionsAryLst,
 							 numChunks, numPlaces);
 				 }
+				 
+				 splash.setProgress(55, "Running HbO ANOVA...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+						return;
+					 }
+				 
 				 if (doHbO) {
 					 File outputFileHbO =
 							 new File(outputDirectoryPath + "\\" + "p-values_HbO.csv");
@@ -766,6 +800,16 @@ public class Hello {
 							 groupsAryLst, conditionsAryLst,
 							 numChunks, numPlaces);
 				 }
+				 
+				 splash.setProgress(100, "Zombie ANOVA done!");
+				 try {
+						Thread.sleep(500);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+						return;
+					 }
+				 
+				 splash.splashOff();
 				 System.out.println("Done writing ANOVAs!");
 			 }
 		 });
@@ -1074,8 +1118,9 @@ public class Hello {
 				 }
 				 
 				 JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
-				 splash.splashOn();
 				 splash.setAlwaysOnTop(true);
+				 splash.splashOn();
+				 splash.setAlwaysOnTop(false);
 				 
 				 if ((list_2.getSelectionIndices()).length<1) {
 					 infoBox("Warning","Select a process.");
@@ -1084,9 +1129,10 @@ public class Hello {
 				 
 				 splash.setProgress(5, "Searching for brains...");
 				 try {
-						Thread.sleep(500);
+						Thread.sleep(200);
 					 } catch (InterruptedException e1) {
 						e1.printStackTrace();
+						return;
 					 }
 
 				 cond_list.clear(); 
@@ -1096,10 +1142,11 @@ public class Hello {
 				 
 				 splash.setProgress(10, "Locating brains...");
 				 try {
-						Thread.sleep(500);
+						Thread.sleep(200);
 					 } catch (InterruptedException e1) {
-						e1.printStackTrace();
-					 }
+							e1.printStackTrace();
+							return;
+						 }
 				 
 				 String name = text_dm_sub.getText();
 				 File hbOutput = workspace.getHbOutput(name);
@@ -1124,6 +1171,13 @@ public class Hello {
 				 }
 
 				 splash.setProgress(25, "Mining brain data...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+						return;
+					 }
+				 
 				 
 				 try {
 					 File rminput = workspace.getRMInput(name);
@@ -1180,6 +1234,12 @@ public class Hello {
 				 }
 				 
 				 splash.setProgress(80, "Processing brain data...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+						return;
+					 }
 
 				 try {
 					 // input file, process file, output file
@@ -1196,8 +1256,14 @@ public class Hello {
 					 return;
 				 }
 				 
-				 
 				 splash.setProgress(95, "Gathering brain bits...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+						return;
+					 }
+				 
 				 enableList(step1);
 				 list_1.removeAll();
 				 
@@ -1451,7 +1517,6 @@ public class Hello {
 			 @Override
 			 public void widgetSelected(SelectionEvent e) {
 				 File condFile = new File(text_7.getText());
-				 System.out.println("heretest");
 				 if (!setExists(condFile)) {
 					 return;
 				 }
@@ -1462,14 +1527,13 @@ public class Hello {
 				 File HbOFile = new File(text_5.getText());
 
 				 if (!HbFile.exists() && !HbOFile.exists()) {
-					 System.out.println("here3");
 					 return;
 				 }
 				 
 				 JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
-				 splash.splashOn();
 				 splash.setAlwaysOnTop(true);
-				 
+				 splash.splashOn();
+				 splash.setAlwaysOnTop(false);			 
 				 
 				 splash.setProgress(0, "Finding deoxygenated brains...");
 				 
@@ -1490,8 +1554,9 @@ public class Hello {
 				 try {
 						Thread.sleep(200);
 					 } catch (InterruptedException e1) {
-						e1.printStackTrace();
-					 }
+							e1.printStackTrace();
+							return;
+						 }
 
 				 if (HbOFile.exists()) {
 					 try {
@@ -1525,8 +1590,9 @@ public class Hello {
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
-						e1.printStackTrace();
-					 }
+							e1.printStackTrace();
+							return;
+						 }
 
 				 if (sessionNumH>Integer.valueOf(num_sessions_h.getText()).intValue()) {
 					 list.add(subjectNameH);
@@ -1552,8 +1618,9 @@ public class Hello {
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
-						e1.printStackTrace();
-					 }
+							e1.printStackTrace();
+							return;
+						 }
 
 				 text_4.setText("");
 				 text_5.setText("");
@@ -1564,8 +1631,9 @@ public class Hello {
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
-						e1.printStackTrace();
-					 }
+							e1.printStackTrace();
+							return;
+						 }
 				 splash.splashOff();
 			 }
 		 });
