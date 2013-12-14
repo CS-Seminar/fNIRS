@@ -150,7 +150,7 @@ public class Hello {
 	 * Create contents of the window.
 	 */
 	 protected int createContents() {
-		 shlFnirsDataProcessing = new Shell(SWT.DIALOG_TRIM | SWT.ON_TOP);
+		 shlFnirsDataProcessing = new Shell(SWT.DIALOG_TRIM | SWT.ON_TOP | SWT.MIN);
 		 shlFnirsDataProcessing.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/logo.png"));
 		 shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -160,11 +160,11 @@ public class Hello {
 		 fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN | SWT.CANCEL);
 		 DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing, SWT.ON_TOP);
 		 dlg.setText("Select Workspace");
-		 String selected = dlg.open(); // annoying new folder bug
+		 String selected = dlg.open();
 		 if (selected == null)
 			 return 1;
 		 workspace = new Workspace(selected,pre);
-
+		 
 		 final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
 		 list.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		 list.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
