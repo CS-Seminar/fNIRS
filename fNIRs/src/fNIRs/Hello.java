@@ -48,7 +48,6 @@ public class Hello {
     private FileDialog fileDialog;
     private Text text_7;
     private Text text_dm_sub;
-
     private String subjectName = "";
     private String subjectNameH = "";
     private int sessionNum;
