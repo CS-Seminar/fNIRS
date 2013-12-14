@@ -98,7 +98,9 @@ public class Hello {
      */
     public void open() {
         Display display = Display.getDefault();
-        createContents();
+        int result = createContents();
+        if (result==1)
+        	return;
         shlFnirsDataProcessing.open();
         shlFnirsDataProcessing.layout();
         while (!shlFnirsDataProcessing.isDisposed()) {
@@ -145,7 +147,7 @@ public class Hello {
 	/**
 	 * Create contents of the window.
 	 */
-	 protected void createContents() {
+	 protected int createContents() {
 		 shlFnirsDataProcessing = new Shell(SWT.DIALOG_TRIM);
 		 shlFnirsDataProcessing.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/logo.png"));
@@ -158,7 +160,7 @@ public class Hello {
 		 dlg.setText("Select Workspace");
 		 String selected = dlg.open(); // annoying new folder bug
 		 if (selected == null)
-			 return;
+			 return 1;
 		 workspace = new Workspace(selected,pre);
 
 		 final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
@@ -1066,7 +1068,6 @@ public class Hello {
 				 }
 
 				 splash.setProgress(25, "Mining brain data...");
-				 boolean done = false;
 				 
 				 try {
 					 File rminput = workspace.getRMInput(name);
@@ -1075,32 +1076,31 @@ public class Hello {
 					 if (radioAS.getSelection())
 						 dm.rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1);
 					 else if (radioSAX.getSelection())
-						 dm.SAX_RapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),3,6);
+						 dm.SAX_RapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1,6);
 					 else
 						 dm.features_rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1);
-					 done = true;
 				 }
 				 catch(MWException mwe) {
 					 mwe.printStackTrace();
-					 done = false;
+					 return;
 				 }
 				 
 				 splash.setProgress(80, "Processing brain data...");
 
-				 if (done) {
+				 try {
+					 // input file, process file, output file
+					 File inputFile = workspace.getRMInput(name);
+					 File outputFile = new File(workspace.getDMPath() + "\\" + text_dmoutput.getText() + ".xls");
 					 try {
-						 // input file, process file, output file
-						 File inputFile = workspace.getRMInput(name);
-						 File outputFile = new File(workspace.getDMPath() + "\\" + text_dmoutput.getText() + ".xls");
-						 try {
-							 rapidDriver.run(inputFile,rapidDriver.generateProcess(inputFile,workspace.getTemplate(list_2.getSelection()[0])),outputFile);
-						 } catch (IOException e1) {
-							 e1.printStackTrace();
-						 }
-					 } catch (OperatorException e1) {
+						 rapidDriver.run(inputFile,rapidDriver.generateProcess(inputFile,workspace.getTemplate(list_2.getSelection()[0])),outputFile);
+					 } catch (IOException e1) {
 						 e1.printStackTrace();
 					 }
+				 } catch (OperatorException e1) {
+					 e1.printStackTrace();
+					 return;
 				 }
+				 
 				 
 				 splash.setProgress(95, "Gathering brain bits...");
 				 enableList(step1);
@@ -1111,6 +1111,7 @@ public class Hello {
 					Thread.sleep(1000);
 				 } catch (InterruptedException e1) {
 					e1.printStackTrace();
+					return;
 				 }
 				 splash.splashOff();
 			 }
@@ -1562,5 +1563,7 @@ public class Hello {
 		 for (Control item : loadHatachi) {
 			 item.setVisible(false);
 		 }
+		 
+		 return 0;
 	 }
 }
