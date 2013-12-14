@@ -946,9 +946,13 @@ public class Hello {
 
                     // Notify user if channels are in more than one group or in
                     //    no group:
-                    infoBox("Warning", temp.getMissingChannelsMsg());
-                    infoBox("Warning!", temp.getDuplicatedChannelsMsg());
-                                 
+		    if (temp.channelsMissing()) {
+			infoBox("Warning", temp.getMissingChannelsMsg());
+		    }
+		    if (temp.channelsDuplicated()) {
+			infoBox("Warning!", temp.getDuplicatedChannelsMsg());
+		    }
+		    
                     // clear lists to prepare for new data:
                     groupsList.removeAll();
                     conditionsList.removeAll();

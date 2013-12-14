@@ -604,11 +604,21 @@ public class FNIRsStats {
                 //    THOSE TWO GROUPS...WHICH IS TOTALLY POSSIBLE, I GUESS.
                 //    MAYBE THIS IS BEYOND THE SCOPE OF OUR PROJECT TO CHECK?
 		localError(getDuplicatedChannelsMsg());
-            }
+            } else {
+		DuplicatedChannels = null;
+	    }
             if (!MissingChannels.isEmpty()) {
 		localError(getMissingChannelsMsg());
+	    } else {
+		MissingChannels = null;
 	    }
 	}
+	boolean channelsMissing() {
+	    return (MissingChannels == null);
+	}
+	boolean channelsDuplicated() {
+	    return (DuplicatedChannels == null);
+	}	
 	TreeSet<Integer> getMissingChannels() {
 	    return MissingChannels;
 	}
