@@ -71,6 +71,8 @@ public class Hello {
             JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
             splash.setAlwaysOnTop(true);
             splash.splashOn();
+            splash.setProgress(0, "Animating zombies...");
+            Thread.sleep(200);
             Hello window = new Hello();
             splash.setProgress(8, "Fetching brains...");
             Thread.sleep(200);
@@ -85,7 +87,7 @@ public class Hello {
             Thread.sleep(200);
             rapidDriver = new RapidDriver();
             splash.setProgress(100, "Zombies loaded!");
-            Thread.sleep(1000);
+            Thread.sleep(500);
             splash.splashOff();
             window.open();
         } catch (Exception e) {
@@ -148,7 +150,7 @@ public class Hello {
 	 * Create contents of the window.
 	 */
 	 protected int createContents() {
-		 shlFnirsDataProcessing = new Shell(SWT.DIALOG_TRIM);
+		 shlFnirsDataProcessing = new Shell(SWT.DIALOG_TRIM | SWT.ON_TOP);
 		 shlFnirsDataProcessing.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/logo.png"));
 		 shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -156,7 +158,7 @@ public class Hello {
 		 shlFnirsDataProcessing.setText("Zombie MiNIR - fNIRs Data Processing and Analysis");
 		 
 		 fileDialog = new FileDialog(shlFnirsDataProcessing, SWT.OPEN | SWT.CANCEL);
-		 DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing);
+		 DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing, SWT.ON_TOP);
 		 dlg.setText("Select Workspace");
 		 String selected = dlg.open(); // annoying new folder bug
 		 if (selected == null)
@@ -182,7 +184,7 @@ public class Hello {
 		 MenuItem mntmHelp = new MenuItem(menu_1, SWT.NONE);
 		 mntmHelp.setText("Tutorial");
 
-		 Button btnClear = new Button(shlFnirsDataProcessing, SWT.NONE);
+		 Button btnClear = new Button(shlFnirsDataProcessing, SWT.FLAT);
 		 btnClear.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 btnClear.addSelectionListener(new SelectionAdapter() {
 			 @Override
@@ -191,7 +193,7 @@ public class Hello {
 				 indexList.clear();
 			 }
 		 });
-		 btnClear.setBounds(10, 476, 226, 25);
+		 btnClear.setBounds(10, 466, 226, 30);
 		 btnClear.setText("Clear Selections");
 
 		 TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
@@ -313,10 +315,15 @@ public class Hello {
 					 return;
 				 }
 				 
-				 // prog bar begin here
 				 JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
 				 splash.splashOn();
 				 splash.setAlwaysOnTop(true);
+				 splash.setProgress(0, "Zombies have arrived...");
+				 try {
+						Thread.sleep(500);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+					 }
 
 				 char slideavg = 'n';
 				 int interval = 0;
@@ -326,7 +333,7 @@ public class Hello {
 					 interval = (Integer.valueOf(spinner.getText())).intValue();
 				 }
 				 
-				 splash.setProgress(7, "Searching for brains...");
+				 splash.setProgress(23, "Searching for brains...");
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
@@ -341,7 +348,7 @@ public class Hello {
 				 }
 				 sessionNum++;
 				 
-				 splash.setProgress(18, "Deep frying grey matter...");
+				 splash.setProgress(45, "Deep frying grey matter...");
 				 try {
 						Thread.sleep(1000);
 					 } catch (InterruptedException e1) {
@@ -368,7 +375,7 @@ public class Hello {
 				 
 				 splash.setProgress(100, "Brains have been preprocessed!");
 				 try {
-						Thread.sleep(1000);
+						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
 						e1.printStackTrace();
 					 }
@@ -1249,7 +1256,7 @@ public class Hello {
 		  */
 
 
-		 Button btnRemove = new Button(shlFnirsDataProcessing, SWT.NONE);
+		 Button btnRemove = new Button(shlFnirsDataProcessing, SWT.FLAT);
 		 btnRemove.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 btnRemove.addSelectionListener(new SelectionAdapter() {
 			 @Override
@@ -1268,7 +1275,7 @@ public class Hello {
 				 indexList.clear();
 			 }
 		 });
-		 btnRemove.setBounds(10, 507, 226, 25);
+		 btnRemove.setBounds(10, 502, 226, 30);
 		 btnRemove.setText("Remove Files");
 
 		 Label lblSubjectName2 = new Label(composite_4, SWT.NONE);
@@ -1389,11 +1396,6 @@ public class Hello {
 				 
 				 
 				 splash.setProgress(0, "Finding deoxygenated brains...");
-				 try {
-						Thread.sleep(200);
-					 } catch (InterruptedException e1) {
-						e1.printStackTrace();
-					 }
 				 
 				 if (HbFile.exists()) {
 					 try {
@@ -1408,7 +1410,7 @@ public class Hello {
 					 HbFile = null;
 				 }
 				 
-				 splash.setProgress(15, "Finding oxygenated brains...");
+				 splash.setProgress(18, "Finding oxygenated brains...");
 				 try {
 						Thread.sleep(200);
 					 } catch (InterruptedException e1) {
@@ -1428,7 +1430,7 @@ public class Hello {
 					 HbOFile = null;
 				 }
 				 
-				 splash.setProgress(30, "Prepping brains...");
+				 splash.setProgress(36, "Prepping brains...");
 				 try {
 						Thread.sleep(200);
 					 } catch (InterruptedException e1) {
@@ -1562,7 +1564,7 @@ public class Hello {
 		 btnCancel.setText("Cancel");
 		 loadHatachi.add(btnCancel);
 		 
-		 Button btnNewButton_1 = new Button(shlFnirsDataProcessing, SWT.NONE);
+		 Button btnNewButton_1 = new Button(shlFnirsDataProcessing, SWT.FLAT);
 		 btnNewButton_1.addSelectionListener(new SelectionAdapter() {
 		 	@Override
 		 	public void widgetSelected(SelectionEvent e) {
@@ -1609,6 +1611,8 @@ public class Hello {
 		 btnNewButton_1.setText("Change Workspace");
 		 
 		 Label lblSubjectList = new Label(shlFnirsDataProcessing, SWT.NONE);
+		 lblSubjectList.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
+		 lblSubjectList.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		 lblSubjectList.setBounds(41, 10, 146, 25);
 		 lblSubjectList.setText("Subject List:");
 
