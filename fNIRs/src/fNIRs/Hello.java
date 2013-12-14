@@ -466,7 +466,7 @@ public class Hello {
 		 loadItems.add(label_1);
 
 		 Label lblPreprocessingOptions = new Label(composite_3, SWT.NONE);
-		 lblPreprocessingOptions.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
+		 lblPreprocessingOptions.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 lblPreprocessingOptions.setBounds(30, 84, 189, 25);
 		 lblPreprocessingOptions.setText("Preprocessing Options:");
 		 loadItems.add(lblPreprocessingOptions);
@@ -939,17 +939,17 @@ public class Hello {
 		 final Button radioAS = new Button(composite_2, SWT.RADIO);
 		 radioAS.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 radioAS.setSelection(true);
-		 radioAS.setBounds(415, 128, 212, 25);
+		 radioAS.setBounds(434, 122, 212, 25);
 		 radioAS.setText("Averaged Segments");
 
 		 final Button radioSAX = new Button(composite_2, SWT.RADIO);
 		 radioSAX.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 radioSAX.setBounds(415, 166, 142, 25);
+		 radioSAX.setBounds(434, 180, 142, 25);
 		 radioSAX.setText("SAX Segments");
 
 		 Button radioFBS = new Button(composite_2, SWT.RADIO);
 		 radioFBS.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 radioFBS.setBounds(415, 206, 223, 25);
+		 radioFBS.setBounds(434, 268, 223, 25);
 		 radioFBS.setText("Feature-based Segments");
 
 		 final ArrayList<Control> step2 = new ArrayList<Control>();
@@ -962,11 +962,11 @@ public class Hello {
 		 
 		 text_dmoutput = new Text(composite_2, SWT.BORDER);
 		 text_dmoutput.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 text_dmoutput.setBounds(415, 284, 212, 25);
+		 text_dmoutput.setBounds(431, 383, 212, 25);
 		 
 		 Label lbldmoutput = new Label(composite_2, SWT.NONE);
 		 lbldmoutput.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 lbldmoutput.setBounds(415, 251, 161, 25);
+		 lbldmoutput.setBounds(431, 350, 161, 25);
 		 lbldmoutput.setText("Output File Name:");
 
 		 final ArrayList<Integer> cond_list = new ArrayList<Integer>();
@@ -1007,7 +1007,7 @@ public class Hello {
 		 
 		 final List list_2 = new List(composite_2, SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 		 list_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 list_2.setBounds(174, 120, 180, 339);
+		 list_2.setBounds(174, 120, 224, 339);
 		 
 		 for (String template : workspace.getTemplates()) {
 			 list_2.add(template);
@@ -1117,7 +1117,7 @@ public class Hello {
 			 }
 		 });
 		 // btnRun.setBounds(216, 120, 485, 308);
-		 btnRun.setBounds(415, 428, 175, 31);
+		 btnRun.setBounds(431, 428, 175, 31);
 		 btnRun.setText("Run");
 		 step2.add(btnRun);
 
@@ -1174,11 +1174,11 @@ public class Hello {
 		 Label lblNewLabel_1 = new Label(composite_2, SWT.NONE);
 		 lblNewLabel_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 lblNewLabel_1.setBounds(30, 90, 126, 25);
-		 lblNewLabel_1.setText("Select Conditions:");
+		 lblNewLabel_1.setText("Conditions:");
 
 		 Label lblDataRepresentation = new Label(composite_2, SWT.NONE);
 		 lblDataRepresentation.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 lblDataRepresentation.setBounds(414, 90, 196, 25);
+		 lblDataRepresentation.setBounds(430, 90, 196, 25);
 		 lblDataRepresentation.setText("Data Representation:");
 		 
 		 Button btnCancel_DM = new Button(composite_2, SWT.NONE);
@@ -1191,14 +1191,42 @@ public class Hello {
 		 		enableList(step1);
 		 	}
 		 });
-		 btnCancel_DM.setBounds(610, 434, 75, 25);
+		 btnCancel_DM.setBounds(626, 434, 75, 25);
 		 btnCancel_DM.setText("Cancel");
 		 step2.add(btnCancel_DM);
 		 
 		 Label lblSelectProcess = new Label(composite_2, SWT.NONE);
 		 lblSelectProcess.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 lblSelectProcess.setBounds(174, 90, 117, 25);
-		 lblSelectProcess.setText("Select Process:");
+		 lblSelectProcess.setText("Processes:");
+		 
+		 Spinner spinner_1 = new Spinner(composite_2, SWT.BORDER);
+		 spinner_1.setBounds(654, 156, 47, 22);
+		 
+		 Spinner spinner_2 = new Spinner(composite_2, SWT.BORDER);
+		 spinner_2.setBounds(654, 208, 47, 22);
+		 
+		 Spinner spinner_3 = new Spinner(composite_2, SWT.BORDER);
+		 spinner_3.setBounds(654, 306, 47, 22);
+		 
+		 Label lblSegments = new Label(composite_2, SWT.NONE);
+		 lblSegments.setBounds(489, 159, 55, 15);
+		 lblSegments.setText("Segments:");
+		 
+		 Label lblNewLabel_2 = new Label(composite_2, SWT.NONE);
+		 lblNewLabel_2.setText("Sequence Length:");
+		 lblNewLabel_2.setBounds(483, 211, 123, 15);
+		 
+		 Label lblNewLabel_3 = new Label(composite_2, SWT.NONE);
+		 lblNewLabel_3.setBounds(489, 309, 55, 15);
+		 lblNewLabel_3.setText("Segments:");
+		 
+		 Spinner spinner_4 = new Spinner(composite_2, SWT.BORDER);
+		 spinner_4.setBounds(654, 240, 47, 22);
+		 
+		 Label lblNewLabel_5 = new Label(composite_2, SWT.NONE);
+		 lblNewLabel_5.setBounds(490, 235, 102, 15);
+		 lblNewLabel_5.setText("Alphabet Size:");
 
 		 for (Control item : step2) {
 			 item.setEnabled(false);
