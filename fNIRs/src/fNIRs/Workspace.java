@@ -185,22 +185,22 @@ public class Workspace {
 		if (hboFile.exists()) {
 			tempFile = addConditions(hboFile, condFile);
 			concatFiles(getHbO(name),tempFile);
-			hbFile.delete();
+			hboFile.delete();
 		}
 	}
 	
 	void concatSession(String name, File hbFile, File hboFile, File condFile) {
 		// same as above but for hitachi (no preprocessing)
 		File tempFile;
-		if (hbFile.exists()) {
+		if (hbFile!=null) {
 			tempFile = addConditions(hbFile, condFile);
 			concatFiles(getHb(name),tempFile);
 			hbFile.delete();
 		}
-		if (hboFile.exists()) {
+		if (hboFile!=null) {
 			tempFile = addConditions(hboFile, condFile);
 			concatFiles(getHbO(name),tempFile);
-			hbFile.delete();
+			hboFile.delete();
 		}
 	}
 	

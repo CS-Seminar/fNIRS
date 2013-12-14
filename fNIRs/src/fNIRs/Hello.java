@@ -161,6 +161,8 @@ public class Hello {
 		 DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing);
 		 dlg.setText("Select Workspace");
 		 String selected = dlg.open(); // annoying new folder bug
+		 if (selected == null)
+			 return;
 		 workspace = new Workspace(selected,pre);
 
 		 final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
@@ -472,7 +474,7 @@ public class Hello {
 		 lblNumberOfSessions.setBounds(390, 30, 147, 25);
 		 lblNumberOfSessions.setText("Number of Sessions:");
 
-		 Button button_3 = new Button(composite_3, SWT.NONE);
+		 final Button button_3 = new Button(composite_3, SWT.NONE);
 		 button_3.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 button_3.addSelectionListener(new SelectionAdapter() {
 			 @Override
@@ -912,7 +914,7 @@ public class Hello {
 		 final Button radioSAX = new Button(composite_2, SWT.RADIO);
 		 radioSAX.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 radioSAX.setBounds(415, 166, 270, 25);
-		 radioSAX.setText("Symbolic Aggregate Approximation Segments");
+		 radioSAX.setText("SAX Segments");
 
 		 Button radioFBS = new Button(composite_2, SWT.RADIO);
 		 radioFBS.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -962,9 +964,11 @@ public class Hello {
 			 public void widgetSelected(SelectionEvent e) {
 				 if (text_dm_sub.getEnabled()) {
 					 String[] dmSubjects = list.getSelection();
-					 String dmSubject = dmSubjects[dmSubjects.length-1];
-					 text_dm_sub.setText(dmSubject);
-					 text_dmoutput.setText(dmSubject);
+					 if (dmSubjects.length>0) {
+						 String dmSubject = dmSubjects[dmSubjects.length-1];
+						 text_dm_sub.setText(dmSubject);
+						 text_dmoutput.setText(dmSubject);
+					 }
 				 }
 			 } 
 		 });
@@ -1332,6 +1336,9 @@ public class Hello {
 						 return;
 					 }
 				 }
+				 else {
+					 HbFile = null;
+				 }
 
 				 if (HbOFile.exists()) {
 					 try {
@@ -1341,6 +1348,9 @@ public class Hello {
 						 e1.printStackTrace();
 						 return;
 					 }
+				 }
+				 else {
+					 HbOFile = null;
 				 }
 
 				 if (sessionNumH==1) {
@@ -1452,6 +1462,12 @@ public class Hello {
 		 btnNewButton_1.addSelectionListener(new SelectionAdapter() {
 		 	@Override
 		 	public void widgetSelected(SelectionEvent e) {
+		 		
+		 		if (button_3.getEnabled()) {
+		 			infoBox("Warning!","Cancel file loading before changing workspace.");
+		 			return;
+		 		}
+		 		
 		 		//cancel iss
 				 for (Control item : loadItems) {
 					 item.setVisible(false);
@@ -1489,6 +1505,8 @@ public class Hello {
 				 DirectoryDialog dlg = new DirectoryDialog(shlFnirsDataProcessing);
 				 dlg.setText("Select Workspace");
 				 String selected = dlg.open(); // annoying new folder bug
+				 if (selected == null)
+					 return;
 				 workspace = new Workspace(selected,pre);
 				 
 				 workspace.loadSubjects(list);
