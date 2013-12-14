@@ -2,13 +2,17 @@ package fNIRs;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeSet;
+
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
@@ -20,11 +24,15 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
+
 import com.mathworks.toolbox.javabuilder.*;
+
 import zombie.DataMining;
 import zombie.Preprocess;
+
 import com.rapidminer.operator.OperatorException;
 import com.thehowtotutorial.splashscreen.JSplash;
+
 import java.awt.Color;
 
 public class Hello {
@@ -269,7 +277,7 @@ public class Hello {
 
 				 subjectName = text_subName.getText();
 
-				 if (subjectName == "" || subjectName.matches(subjectNameH) || Arrays.asList(list.getItems()).contains(subjectName)) {
+				 if (subjectName == "" || subjectName.matches(subjectNameH) || subjectName.matches(subjectNameOther) || Arrays.asList(list.getItems()).contains(subjectName)) {
 					 infoBox("Warning", "Please enter a new name.");
 					 return;
 				 }
@@ -1300,7 +1308,7 @@ public class Hello {
 			 public void widgetSelected(SelectionEvent e) {
 				 subjectNameH = text_subName2.getText();
 
-				 if (subjectNameH == "" || subjectNameH.matches(subjectName) || Arrays.asList(list.getItems()).contains(subjectNameH)) {
+				 if (subjectNameH == "" || subjectNameH.matches(subjectName) || subjectNameH.matches(subjectNameOther) || Arrays.asList(list.getItems()).contains(subjectNameH)) {
 					 infoBox("Warning","Please enter a new name.");
 					 return;
 				 }
@@ -1524,40 +1532,185 @@ public class Hello {
 		 composite_other.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 tabOther.setControl(composite_other);
 		 
-		 ArrayList<Control> loadOther = new ArrayList<Control>();
+		 final ArrayList<Control> loadOther = new ArrayList<Control>();
 		 
 		 text_hbother = new Text(composite_other, SWT.BORDER);
 		 text_hbother.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 text_hbother.setBounds(146, 190, 396, 25);
+		 loadOther.add(text_hbother);
 		 
 		 text_hboother = new Text(composite_other, SWT.BORDER);
 		 text_hboother.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 text_hboother.setBounds(146, 230, 396, 25);
+		 loadOther.add(text_hboother);
 		 
-		 Button browse_hbother = new Button(composite_other, SWT.NONE);
+		 final Button browse_hbother = new Button(composite_other, SWT.NONE);
+		 browse_hbother.addSelectionListener(new SelectionAdapter() {
+		 	@Override
+		 	public void widgetSelected(SelectionEvent e) {
+		 		browse(text_hbother);
+		 	}
+		 });
 		 browse_hbother.setText("Browse...");
 		 browse_hbother.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 browse_hbother.setBounds(548, 190, 127, 25);
+		 loadOther.add(browse_hbother);
 		 
-		 Button browse_hboother = new Button(composite_other, SWT.NONE);
+		 final Button browse_hboother = new Button(composite_other, SWT.NONE);
+		 browse_hboother.addSelectionListener(new SelectionAdapter() {
+		 	@Override
+		 	public void widgetSelected(SelectionEvent e) {
+		 		browse(text_hboother);
+		 	}
+		 });
 		 browse_hboother.setText("Browse...");
 		 browse_hboother.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 browse_hboother.setBounds(548, 230, 127, 25);
+		 loadOther.add(browse_hboother);
 		 
-		 Label label_hboother = new Label(composite_other, SWT.NONE);
+		 final Label label_hboother = new Label(composite_other, SWT.NONE);
 		 label_hboother.setText("HbO File:");
 		 label_hboother.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 label_hboother.setBounds(30, 230, 84, 25);
+		 loadOther.add(label_hboother);
 		 
-		 Label lbl_hbother = new Label(composite_other, SWT.NONE);
+		 final Label lbl_hbother = new Label(composite_other, SWT.NONE);
 		 lbl_hbother.setText("Hb File:");
 		 lbl_hbother.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 lbl_hbother.setBounds(30, 190, 84, 25);
+		 loadOther.add(lbl_hbother);
+		 
+		 final Spinner spinner_nsother = new Spinner(composite_other, SWT.BORDER);
+		 spinner_nsother.setMinimum(1);
+		 spinner_nsother.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		 spinner_nsother.setBounds(182, 75, 47, 25);
+		 
+		 final Label lbl_seshnum = new Label(composite_other, SWT.NONE);
+		 lbl_seshnum.setText("1 of 1");
+		 lbl_seshnum.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		 lbl_seshnum.setAlignment(SWT.CENTER);
+		 lbl_seshnum.setBounds(330, 355, 74, 20);
+		 loadOther.add(lbl_seshnum);
+		 
+		 final Button button_hbother = new Button(composite_other, SWT.CHECK);
+		 button_hbother.setText("Hb");
+		 button_hbother.setBounds(512, 75, 46, 16);
+		 
+		 final Button button_hboother = new Button(composite_other, SWT.CHECK);
+		 button_hboother.setText("HbO");
+		 button_hboother.setBounds(564, 75, 47, 16);
 		 
 		 Button add_other = new Button(composite_other, SWT.NONE);
+		 add_other.addSelectionListener(new SelectionAdapter() {
+		 	@Override
+		 	public void widgetSelected(SelectionEvent e) {
+
+		 		File condFile = new File(text_conditionsother.getText());
+		 		if (!setExists(condFile))
+		 			return;
+
+		 		int channels = (Integer.valueOf(spinner_nsother.getText())).intValue();
+
+		 		File Hb = new File(text_hbother.getText());
+		 		File HbO = new File(text_hboother.getText());
+
+		 		if (!Hb.exists() && !HbO.exists()) {
+		 			return;
+		 		}
+					 
+		 		File HbFile = new File("HbFile");
+				File HbOFile = new File("HbOFile");
+
+				if (text_hbother.getText()!="") {
+					 try {
+						 Files.copy(Hb.toPath(),HbFile.toPath().toAbsolutePath(),StandardCopyOption.REPLACE_EXISTING);
+					 } catch (IOException e2) {
+						 // TODO Auto-generated catch block
+						 e2.printStackTrace();
+						 return;
+					 }
+				 }
+				 else {
+					 HbFile = null;
+				 }
+
+				if (text_hboother.getText()!="") {                                
+					try {
+						 Files.copy(HbO.toPath(),HbOFile.toPath().toAbsolutePath(),StandardCopyOption.REPLACE_EXISTING);
+					 } catch (IOException e2) {
+						 // TODO Auto-generated catch block
+						 e2.printStackTrace();
+						 return;
+					 }
+				 }
+				 else {
+					 HbOFile = null;
+				 }
+					 
+		 		// prog bar begin here
+		 		JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+		 		splash.splashOn();
+		 		splash.setAlwaysOnTop(true);
+
+		 		if (sessionNumOther==1) {
+		 			workspace.addSubject(subjectNameOther, HbFile, HbOFile, condFile);
+		 		}
+		 		else{
+		 			workspace.concatSession(subjectNameOther, HbFile, HbOFile, condFile);
+		 		}
+		 		sessionNumOther++;
+					 
+		 		splash.setProgress(33, "Searching for brains...");
+		 		try {
+		 			Thread.sleep(500);
+		 		} catch (InterruptedException e1) {
+		 			e1.printStackTrace();
+		 		}
+
+		 		if (sessionNumOther>Integer.valueOf(spinner_nsother.getText()).intValue()) {
+		 			list.add(subjectNameOther);
+		 			for (Control item : loadOther) {
+		 				item.setVisible(false);
+		 			}
+		 			text_subnameOther.setEnabled(true);
+		 			spinner_nsother.setEnabled(true);
+		 			button_2.setEnabled(true);
+
+		 			button_hbother.setEnabled(true);
+		 			button_hboother.setEnabled(true);
+
+		 			text_subnameOther.setText("");
+		 			spinner_nsother.setSelection(1);
+		 		}
+		 		else {
+		 			lbl_seshnum.setText(sessionNumOther + " of " + spinner_nsother.getText());
+		 		}
+					 
+		 		splash.setProgress(68, "Offering Hitachi-san some brains...");
+		 		try {
+		 			Thread.sleep(500);
+		 		} catch (InterruptedException e1) {
+		 			e1.printStackTrace();
+		 		}
+
+		 		text_hbother.setText("");
+		 		text_hboother.setText("");
+		 		text_conditionsother.setText("");
+		 		text_subnameOther.setText("");
+		 		
+		 		splash.setProgress(100, "Hitachi likes brains!");
+		 		try {
+		 			Thread.sleep(1000);
+		 		} catch (InterruptedException e1) {
+		 			e1.printStackTrace();
+		 		}
+		 		splash.splashOff();
+		 	}
+		 });
 		 add_other.setText("Add");
 		 add_other.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 add_other.setBounds(330, 390, 75, 25);
+		 loadOther.add(add_other);
 		 
 		 Label label_subNameOther = new Label(composite_other, SWT.NONE);
 		 label_subNameOther.setText("Subject Name:");
@@ -1574,26 +1727,7 @@ public class Hello {
 		 label_10.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 label_10.setBounds(306, 339, 105, 15);
 		 
-		 Spinner spinner_nsother = new Spinner(composite_other, SWT.BORDER);
-		 spinner_nsother.setMinimum(1);
-		 spinner_nsother.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 spinner_nsother.setBounds(182, 75, 47, 25);
-		 
-		 Label lbl_seshnum = new Label(composite_other, SWT.NONE);
-		 lbl_seshnum.setText("1 of 1");
-		 lbl_seshnum.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 lbl_seshnum.setAlignment(SWT.CENTER);
-		 lbl_seshnum.setBounds(330, 355, 74, 20);
-		 
-		 final Button button_hbother = new Button(composite_other, SWT.CHECK);
-		 button_hbother.setText("Hb");
-		 button_hbother.setBounds(512, 75, 46, 16);
-		 
-		 final Button button_hboother = new Button(composite_other, SWT.CHECK);
-		 button_hboother.setText("HbO");
-		 button_hboother.setBounds(564, 75, 47, 16);
-		 
-		 Button enter_other = new Button(composite_other, SWT.NONE);
+		 final Button enter_other = new Button(composite_other, SWT.NONE);
 		 enter_other.addSelectionListener(new SelectionAdapter() {
 		 	@Override
 		 	public void widgetSelected(SelectionEvent e) {
@@ -1609,32 +1743,31 @@ public class Hello {
 					 return;
 				 }
 
-				 for (Control item : loadHatachi) {
+				 for (Control item : loadOther) {
 					 item.setVisible(true);
 				 }
 
-				 if (!btnHb.getSelection()) {
-					 text_4.setVisible(false);
-					 btnNewButton.setVisible(false);
-					 lblHbFile.setVisible(false);
+				 if (!button_hbother.getSelection()) {
+					 text_hbother.setVisible(false);
+					 browse_hbother.setVisible(false);
+					 lbl_hbother.setVisible(false);
 				 }
 
-				 if (!btnHbo.getSelection()) {
-					 text_5.setVisible(false);
-					 btnBrowse_1.setVisible(false);
-					 lblHboFile.setVisible(false);
+				 if (!button_hboother.getSelection()) {
+					 text_hboother.setVisible(false);
+					 browse_hboother.setVisible(false);
+					 label_hboother.setVisible(false);	
 				 }
 
-				 sessionNumH = 1;
+				 sessionNumOther = 1;
 
-				 lblOf_H.setText("1 of " + num_sessions_h.getText());
+				 lbl_seshnum.setText("1 of " + spinner_nsother.getText());
 
-				 text_subName2.setEnabled(false);
-				 num_sessions_h.setEnabled(false);
-				 button_2.setEnabled(false);
-				 num_channels_H.setEnabled(false);
-				 btnHb.setEnabled(false);
-				 btnHbo.setEnabled(false);
+				 text_subnameOther.setEnabled(false);
+				 spinner_nsother.setEnabled(false);
+				 enter_other.setEnabled(false);
+				 button_hbother.setEnabled(false);
+				 button_hboother.setEnabled(false);
 		 	}
 		 });
 		 enter_other.setText("Enter");
@@ -1645,20 +1778,30 @@ public class Hello {
 		 lbl_conditionsother.setText("Conditions File:");
 		 lbl_conditionsother.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 lbl_conditionsother.setBounds(30, 270, 111, 25);
+		 loadOther.add(lbl_conditionsother);
 		 
 		 text_conditionsother = new Text(composite_other, SWT.BORDER);
 		 text_conditionsother.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 text_conditionsother.setBounds(146, 270, 396, 25);
+		 loadOther.add(text_conditionsother);
 		 
 		 Button browse_condother = new Button(composite_other, SWT.NONE);
+		 browse_condother.addSelectionListener(new SelectionAdapter() {
+		 	@Override
+		 	public void widgetSelected(SelectionEvent e) {
+		 		browse(text_conditionsother);
+		 	}
+		 });
 		 browse_condother.setText("Browse...");
 		 browse_condother.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 browse_condother.setBounds(548, 270, 127, 25);
+		 loadOther.add(browse_condother);
 		 
 		 Label label_ppoptions = new Label(composite_other, SWT.NONE);
 		 label_ppoptions.setText("Preprocessing Options:");
 		 label_ppoptions.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
 		 label_ppoptions.setBounds(30, 128, 189, 25);
+		 loadOther.add(label_ppoptions);
 		 
 		 Label lbl_numSessionsOther = new Label(composite_other, SWT.NONE);
 		 lbl_numSessionsOther.setText("Number of Sessions:");
@@ -1666,9 +1809,28 @@ public class Hello {
 		 lbl_numSessionsOther.setBounds(30, 75, 149, 25);
 		 
 		 Button cancel_other = new Button(composite_other, SWT.NONE);
+		 cancel_other.addSelectionListener(new SelectionAdapter() {
+		 	@Override
+		 	public void widgetSelected(SelectionEvent e) {
+		 		 workspace.removeSubject(subjectNameOther);
+				 for (Control item : loadOther) {
+					 item.setVisible(false);
+				 }
+				 text_subnameOther.setEnabled(true);
+				 spinner_nsother.setEnabled(true);
+				 enter_other.setEnabled(true);
+
+				 button_hbother.setEnabled(true);
+				 button_hboother.setEnabled(true);
+
+				 text_subnameOther.setText("");
+				 spinner_nsother.setSelection(1);
+		 	}
+		 });
 		 cancel_other.setText("Cancel");
 		 cancel_other.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 cancel_other.setBounds(411, 390, 84, 25);
+		 loadOther.add(cancel_other);
 		 
 		 Button btnNewButton_1 = new Button(shlFnirsDataProcessing, SWT.NONE);
 		 btnNewButton_1.addSelectionListener(new SelectionAdapter() {
@@ -1721,6 +1883,10 @@ public class Hello {
 		 lblSubjectList.setText("Subject List:");
 
 		 for (Control item : loadHatachi) {
+			 item.setVisible(false);
+		 }
+
+		 for (Control item : loadOther) {
 			 item.setVisible(false);
 		 }
 		 
