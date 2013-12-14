@@ -915,7 +915,15 @@ public class Hello {
                         ArrayList<File> hbFiles = new ArrayList<File>();
                         // and add each subject's Hb file to the ArrayList:
                         for (String subject: subjects) {
-                            hbFiles.add(workspace.getHb(subject));
+			    File dataFile = workspace.getHb(subject);
+			    if (dataFile != null &&
+				dataFile.exists()){
+				hbFiles.add(dataFile);
+			    } else {
+				infoBox("Error", "Hb file for " + subject +
+					" does not exist.");
+				return;
+			    }
                         }
                         // then produce a GroupedChannels object from those files and the
                         //    groupings file:
@@ -926,7 +934,15 @@ public class Hello {
                         ArrayList<File> hbOFiles = new ArrayList<File>();
                         // and add each subject's HbO file to the ArrayList:
                         for (String subject: subjects) {
-                            hbOFiles.add(workspace.getHbO(subject));
+			    File dataFile = workspace.getHbO(subject);
+			    if (dataFile != null &&
+				dataFile.exists()){
+				hbOFiles.add(dataFile);
+			    } else {
+				infoBox("Error", "HbO file for " + subject +
+					" does not exist.");
+				return;
+			    }
                         }
                         // then produce a GroupedChannels object from those files and the
                         //    groupings file:
