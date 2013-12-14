@@ -616,10 +616,10 @@ public class FNIRsStats {
 	    }
 	}
 	boolean channelsMissing() {
-	    return (MissingChannels == null);
+	    return (MissingChannels != null);
 	}
 	boolean channelsDuplicated() {
-	    return (DuplicatedChannels == null);
+	    return (DuplicatedChannels != null);
 	}	
 	TreeSet<Integer> getMissingChannels() {
 	    return MissingChannels;
