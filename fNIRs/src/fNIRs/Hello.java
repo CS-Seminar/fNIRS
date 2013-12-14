@@ -935,19 +935,61 @@ public class Hello {
 
 		 Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 		 tbtmMachineLearning.setControl(composite_2);
+		 
+		 final Spinner spinner_avgseg = new Spinner(composite_2, SWT.BORDER);
+		 spinner_avgseg.setBounds(654, 156, 47, 22);
+		 
+		 final Spinner spinner_seqlen = new Spinner(composite_2, SWT.BORDER);
+		 spinner_seqlen.setEnabled(false);
+		 spinner_seqlen.setBounds(654, 208, 47, 22);
+		 
+		 final Spinner spinner_fbs = new Spinner(composite_2, SWT.BORDER);
+		 spinner_fbs.setEnabled(false);
+		 spinner_fbs.setBounds(654, 306, 47, 22);
+		 
+		 final Spinner spinner_alphsize = new Spinner(composite_2, SWT.BORDER);
+		 spinner_alphsize.setEnabled(false);
+		 spinner_alphsize.setBounds(654, 240, 47, 22);
 
 		 final Button radioAS = new Button(composite_2, SWT.RADIO);
+		 radioAS.addSelectionListener(new SelectionAdapter() {
+		 	@Override
+		 	public void widgetSelected(SelectionEvent e) {
+		 		spinner_avgseg.setEnabled(true);
+		 		spinner_seqlen.setEnabled(false);
+		 		spinner_alphsize.setEnabled(false);
+		 		spinner_fbs.setEnabled(false);
+		 	}
+		 });
 		 radioAS.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 radioAS.setSelection(true);
 		 radioAS.setBounds(434, 122, 212, 25);
 		 radioAS.setText("Averaged Segments");
 
 		 final Button radioSAX = new Button(composite_2, SWT.RADIO);
+		 radioSAX.addSelectionListener(new SelectionAdapter() {
+		 	@Override
+		 	public void widgetSelected(SelectionEvent e) {
+		 		spinner_avgseg.setEnabled(false);
+		 		spinner_seqlen.setEnabled(true);
+		 		spinner_alphsize.setEnabled(true);
+		 		spinner_fbs.setEnabled(false);
+		 	}
+		 });
 		 radioSAX.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 radioSAX.setBounds(434, 180, 142, 25);
 		 radioSAX.setText("SAX Segments");
 
 		 Button radioFBS = new Button(composite_2, SWT.RADIO);
+		 radioFBS.addSelectionListener(new SelectionAdapter() {
+		 	@Override
+		 	public void widgetSelected(SelectionEvent e) {
+		 		spinner_avgseg.setEnabled(false);
+		 		spinner_seqlen.setEnabled(false);
+		 		spinner_alphsize.setEnabled(false);
+		 		spinner_fbs.setEnabled(true);
+		 	}
+		 });
 		 radioFBS.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 radioFBS.setBounds(434, 268, 223, 25);
 		 radioFBS.setText("Feature-based Segments");
@@ -1053,18 +1095,25 @@ public class Hello {
 					 }
 				 
 				 String name = text_dm_sub.getText();
+				 File hbOutput = workspace.getHbOutput(name);
+				 File hboOutput = workspace.getHbOOutput(name);
+				 if (hbOutput.exists())
+					 hbOutput.delete();
+				 if (hboOutput.exists())
+					 hboOutput.delete();
+				 
 				 if (btnHb_1.getSelection()) {
-					 rapidDriver.filter(cond_list, workspace.getHb(name), workspace.getHbOutput(name));
+					 rapidDriver.filter(cond_list, workspace.getHb(name), hbOutput);
 				 }
 				 else {
-					 rapidDriver.empty(workspace.getHbOutput(name));
+					 rapidDriver.empty(hbOutput);
 				 }
 
 				 if (btnHbO_1.getSelection()) {
-					 rapidDriver.filter(cond_list, workspace.getHbO(name), workspace.getHbOOutput(name));
+					 rapidDriver.filter(cond_list, workspace.getHbO(name), hboOutput);
 				 }
 				 else {
-					 rapidDriver.empty(workspace.getHbOOutput(name));
+					 rapidDriver.empty(hboOutput);
 				 }
 
 				 splash.setProgress(25, "Mining brain data...");
@@ -1073,12 +1122,46 @@ public class Hello {
 					 File rminput = workspace.getRMInput(name);
 					 if (rminput.exists())
 						 rminput.delete();
-					 if (radioAS.getSelection())
-						 dm.rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1);
-					 else if (radioSAX.getSelection())
-						 dm.SAX_RapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1,6);
-					 else
-						 dm.features_rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1);
+					 if (radioAS.getSelection()) {
+						 int num_segs;
+						 try {
+							 num_segs = (Integer.valueOf(spinner_avgseg.getText())).intValue();
+						 }
+						 catch (NumberFormatException nfe) {
+							 nfe.printStackTrace();
+							 infoBox("Warning!","Number of segments requires an integer.");
+							 return;
+						 }
+						 dm.rapidFormatConversion(hbOutput.getAbsolutePath(),hboOutput.getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),num_segs);
+					 }
+					 else if (radioSAX.getSelection()) {
+						 int seq_len;
+						 int alph_size;
+						 try {
+							 seq_len = (Integer.valueOf(spinner_seqlen.getText())).intValue();
+							 alph_size = (Integer.valueOf(spinner_alphsize.getText())).intValue();
+						 }
+						 catch (NumberFormatException nfe) {
+							 nfe.printStackTrace();
+							 infoBox("Warning!","Sequence length and Alphabet Size require integers.");
+							 return;
+						 }
+						 dm.SAX_RapidFormatConversion(hbOutput.getAbsolutePath(),hboOutput.getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),
+								 seq_len,alph_size);
+					 }
+					 else {
+						 int num_segs;
+						 try {
+							 num_segs = (Integer.valueOf(spinner_fbs.getText())).intValue();
+						 }
+						 catch (NumberFormatException nfe) {
+							 nfe.printStackTrace();
+							 infoBox("Warning!","Number of Segments requires an integer.");
+							 return;
+						 }
+						 dm.features_rapidFormatConversion(hbOutput.getAbsolutePath(),hboOutput.getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),
+								 num_segs);
+					 }
 				 }
 				 catch(MWException mwe) {
 					 mwe.printStackTrace();
@@ -1095,6 +1178,7 @@ public class Hello {
 						 rapidDriver.run(inputFile,rapidDriver.generateProcess(inputFile,workspace.getTemplate(list_2.getSelection()[0])),outputFile);
 					 } catch (IOException e1) {
 						 e1.printStackTrace();
+						 return;
 					 }
 				 } catch (OperatorException e1) {
 					 e1.printStackTrace();
@@ -1200,15 +1284,6 @@ public class Hello {
 		 lblSelectProcess.setBounds(174, 90, 117, 25);
 		 lblSelectProcess.setText("Processes:");
 		 
-		 Spinner spinner_1 = new Spinner(composite_2, SWT.BORDER);
-		 spinner_1.setBounds(654, 156, 47, 22);
-		 
-		 Spinner spinner_2 = new Spinner(composite_2, SWT.BORDER);
-		 spinner_2.setBounds(654, 208, 47, 22);
-		 
-		 Spinner spinner_3 = new Spinner(composite_2, SWT.BORDER);
-		 spinner_3.setBounds(654, 306, 47, 22);
-		 
 		 Label lblSegments = new Label(composite_2, SWT.NONE);
 		 lblSegments.setBounds(489, 159, 55, 15);
 		 lblSegments.setText("Segments:");
@@ -1220,9 +1295,6 @@ public class Hello {
 		 Label lblNewLabel_3 = new Label(composite_2, SWT.NONE);
 		 lblNewLabel_3.setBounds(489, 309, 55, 15);
 		 lblNewLabel_3.setText("Segments:");
-		 
-		 Spinner spinner_4 = new Spinner(composite_2, SWT.BORDER);
-		 spinner_4.setBounds(654, 240, 47, 22);
 		 
 		 Label lblNewLabel_5 = new Label(composite_2, SWT.NONE);
 		 lblNewLabel_5.setBounds(490, 235, 102, 15);
