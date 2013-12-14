@@ -737,6 +737,19 @@ public class Hello {
 					 return; // and stop executing the ANOVA stuff.
 				 }
 				 int numPlaces = Integer.parseInt(numPlacesStr);
+				 
+				 // INIT PROGRESS BAR
+				 
+				 JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+		         splash.setAlwaysOnTop(true);
+		         splash.splashOn();
+		         splash.setProgress(0, "Searching for brains...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+						return;
+					 }
 
 				 // CHANGE "ANOVA" TO "ANOVA P-VALUE"
 				 String outputDirectoryName = outputDirectoryBox.getText();
@@ -746,9 +759,14 @@ public class Hello {
 				 // CHECK THE DIRECTORY DOES NOT EXIST?? (AND ASK THEM TO MAKE SURE)
 				 statsOutputDirectory.mkdir(); // create new directory with name given
 
+				 splash.setProgress(10, "Running Hb ANOVA...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+						return;
+					 }
 				 
-				 // PROGRESS BAR - BIG CHUNK HERE
-				 // actually do the requested ANOVAs and write them to the output file(s):
 				 if (doHb) {
 					 File outputFileHb =
 							 new File(outputDirectoryPath + "\\" + "p-values_Hb.csv");
@@ -758,6 +776,15 @@ public class Hello {
 							 groupsAryLst, conditionsAryLst,
 							 numChunks, numPlaces);
 				 }
+				 
+				 splash.setProgress(55, "Running HbO ANOVA...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+						return;
+					 }
+				 
 				 if (doHbO) {
 					 File outputFileHbO =
 							 new File(outputDirectoryPath + "\\" + "p-values_HbO.csv");
@@ -766,6 +793,14 @@ public class Hello {
 							 groupsAryLst, conditionsAryLst,
 							 numChunks, numPlaces);
 				 }
+				 
+				 splash.setProgress(100, "Zombie ANOVA done!");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+						return;
+					 }
 				 System.out.println("Done writing ANOVAs!");
 			 }
 		 });
@@ -1042,9 +1077,10 @@ public class Hello {
 				 
 				 splash.setProgress(5, "Searching for brains...");
 				 try {
-						Thread.sleep(500);
+						Thread.sleep(200);
 					 } catch (InterruptedException e1) {
 						e1.printStackTrace();
+						return;
 					 }
 
 				 cond_list.clear(); 
@@ -1054,7 +1090,7 @@ public class Hello {
 				 
 				 splash.setProgress(10, "Locating brains...");
 				 try {
-						Thread.sleep(500);
+						Thread.sleep(200);
 					 } catch (InterruptedException e1) {
 						e1.printStackTrace();
 					 }
@@ -1075,6 +1111,13 @@ public class Hello {
 				 }
 
 				 splash.setProgress(25, "Mining brain data...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+						return;
+					 }
+				 
 				 
 				 try {
 					 File rminput = workspace.getRMInput(name);
@@ -1093,6 +1136,12 @@ public class Hello {
 				 }
 				 
 				 splash.setProgress(80, "Processing brain data...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+						return;
+					 }
 
 				 try {
 					 // input file, process file, output file
@@ -1108,8 +1157,14 @@ public class Hello {
 					 return;
 				 }
 				 
-				 
 				 splash.setProgress(95, "Gathering brain bits...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+						return;
+					 }
+				 
 				 enableList(step1);
 				 list_1.removeAll();
 				 
