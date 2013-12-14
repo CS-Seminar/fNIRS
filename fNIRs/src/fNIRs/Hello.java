@@ -26,6 +26,9 @@ import zombie.Preprocess;
 import com.rapidminer.operator.OperatorException;
 import com.thehowtotutorial.splashscreen.JSplash;
 import java.awt.Color;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.custom.CTabItem;
 
 public class Hello {
     protected Shell shlFnirsDataProcessing;
@@ -166,7 +169,7 @@ public class Hello {
 			 return 1;
 		 workspace = new Workspace(selected,pre);
 		 
-		 final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		 final List list = new List(shlFnirsDataProcessing, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI);
 		 list.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		 list.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 list.setBounds(10, 41, 226, 383);
@@ -197,26 +200,30 @@ public class Hello {
 		 btnClear.setBounds(10, 466, 226, 30);
 		 btnClear.setText("Clear Selections");
 
-		 TabFolder tabFolder = new TabFolder(shlFnirsDataProcessing, SWT.NONE);
-		 tabFolder.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		 tabFolder.setFont(SWTResourceManager.getFont("Segoe UI", 13, SWT.BOLD));
+		 CTabFolder tabFolder = new CTabFolder(shlFnirsDataProcessing, SWT.BORDER);
+		 tabFolder.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		 tabFolder.setSimple(false);
+		 tabFolder.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
 		 tabFolder.setBounds(242, 10, 742, 522);
-
-		 TabItem tbtmLoadFiles = new TabItem(tabFolder, SWT.NONE);
-		 tbtmLoadFiles.setText("  Load File(s) / Preprocessing  ");
+		 
+		 CTabItem tbtmLoadFiles = new CTabItem(tabFolder, SWT.NONE);
+		 tbtmLoadFiles.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
+		 tbtmLoadFiles.setText(" Load  File(s) / Preprocessing  ");
 
 		 Composite composite = new Composite(tabFolder, SWT.NONE);
 		 composite.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-		 composite.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD | SWT.ITALIC));
+		 composite.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD | SWT.ITALIC));
 		 tbtmLoadFiles.setControl(composite);
 
-		 TabFolder tabFolder_1 = new TabFolder(composite, SWT.NONE);
-		 tabFolder_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		 tabFolder_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD | SWT.ITALIC));
+		 CTabFolder tabFolder_1 = new CTabFolder(composite, SWT.BORDER);
+		 tabFolder_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		 tabFolder_1.setSimple(false);
+		 tabFolder_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
 		 tabFolder_1.setBounds(10, 10, 718, 474);
 
-		 TabItem tbtmNewItem = new TabItem(tabFolder_1, SWT.NONE);
-		 tbtmNewItem.setText("ISS Oxyplex");
+		 CTabItem tbtmNewItem = new CTabItem(tabFolder_1, SWT.NONE);
+		 tbtmNewItem.setFont(SWTResourceManager.getFont("Segoe UI", 13, SWT.BOLD));
+		 tbtmNewItem.setText(" ISS Oxyplex ");
 
 		 Composite composite_3 = new Composite(tabFolder_1, SWT.NONE);
 		 composite_3.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -595,7 +602,8 @@ public class Hello {
 		 btnAdd.setText("Add");
 		 loadHatachi.add(btnAdd);
 
-		 TabItem tbtmStats = new TabItem(tabFolder, SWT.NONE);
+		 CTabItem tbtmStats = new CTabItem(tabFolder, SWT.NONE);
+		 tbtmStats.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
 		 tbtmStats.setText("  Statistical Analysis ");
 
 		 Composite composite_1 = new Composite(tabFolder, SWT.NONE);
@@ -607,7 +615,7 @@ public class Hello {
 		 lblChannelGrouping.setText("Channel Grouping:");
 
 		 groupFileBox = new Text(composite_1, SWT.BORDER);
-		 groupFileBox.setBounds(145, 70, 439, 25);
+		 groupFileBox.setBounds(145, 57, 439, 25);
 
 		 Button btnNewButton_2 = new Button(composite_1, SWT.NONE);
 		 btnNewButton_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -617,17 +625,17 @@ public class Hello {
 				 browse(groupFileBox);
 			 }
 		 });
-		 btnNewButton_2.setBounds(590, 70, 116, 25);
+		 btnNewButton_2.setBounds(590, 57, 116, 25);
 		 btnNewButton_2.setText("Browse...");
 
 		 final Button HbCheck = new Button(composite_1, SWT.CHECK);
 		 HbCheck.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 HbCheck.setBounds(30, 70, 48, 25);
+		 HbCheck.setBounds(30, 57, 48, 25);
 		 HbCheck.setText("Hb");
 
 		 final Button HbOCheck = new Button(composite_1, SWT.CHECK);
 		 HbOCheck.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 HbOCheck.setBounds(80, 70, 64, 25);
+		 HbOCheck.setBounds(74, 57, 64, 25);
 		 HbOCheck.setText("HbO");
 
 		 final List groupsList = new List(composite_1, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
@@ -973,7 +981,7 @@ public class Hello {
 			 }
 		 });
 		 btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		 btnLoadGroupsAnd.setBounds(240, 115, 276, 25);
+		 btnLoadGroupsAnd.setBounds(241, 119, 276, 25);
 		 btnLoadGroupsAnd.setText("Load Groups and Conditions");
 		 
 		 Label lblPleaseSelect = new Label(composite_1, SWT.NONE);
@@ -981,66 +989,25 @@ public class Hello {
 		 lblPleaseSelect.setBounds(30, 8, 394, 25);
 		 lblPleaseSelect.setText("<< Please select subject(s) from the subject list to begin");
 
-		 TabItem tbtmMachineLearning = new TabItem(tabFolder, SWT.NONE);
+		 CTabItem tbtmMachineLearning = new CTabItem(tabFolder, SWT.NONE);
+		 tbtmMachineLearning.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
 		 tbtmMachineLearning.setText("  Data Mining ");
 
 		 Composite composite_2 = new Composite(tabFolder, SWT.NONE);
 		 tbtmMachineLearning.setControl(composite_2);
-		 
-		 final Spinner spinner_avgseg = new Spinner(composite_2, SWT.BORDER);
-		 spinner_avgseg.setBounds(654, 156, 47, 22);
-		 
-		 final Spinner spinner_seqlen = new Spinner(composite_2, SWT.BORDER);
-		 spinner_seqlen.setEnabled(false);
-		 spinner_seqlen.setBounds(654, 208, 47, 22);
-		 
-		 final Spinner spinner_fbs = new Spinner(composite_2, SWT.BORDER);
-		 spinner_fbs.setEnabled(false);
-		 spinner_fbs.setBounds(654, 306, 47, 22);
-		 
-		 final Spinner spinner_alphsize = new Spinner(composite_2, SWT.BORDER);
-		 spinner_alphsize.setEnabled(false);
-		 spinner_alphsize.setBounds(654, 240, 47, 22);
 
 		 final Button radioAS = new Button(composite_2, SWT.RADIO);
-		 radioAS.addSelectionListener(new SelectionAdapter() {
-		 	@Override
-		 	public void widgetSelected(SelectionEvent e) {
-		 		spinner_avgseg.setEnabled(true);
-		 		spinner_seqlen.setEnabled(false);
-		 		spinner_alphsize.setEnabled(false);
-		 		spinner_fbs.setEnabled(false);
-		 	}
-		 });
 		 radioAS.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 radioAS.setSelection(true);
 		 radioAS.setBounds(434, 122, 212, 25);
 		 radioAS.setText("Averaged Segments");
 
 		 final Button radioSAX = new Button(composite_2, SWT.RADIO);
-		 radioSAX.addSelectionListener(new SelectionAdapter() {
-		 	@Override
-		 	public void widgetSelected(SelectionEvent e) {
-		 		spinner_avgseg.setEnabled(false);
-		 		spinner_seqlen.setEnabled(true);
-		 		spinner_alphsize.setEnabled(true);
-		 		spinner_fbs.setEnabled(false);
-		 	}
-		 });
 		 radioSAX.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 radioSAX.setBounds(434, 180, 142, 25);
 		 radioSAX.setText("SAX Segments");
 
 		 Button radioFBS = new Button(composite_2, SWT.RADIO);
-		 radioFBS.addSelectionListener(new SelectionAdapter() {
-		 	@Override
-		 	public void widgetSelected(SelectionEvent e) {
-		 		spinner_avgseg.setEnabled(false);
-		 		spinner_seqlen.setEnabled(false);
-		 		spinner_alphsize.setEnabled(false);
-		 		spinner_fbs.setEnabled(true);
-		 	}
-		 });
 		 radioFBS.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 radioFBS.setBounds(434, 268, 223, 25);
 		 radioFBS.setText("Feature-based Segments");
@@ -1149,25 +1116,18 @@ public class Hello {
 						 }
 				 
 				 String name = text_dm_sub.getText();
-				 File hbOutput = workspace.getHbOutput(name);
-				 File hboOutput = workspace.getHbOOutput(name);
-				 if (hbOutput.exists())
-					 hbOutput.delete();
-				 if (hboOutput.exists())
-					 hboOutput.delete();
-				 
 				 if (btnHb_1.getSelection()) {
-					 rapidDriver.filter(cond_list, workspace.getHb(name), hbOutput);
+					 rapidDriver.filter(cond_list, workspace.getHb(name), workspace.getHbOutput(name));
 				 }
 				 else {
-					 rapidDriver.empty(hbOutput);
+					 rapidDriver.empty(workspace.getHbOutput(name));
 				 }
 
 				 if (btnHbO_1.getSelection()) {
-					 rapidDriver.filter(cond_list, workspace.getHbO(name), hboOutput);
+					 rapidDriver.filter(cond_list, workspace.getHbO(name), workspace.getHbOOutput(name));
 				 }
 				 else {
-					 rapidDriver.empty(hboOutput);
+					 rapidDriver.empty(workspace.getHbOOutput(name));
 				 }
 
 				 splash.setProgress(25, "Mining brain data...");
@@ -1183,53 +1143,15 @@ public class Hello {
 					 File rminput = workspace.getRMInput(name);
 					 if (rminput.exists())
 						 rminput.delete();
-					 if (radioAS.getSelection()) {
-						 int num_segs;
-						 try {
-							 num_segs = (Integer.valueOf(spinner_avgseg.getText())).intValue();
-						 }
-						 catch (NumberFormatException nfe) {
-							 nfe.printStackTrace();
-							 infoBox("Warning!","Number of segments requires an integer.");
-							 return;
-						 }
-						 dm.rapidFormatConversion(hbOutput.getAbsolutePath(),hboOutput.getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),num_segs);
-					 }
-					 else if (radioSAX.getSelection()) {
-						 int seq_len;
-						 int alph_size;
-						 try {
-							 seq_len = (Integer.valueOf(spinner_seqlen.getText())).intValue();
-							 alph_size = (Integer.valueOf(spinner_alphsize.getText())).intValue();
-						 }
-						 catch (NumberFormatException nfe) {
-							 nfe.printStackTrace();
-							 infoBox("Warning!","Sequence length and Alphabet Size require integers.");
-							 return;
-						 }
-						 dm.SAX_RapidFormatConversion(hbOutput.getAbsolutePath(),hboOutput.getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),
-								 seq_len,alph_size);
-					 }
-					 else {
-						 int num_segs;
-						 try {
-							 num_segs = (Integer.valueOf(spinner_fbs.getText())).intValue();
-						 }
-						 catch (NumberFormatException nfe) {
-							 nfe.printStackTrace();
-							 infoBox("Warning!","Number of Segments requires an integer.");
-							 return;
-						 }
-						 dm.features_rapidFormatConversion(hbOutput.getAbsolutePath(),hboOutput.getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),
-								 num_segs);
-					 }
+					 if (radioAS.getSelection())
+						 dm.rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1);
+					 else if (radioSAX.getSelection())
+						 dm.SAX_RapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1,6);
+					 else
+						 dm.features_rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1);
 				 }
 				 catch(MWException mwe) {
 					 mwe.printStackTrace();
-					 splash.splashOff();
-					 enableList(step1);
-					 list_1.removeAll();
-					 infoBox("Error", "Data Mining Failed.");
 					 return;
 				 }
 				 
@@ -1249,7 +1171,6 @@ public class Hello {
 						 rapidDriver.run(inputFile,rapidDriver.generateProcess(inputFile,workspace.getTemplate(list_2.getSelection()[0])),outputFile);
 					 } catch (IOException e1) {
 						 e1.printStackTrace();
-						 return;
 					 }
 				 } catch (OperatorException e1) {
 					 e1.printStackTrace();
@@ -1361,6 +1282,15 @@ public class Hello {
 		 lblSelectProcess.setBounds(174, 90, 117, 25);
 		 lblSelectProcess.setText("Processes:");
 		 
+		 Spinner spinner_1 = new Spinner(composite_2, SWT.BORDER);
+		 spinner_1.setBounds(654, 156, 47, 22);
+		 
+		 Spinner spinner_2 = new Spinner(composite_2, SWT.BORDER);
+		 spinner_2.setBounds(654, 208, 47, 22);
+		 
+		 Spinner spinner_3 = new Spinner(composite_2, SWT.BORDER);
+		 spinner_3.setBounds(654, 306, 47, 22);
+		 
 		 Label lblSegments = new Label(composite_2, SWT.NONE);
 		 lblSegments.setBounds(489, 159, 55, 15);
 		 lblSegments.setText("Segments:");
@@ -1372,6 +1302,9 @@ public class Hello {
 		 Label lblNewLabel_3 = new Label(composite_2, SWT.NONE);
 		 lblNewLabel_3.setBounds(489, 309, 55, 15);
 		 lblNewLabel_3.setText("Segments:");
+		 
+		 Spinner spinner_4 = new Spinner(composite_2, SWT.BORDER);
+		 spinner_4.setBounds(654, 240, 47, 22);
 		 
 		 Label lblNewLabel_5 = new Label(composite_2, SWT.NONE);
 		 lblNewLabel_5.setBounds(490, 235, 102, 15);
@@ -1639,7 +1572,8 @@ public class Hello {
 		 });
 		 loadHatachi.add(btnAdd);
 
-		 TabItem tbtmNewItem_2 = new TabItem(tabFolder_1, SWT.NONE);
+		 CTabItem tbtmNewItem_2 = new CTabItem(tabFolder_1, SWT.NONE);
+		 tbtmNewItem_2.setFont(SWTResourceManager.getFont("Segoe UI", 13, SWT.BOLD));
 		 tbtmNewItem_2.setText("Hitachi");
 		 tbtmNewItem_2.setControl(composite_4);
 
@@ -1754,11 +1688,13 @@ public class Hello {
 		 btnNewButton_1.setBounds(10, 430, 226, 30);
 		 btnNewButton_1.setText("Change Workspace");
 		 
-		 Label lblSubjectList = new Label(shlFnirsDataProcessing, SWT.NONE);
+		 Label lblSubjectList = new Label(shlFnirsDataProcessing, SWT.SHADOW_NONE | SWT.CENTER);
+		 lblSubjectList.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND));
+		 lblSubjectList.setAlignment(SWT.CENTER);
 		 lblSubjectList.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
 		 lblSubjectList.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		 lblSubjectList.setBounds(41, 10, 146, 25);
-		 lblSubjectList.setText("Subject List:");
+		 lblSubjectList.setBounds(10, 10, 226, 25);
+		 lblSubjectList.setText("Subject List");
 
 		 for (Control item : loadHatachi) {
 			 item.setVisible(false);
