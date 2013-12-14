@@ -605,9 +605,11 @@ public class FNIRsStats {
                 //    MAYBE THIS IS BEYOND THE SCOPE OF OUR PROJECT TO CHECK?
 		localError(getDuplicatedChannelsMsg());
             } else {
-		DuplicatedChannels = null;
+		// remember there are no duplicated channels:
+		DuplicatedChannels = null; 
 	    }
             if (!MissingChannels.isEmpty()) {
+		// remember there are no missing channels:		
 		localError(getMissingChannelsMsg());
 	    } else {
 		MissingChannels = null;
