@@ -1048,7 +1048,7 @@ public class Hello {
 					 if (radioAS.getSelection())
 						 dm.rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1);
 					 else if (radioSAX.getSelection())
-						 dm.SAX_RapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1,6);
+						 dm.SAX_RapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),3,6);
 					 else
 						 dm.features_rapidFormatConversion(workspace.getHbOutput(name).getAbsolutePath(),workspace.getHbOOutput(name).getAbsolutePath(),workspace.getRMInput(name).getAbsolutePath(),1);
 					 done = true;
