@@ -81,7 +81,7 @@ public class Hello {
             splash.setProgress(30, "Practicing moans...");
             Thread.sleep(200);
             dm = new DataMining();
-            splash.setProgress(50, "Digging graves...");
+            splash.setProgress(49, "Digging graves...");
             Thread.sleep(200);
             rapidDriver = new RapidDriver();
             splash.setProgress(100, "Zombies loaded!");
@@ -1281,6 +1281,7 @@ public class Hello {
 		 text_subName2.setBounds(140, 30, 396, 25);
 
 		 final Spinner num_channels_H = new Spinner(composite_4, SWT.BORDER);
+		 num_channels_H.setSelection(52);
 		 num_channels_H.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		 num_channels_H.setBounds(422, 75, 47, 25);
 
@@ -1366,10 +1367,11 @@ public class Hello {
 		 btnAdd.addSelectionListener(new SelectionAdapter() {
 			 @Override
 			 public void widgetSelected(SelectionEvent e) {
-
 				 File condFile = new File(text_7.getText());
-				 if (!setExists(condFile))
+				 System.out.println("heretest");
+				 if (!setExists(condFile)) {
 					 return;
+				 }
 
 				 int channels = (Integer.valueOf(num_channels_H.getText())).intValue();
 
@@ -1377,8 +1379,21 @@ public class Hello {
 				 File HbOFile = new File(text_5.getText());
 
 				 if (!HbFile.exists() && !HbOFile.exists()) {
+					 System.out.println("here3");
 					 return;
 				 }
+				 
+				 JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
+				 splash.splashOn();
+				 splash.setAlwaysOnTop(true);
+				 
+				 
+				 splash.setProgress(0, "Finding deoxygenated brains...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+					 }
 				 
 				 if (HbFile.exists()) {
 					 try {
@@ -1392,6 +1407,13 @@ public class Hello {
 				 else {
 					 HbFile = null;
 				 }
+				 
+				 splash.setProgress(15, "Finding oxygenated brains...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+					 }
 
 				 if (HbOFile.exists()) {
 					 try {
@@ -1406,10 +1428,12 @@ public class Hello {
 					 HbOFile = null;
 				 }
 				 
-				// prog bar begin here
-				 JSplash splash = new JSplash(Hello.class.getClassLoader().getResource("splash.png"), true, true, false, "", null, Color.BLACK, Color.BLACK);
-				 splash.splashOn();
-				 splash.setAlwaysOnTop(true);
+				 splash.setProgress(30, "Prepping brains...");
+				 try {
+						Thread.sleep(200);
+					 } catch (InterruptedException e1) {
+						e1.printStackTrace();
+					 }
 
 				 if (sessionNumH==1) {
 					 workspace.addSubject(subjectNameH, HbFile, HbOFile, condFile);
@@ -1419,7 +1443,7 @@ public class Hello {
 				 }
 				 sessionNumH++;
 				 
-				 splash.setProgress(33, "Searching for brains...");
+				 splash.setProgress(40, "Searching for brains...");
 				 try {
 						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
@@ -1460,7 +1484,7 @@ public class Hello {
 				 
 				 splash.setProgress(100, "Hitachi likes brains!");
 				 try {
-						Thread.sleep(1000);
+						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
 						e1.printStackTrace();
 					 }
