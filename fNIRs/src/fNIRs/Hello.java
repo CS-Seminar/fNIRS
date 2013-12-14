@@ -1172,6 +1172,10 @@ public class Hello {
 				 }
 				 catch(MWException mwe) {
 					 mwe.printStackTrace();
+					 splash.splashOff();
+					 enableList(step1);
+					 list_1.removeAll();
+					 infoBox("Error", "Data Mining Failed.");
 					 return;
 				 }
 				 

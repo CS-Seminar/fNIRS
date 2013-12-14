@@ -7,38 +7,15 @@
   </context>
   <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
     <process expanded="true">
-      <operator activated="true" class="read_excel" compatibility="5.3.013" expanded="true" height="60" name="Read Excel" width="90" x="45" y="30">
+      <operator activated="true" class="read_excel" compatibility="5.3.013" expanded="true" height="60" name="Read Excel" width="90" x="45" y="120">
         <parameter key="excel_file" value="C:\Users\jssmith\Desktop\RapidStuff\RM_input_file.xls"/>
         <parameter key="first_row_as_names" value="false"/>
         <list key="annotations">
           <parameter key="0" value="Name"/>
         </list>
-        <list key="data_set_meta_data_information">
-	<parameter key="0" value="1.true.real.attribute"/>
-	<parameter key="1" value="2.true.real.attribute"/>
-	<parameter key="2" value="3.true.real.attribute"/>
-	<parameter key="3" value="4.true.real.attribute"/>
-	<parameter key="4" value="5.true.real.attribute"/>
-	<parameter key="5" value="6.true.real.attribute"/>
-	<parameter key="6" value="7.true.real.attribute"/>
-	<parameter key="7" value="8.true.real.attribute"/>
-	<parameter key="8" value="9.true.real.attribute"/>
-	<parameter key="9" value="10.true.real.attribute"/>
-	<parameter key="10" value="11.true.real.attribute"/>
-	<parameter key="11" value="12.true.real.attribute"/>
-	<parameter key="12" value="13.true.real.attribute"/>
-	<parameter key="13" value="14.true.real.attribute"/>
-	<parameter key="14" value="15.true.real.attribute"/>
-	<parameter key="15" value="16.true.real.attribute"/>
-	<parameter key="16" value="label.true.polynominal.label"/>
-	</list>
+     	#!#TEMPLATE#!#
       </operator>
-      <operator activated="true" class="parse_numbers" compatibility="5.3.013" expanded="true" height="76" name="Parse Numbers" width="90" x="112" y="165">
-        <parameter key="attribute_filter_type" value="single"/>
-        <parameter key="attribute" value="label"/>
-        <parameter key="include_special_attributes" value="true"/>
-      </operator>
-      <operator activated="true" class="split_validation" compatibility="5.3.013" expanded="true" height="112" name="Validation (2)" width="90" x="246" y="165">
+      <operator activated="true" class="split_validation" compatibility="5.3.013" expanded="true" height="112" name="Validation (2)" width="90" x="246" y="75">
         <process expanded="true">
           <operator activated="true" class="support_vector_machine_evolutionary" compatibility="5.3.013" expanded="true" height="76" name="SVM (2)" width="90" x="45" y="30"/>
           <connect from_port="training" to_op="SVM (2)" to_port="training set"/>
@@ -79,12 +56,9 @@
           <portSpacing port="sink_averagable 2" spacing="0"/>
         </process>
       </operator>
-      <operator activated="true" class="performance_to_data" compatibility="5.3.013" expanded="true" height="76" name="Performance to Data" width="90" x="380" y="165"/>
-      <operator activated="true" class="write_excel" compatibility="5.3.013" expanded="true" height="76" name="Write Excel" width="90" x="514" y="165">
-        <parameter key="excel_file" value="C:\Users\jssmith\Desktop\output.xls"/>
-      </operator>
-      <connect from_op="Read Excel" from_port="output" to_op="Parse Numbers" to_port="example set input"/>
-      <connect from_op="Parse Numbers" from_port="example set output" to_op="Validation (2)" to_port="training"/>
+      <operator activated="true" class="performance_to_data" compatibility="5.3.013" expanded="true" height="76" name="Performance to Data" width="90" x="447" y="120"/>
+      <operator activated="true" class="write_excel" compatibility="5.3.013" expanded="true" height="76" name="Write Excel" width="90" x="581" y="120"/>
+      <connect from_op="Read Excel" from_port="output" to_op="Validation (2)" to_port="training"/>
       <connect from_op="Validation (2)" from_port="averagable 1" to_op="Performance to Data" to_port="performance vector"/>
       <connect from_op="Performance to Data" from_port="example set" to_op="Write Excel" to_port="input"/>
       <connect from_op="Write Excel" from_port="through" to_port="result 1"/>

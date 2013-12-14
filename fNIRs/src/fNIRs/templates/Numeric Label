@@ -13,25 +13,7 @@
         <list key="annotations">
           <parameter key="0" value="Name"/>
         </list>
-        <list key="data_set_meta_data_information">
-	<parameter key="0" value="1.true.real.attribute"/>
-	<parameter key="1" value="2.true.real.attribute"/>
-	<parameter key="2" value="3.true.real.attribute"/>
-	<parameter key="3" value="4.true.real.attribute"/>
-	<parameter key="4" value="5.true.real.attribute"/>
-	<parameter key="5" value="6.true.real.attribute"/>
-	<parameter key="6" value="7.true.real.attribute"/>
-	<parameter key="7" value="8.true.real.attribute"/>
-	<parameter key="8" value="9.true.real.attribute"/>
-	<parameter key="9" value="10.true.real.attribute"/>
-	<parameter key="10" value="11.true.real.attribute"/>
-	<parameter key="11" value="12.true.real.attribute"/>
-	<parameter key="12" value="13.true.real.attribute"/>
-	<parameter key="13" value="14.true.real.attribute"/>
-	<parameter key="14" value="15.true.real.attribute"/>
-	<parameter key="15" value="16.true.real.attribute"/>
-	<parameter key="16" value="label.true.polynominal.label"/>
-	</list>
+        #!#TEMPLATE#!#
       </operator>
       <operator activated="true" class="parse_numbers" compatibility="5.3.013" expanded="true" height="76" name="Parse Numbers" width="90" x="112" y="165">
         <parameter key="attribute_filter_type" value="single"/>

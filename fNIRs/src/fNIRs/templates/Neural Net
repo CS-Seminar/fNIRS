@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="5.3.013">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
+    <process expanded="true">
+      <operator activated="true" class="read_excel" compatibility="5.3.013" expanded="true" height="60" name="Read Excel" width="90" x="45" y="30">
+        <parameter key="excel_file" value="C:\Users\jssmith\Desktop\RapidStuff\RM_input_file.xls"/>
+        <parameter key="first_row_as_names" value="false"/>
+        <list key="annotations">
+          <parameter key="0" value="Name"/>
+        </list>
+        #!#TEMPLATE#!#
+      </operator>
+      <operator activated="true" class="neural_net" compatibility="5.3.013" expanded="true" height="76" name="Neural Net (2)" width="90" x="112" y="210">
+        <list key="hidden_layers"/>
+      </operator>
+      <operator activated="true" class="apply_model" compatibility="5.3.013" expanded="true" height="76" name="Apply Model (2)" width="90" x="380" y="165">
+        <list key="application_parameters"/>
+      </operator>
+      <operator activated="true" class="write_excel" compatibility="5.3.013" expanded="true" height="76" name="Write Excel" width="90" x="514" y="165">
+        <parameter key="excel_file" value="C:\Users\jssmith\Desktop\output.xls"/>
+      </operator>
+      <connect from_op="Read Excel" from_port="output" to_op="Neural Net (2)" to_port="training set"/>
+      <connect from_op="Neural Net (2)" from_port="model" to_op="Apply Model (2)" to_port="model"/>
+      <connect from_op="Neural Net (2)" from_port="exampleSet" to_op="Apply Model (2)" to_port="unlabelled data"/>
+      <connect from_op="Apply Model (2)" from_port="labelled data" to_op="Write Excel" to_port="input"/>
+      <connect from_op="Write Excel" from_port="through" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>
