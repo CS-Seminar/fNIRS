@@ -796,11 +796,13 @@ public class Hello {
 				 
 				 splash.setProgress(100, "Zombie ANOVA done!");
 				 try {
-						Thread.sleep(200);
+						Thread.sleep(500);
 					 } catch (InterruptedException e1) {
 						e1.printStackTrace();
 						return;
 					 }
+				 
+				 splash.splashOff();
 				 System.out.println("Done writing ANOVAs!");
 			 }
 		 });
@@ -1430,7 +1432,6 @@ public class Hello {
 			 @Override
 			 public void widgetSelected(SelectionEvent e) {
 				 File condFile = new File(text_7.getText());
-				 System.out.println("heretest");
 				 if (!setExists(condFile)) {
 					 return;
 				 }
@@ -1441,7 +1442,6 @@ public class Hello {
 				 File HbOFile = new File(text_5.getText());
 
 				 if (!HbFile.exists() && !HbOFile.exists()) {
-					 System.out.println("here3");
 					 return;
 				 }
 				 
