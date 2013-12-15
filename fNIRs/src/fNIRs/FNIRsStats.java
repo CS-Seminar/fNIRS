@@ -179,7 +179,8 @@ public class FNIRsStats {
 		// convert and add second's data sequence to position one in
 		//    dataSets:
 		dataSets.set(1, toPrimitiveDoubleArray(second.getData()));
-		double result = 0;
+		double result = -1; // not a valid ANOVA value so we know if
+                                    //    something went wrong
 		try {
 		    result = myANOVA.anovaPValue(dataSets);
 		    // if (first == second) { // if the two TDSs are the same TDS,
@@ -353,7 +354,8 @@ public class FNIRsStats {
 		// convert and add second's data sequence to position one in
 		//    dataSets:
 		dataSets.set(1,toPrimitiveDoubleArray(second.getData()));
-		double result = 0;
+		double result = -1; // not a valid ANOVA value so we know if
+                                    //    something went wrong
 		try {
 		    result = myANOVA.anovaPValue(dataSets);
 		    // if (first == second) { // if the two TDSs are the same TDS,
@@ -434,7 +436,8 @@ public class FNIRsStats {
 		dataSets.set(1,
 			     toPrimitiveDoubleArray(second.getData())
 			     );
-		double result = 0;
+		double result = -1; // not a valid ANOVA value so we know if
+                                    //    something went wrong
 		try {
 		    result = myANOVA.anovaPValue(dataSets);
 		} catch (Exception ex) {
