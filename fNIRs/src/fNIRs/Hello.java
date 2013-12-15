@@ -1307,6 +1307,7 @@ public class Hello {
 		spinner_avgseg.setBounds(656, 148, 55, 25);
 
 		final Spinner spinner_seqlen1 = new Spinner(composite_2, SWT.BORDER);
+		spinner_seqlen1.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		spinner_seqlen1.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		spinner_seqlen1.setBackground(SWTResourceManager
