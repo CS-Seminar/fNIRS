@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeSet;
+
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
@@ -20,12 +22,17 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Composite;
+
 import com.mathworks.toolbox.javabuilder.*;
+
 import zombie.DataMining;
 import zombie.Preprocess;
+
 import com.rapidminer.operator.OperatorException;
 import com.thehowtotutorial.splashscreen.JSplash;
+
 import java.awt.Color;
+
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 
@@ -157,13 +164,12 @@ public class Hello {
 	 * Create contents of the window.
 	 */
 	protected int createContents() {
-		shlFnirsDataProcessing = new Shell(SWT.DIALOG_TRIM | SWT.MIN);
+		shlFnirsDataProcessing = new Shell(SWT.CLOSE | SWT.MIN | SWT.TITLE);
 		shlFnirsDataProcessing.setFont(SWTResourceManager.getFont("Segoe UI",
 				12, SWT.NORMAL));
 		shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(
 				Hello.class, "/fNIRs/logo.png"));
-		shlFnirsDataProcessing.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WHITE));
+		shlFnirsDataProcessing.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		shlFnirsDataProcessing.setSize(1000, 600);
 		shlFnirsDataProcessing
 				.setText("Zombie MiNIR - fNIRs Data Processing and Analysis");
@@ -179,9 +185,12 @@ public class Hello {
 
 		final List list = new List(shlFnirsDataProcessing, SWT.BORDER
 				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI);
-		list.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		list.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		list.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		list.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		list.setBounds(10, 41, 226, 393);
+		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
+		list.setLayoutData(data);
 
 		workspace.loadSubjects(list);
 
@@ -212,37 +221,44 @@ public class Hello {
 
 		CTabFolder tabFolder = new CTabFolder(shlFnirsDataProcessing,
 				SWT.BORDER);
-		tabFolder.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		tabFolder.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		tabFolder.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		tabFolder.setSelectionBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		tabFolder.setSelectionForeground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
 		tabFolder.setSimple(false);
 		tabFolder.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
 		tabFolder.setBounds(242, 10, 742, 532);
 
 		CTabItem tbtmLoadFiles = new CTabItem(tabFolder, SWT.NONE);
-		tbtmLoadFiles.setFont(SWTResourceManager.getFont("Segoe UI", 14,
-				SWT.BOLD));
-		tbtmLoadFiles.setText(" Load  File(s) / Preprocessing  ");
+		tbtmLoadFiles.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
+		tbtmLoadFiles.setText("  Load File(s) / Preprocessing  ");
 
 		Composite composite = new Composite(tabFolder, SWT.NONE);
-		composite.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+		composite.setBackgroundImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/iss-bkg.jpg"));
+		composite.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 
 		composite.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD
 				| SWT.ITALIC));
 		tbtmLoadFiles.setControl(composite);
 
 		CTabFolder tabFolder_1 = new CTabFolder(composite, SWT.BORDER);
-		tabFolder_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		tabFolder_1.setBackgroundImage(SWTResourceManager.getImage(Hello.class, "/fNIRs/iss-bkg.jpg"));
+		tabFolder_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		tabFolder_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		tabFolder_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		tabFolder_1.setSelectionBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		tabFolder_1.setSelectionForeground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
 		tabFolder_1.setSimple(false);
 		tabFolder_1.setFont(SWTResourceManager
 				.getFont("Segoe UI", 12, SWT.BOLD));
 		tabFolder_1.setBounds(10, 10, 718, 474);
 
 		CTabItem tbtmNewItem = new CTabItem(tabFolder_1, SWT.NONE);
-		tbtmNewItem.setFont(SWTResourceManager
-				.getFont("Segoe UI", 13, SWT.BOLD));
+		tbtmNewItem.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		tbtmNewItem.setText("  ISS Oxyplex  ");
 
 		Composite composite_3 = new Composite(tabFolder_1, SWT.NONE);
+		composite_3.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		composite_3.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		tbtmNewItem.setControl(composite_3);
@@ -250,12 +266,16 @@ public class Hello {
 		final ArrayList<Control> loadItems = new ArrayList<Control>();
 
 		final Spinner spinner = new Spinner(composite_3, SWT.BORDER);
+		spinner.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		spinner.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		spinner.setSelection(20);
 		spinner.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		spinner.setBounds(568, 228, 47, 25);
+		spinner.setBounds(580, 227, 47, 25);
 		loadItems.add(spinner);
 
 		final Label lblOf = new Label(composite_3, SWT.NONE);
+		lblOf.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblOf.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblOf.setAlignment(SWT.CENTER);
 		lblOf.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblOf.setBounds(330, 355, 75, 21);
@@ -263,6 +283,8 @@ public class Hello {
 		loadItems.add(lblOf);
 
 		final Button btnCheckButton = new Button(composite_3, SWT.CHECK);
+		btnCheckButton.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		btnCheckButton.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnCheckButton.setSelection(true);
 		btnCheckButton.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
@@ -275,17 +297,19 @@ public class Hello {
 					spinner.setEnabled(false);
 			}
 		});
-		btnCheckButton.setBounds(425, 228, 134, 25);
-		btnCheckButton.setText("Sliding Average:");
+		btnCheckButton.setBounds(425, 228, 21, 25);
 		loadItems.add(btnCheckButton);
 
 		final Spinner num_sessions = new Spinner(composite_3, SWT.BORDER);
+		num_sessions.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		num_sessions.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		num_sessions.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		num_sessions.setMinimum(1);
 		num_sessions.setBounds(543, 29, 47, 25);
 
 		final Button btnEnter_1 = new Button(composite_3, SWT.NONE);
+		btnEnter_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnEnter_1.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		btnEnter_1.addSelectionListener(new SelectionAdapter() {
@@ -318,6 +342,7 @@ public class Hello {
 		btnEnter_1.setText("Enter");
 
 		Button btnEnter = new Button(composite_3, SWT.NONE);
+		btnEnter.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnEnter.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnEnter.setBounds(330, 390, 75, 30);
 		btnEnter.addSelectionListener(new SelectionAdapter() {
@@ -423,11 +448,14 @@ public class Hello {
 		loadItems.add(btnEnter);
 
 		text_subName = new Text(composite_3, SWT.BORDER);
+		text_subName.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		text_subName.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		text_subName.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		text_subName.setBounds(140, 30, 220, 25);
 
 		Button btnBrowse = new Button(composite_3, SWT.NONE);
+		btnBrowse.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnBrowse.setFont(SWTResourceManager
 				.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnBrowse.setBounds(568, 126, 108, 25);
@@ -441,17 +469,23 @@ public class Hello {
 		loadItems.add(btnBrowse);
 
 		Label lblSubjectName = new Label(composite_3, SWT.NONE);
+		lblSubjectName.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblSubjectName.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblSubjectName.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		lblSubjectName.setBounds(30, 30, 104, 25);
 		lblSubjectName.setText("Subject Name:");
 
 		text = new Text(composite_3, SWT.BORDER);
+		text.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		text.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		text.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text.setBounds(150, 125, 411, 25);
 		loadItems.add(text);
 
 		Label lblDataFile = new Label(composite_3, SWT.NONE);
+		lblDataFile.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblDataFile.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblDataFile.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		lblDataFile.setBounds(30, 125, 67, 25);
@@ -459,12 +493,16 @@ public class Hello {
 		loadItems.add(lblDataFile);
 
 		text_1 = new Text(composite_3, SWT.BORDER);
+		text_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		text_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		text_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text_1.setText("2");
 		text_1.setBounds(285, 228, 50, 25);
 		loadItems.add(text_1);
 
 		Label lblNewLabel = new Label(composite_3, SWT.NONE);
+		lblNewLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblNewLabel.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblNewLabel.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		lblNewLabel.setBounds(85, 228, 164, 25);
@@ -472,12 +510,16 @@ public class Hello {
 		loadItems.add(lblNewLabel);
 
 		Label lblHz = new Label(composite_3, SWT.NONE);
+		lblHz.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblHz.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblHz.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblHz.setBounds(340, 228, 29, 25);
 		lblHz.setText("Hz");
 		loadItems.add(lblHz);
 
 		Label lblHighPassFilter = new Label(composite_3, SWT.NONE);
+		lblHighPassFilter.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblHighPassFilter.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblHighPassFilter.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		lblHighPassFilter.setBounds(85, 268, 196, 25);
@@ -485,18 +527,24 @@ public class Hello {
 		loadItems.add(lblHighPassFilter);
 
 		text_2 = new Text(composite_3, SWT.BORDER);
+		text_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		text_2.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		text_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text_2.setText(".1");
 		text_2.setBounds(285, 268, 50, 25);
 		loadItems.add(text_2);
 
 		Label label = new Label(composite_3, SWT.NONE);
+		label.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		label.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		label.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		label.setText("Hz");
 		label.setBounds(340, 268, 29, 25);
 		loadItems.add(label);
 
 		Label lblLowPassFilter = new Label(composite_3, SWT.NONE);
+		lblLowPassFilter.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblLowPassFilter.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblLowPassFilter.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		lblLowPassFilter.setBounds(85, 308, 196, 25);
@@ -504,18 +552,24 @@ public class Hello {
 		loadItems.add(lblLowPassFilter);
 
 		text_3 = new Text(composite_3, SWT.BORDER);
+		text_3.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		text_3.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		text_3.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text_3.setText(".01");
 		text_3.setBounds(285, 308, 50, 25);
 		loadItems.add(text_3);
 
 		Label label_1 = new Label(composite_3, SWT.NONE);
+		label_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		label_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		label_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		label_1.setText("Hz");
 		label_1.setBounds(340, 308, 29, 25);
 		loadItems.add(label_1);
 
 		Label lblPreprocessingOptions = new Label(composite_3, SWT.NONE);
+		lblPreprocessingOptions.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblPreprocessingOptions.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblPreprocessingOptions.setFont(SWTResourceManager.getFont("Segoe UI",
 				12, SWT.NORMAL));
 		lblPreprocessingOptions.setBounds(30, 84, 189, 25);
@@ -523,6 +577,8 @@ public class Hello {
 		loadItems.add(lblPreprocessingOptions);
 
 		Label lblConditionsFile = new Label(composite_3, SWT.NONE);
+		lblConditionsFile.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblConditionsFile.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblConditionsFile.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		lblConditionsFile.setBounds(30, 165, 116, 25);
@@ -530,11 +586,14 @@ public class Hello {
 		loadItems.add(lblConditionsFile);
 
 		text_6 = new Text(composite_3, SWT.BORDER);
+		text_6.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		text_6.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		text_6.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text_6.setBounds(150, 165, 411, 25);
 		loadItems.add(text_6);
 
 		Button btnBrowse_3 = new Button(composite_3, SWT.NONE);
+		btnBrowse_3.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnBrowse_3.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		btnBrowse_3.addSelectionListener(new SelectionAdapter() {
@@ -548,12 +607,15 @@ public class Hello {
 		loadItems.add(btnBrowse_3);
 
 		Label lblNumberOfSessions = new Label(composite_3, SWT.NONE);
+		lblNumberOfSessions.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblNumberOfSessions.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblNumberOfSessions.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		lblNumberOfSessions.setBounds(390, 30, 147, 25);
 		lblNumberOfSessions.setText("Number of Sessions:");
 
 		final Button button_3 = new Button(composite_3, SWT.NONE);
+		button_3.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		button_3.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		button_3.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -572,12 +634,21 @@ public class Hello {
 		button_3.setText("Cancel");
 		button_3.setBounds(416, 389, 84, 30);
 		loadItems.add(button_3);
+		
+		Label lblSlidingAverage = new Label(composite_3, SWT.NONE);
+		lblSlidingAverage.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		lblSlidingAverage.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblSlidingAverage.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		lblSlidingAverage.setBounds(450, 228, 121, 25);
+		lblSlidingAverage.setText("Sliding Average:");
+		loadItems.add(lblSlidingAverage);
 
 		for (Control item : loadItems) {
 			item.setVisible(false);
 		}
 
 		final Composite composite_4 = new Composite(tabFolder_1, SWT.NONE);
+		composite_4.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		composite_4.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		composite_4.setBounds(10, 96, 694, 254);
@@ -586,16 +657,21 @@ public class Hello {
 		final ArrayList<Control> loadHatachi = new ArrayList<Control>();
 
 		text_4 = new Text(composite_4, SWT.BORDER);
+		text_4.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		text_4.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		text_4.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text_4.setBounds(146, 190, 396, 25);
 		loadHatachi.add(text_4);
 
 		text_5 = new Text(composite_4, SWT.BORDER);
+		text_5.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		text_5.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		text_5.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text_5.setBounds(146, 230, 396, 25);
 		loadHatachi.add(text_5);
 
 		final Button btnNewButton = new Button(composite_4, SWT.NONE);
+		btnNewButton.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnNewButton.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		btnNewButton.setBounds(548, 190, 127, 25);
@@ -609,6 +685,7 @@ public class Hello {
 		loadHatachi.add(btnNewButton);
 
 		final Button btnBrowse_1 = new Button(composite_4, SWT.NONE);
+		btnBrowse_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnBrowse_1.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		btnBrowse_1.setBounds(548, 230, 127, 25);
@@ -622,6 +699,8 @@ public class Hello {
 		loadHatachi.add(btnBrowse_1);
 
 		final Label lblHboFile = new Label(composite_4, SWT.NONE);
+		lblHboFile.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblHboFile.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblHboFile.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		lblHboFile.setBounds(30, 230, 84, 25);
@@ -629,6 +708,8 @@ public class Hello {
 		loadHatachi.add(lblHboFile);
 
 		final Label lblHbFile = new Label(composite_4, SWT.NONE);
+		lblHbFile.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblHbFile.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblHbFile.setFont(SWTResourceManager
 				.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblHbFile.setBounds(30, 190, 84, 25);
@@ -636,29 +717,38 @@ public class Hello {
 		loadHatachi.add(lblHbFile);
 
 		Button btnAdd = new Button(composite_4, SWT.NONE);
+		btnAdd.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnAdd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnAdd.setBounds(330, 390, 75, 25);
 		btnAdd.setText("Add");
 		loadHatachi.add(btnAdd);
 
 		CTabItem tbtmStats = new CTabItem(tabFolder, SWT.NONE);
-		tbtmStats.setFont(SWTResourceManager.getFont("Segoe UI", 14, SWT.BOLD));
+		tbtmStats.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		tbtmStats.setText("  Statistical Analysis ");
 
 		Composite composite_1 = new Composite(tabFolder, SWT.NONE);
+		composite_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		tbtmStats.setControl(composite_1);
 
 		Label lblChannelGrouping = new Label(composite_1, SWT.NONE);
-		lblChannelGrouping.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		lblChannelGrouping.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		lblChannelGrouping.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblChannelGrouping.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		lblChannelGrouping.setBounds(29, 53, 161, 25);
 		lblChannelGrouping.setText("Channel Grouping:");
 
 		groupFileBox = new Text(composite_1, SWT.BORDER);
-		groupFileBox.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		groupFileBox.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		groupFileBox.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		groupFileBox.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		groupFileBox.setBounds(30, 84, 555, 25);
 
 		Button btnNewButton_2 = new Button(composite_1, SWT.NONE);
-		btnNewButton_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		btnNewButton_2.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		btnNewButton_2.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -680,33 +770,45 @@ public class Hello {
 
 		final List groupsList = new List(composite_1, SWT.BORDER | SWT.MULTI
 				| SWT.V_SCROLL | SWT.H_SCROLL);
+		groupsList.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		groupsList.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		groupsList.setEnabled(false);
 		groupsList.setBounds(30, 240, 188, 237);
 
 		final List conditionsList = new List(composite_1, SWT.BORDER
 				| SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		conditionsList.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		conditionsList.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		conditionsList.setEnabled(false);
 		conditionsList.setBounds(224, 240, 116, 237);
 
 		final Label grouplbl = new Label(composite_1, SWT.NONE);
+		grouplbl.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		grouplbl.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		grouplbl.setEnabled(false);
 		grouplbl.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		grouplbl.setBounds(30, 209, 55, 25);
 		grouplbl.setText("Groups:");
 
 		final Label condlbl = new Label(composite_1, SWT.NONE);
+		condlbl.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		condlbl.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		condlbl.setEnabled(false);
 		condlbl.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		condlbl.setBounds(224, 209, 116, 25);
 		condlbl.setText("Conditions:");
 
 		final Label chunking = new Label(composite_1, SWT.NONE);
+		chunking.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		chunking.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		chunking.setEnabled(false);
 		chunking.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		chunking.setBounds(390, 209, 86, 25);
 		chunking.setText("Chunking:");
 
 		final Label lblOutputDir = new Label(composite_1, SWT.NONE);
+		lblOutputDir.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		lblOutputDir.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		lblOutputDir.setText("Output Directory Name:"); // "Folder" ???
 		lblOutputDir.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
@@ -714,28 +816,41 @@ public class Hello {
 		lblOutputDir.setBounds(390, 368, 180, 25);
 
 		numChunksBox = new Text(composite_1, SWT.BORDER);
-		numChunksBox.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		numChunksBox.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		numChunksBox.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		numChunksBox.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		numChunksBox.setEnabled(false);
 		numChunksBox.setBounds(390, 241, 55, 25);
 
 		final Label chunks = new Label(composite_1, SWT.NONE);
+		chunks.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		chunks.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		chunks.setEnabled(false);
 		chunks.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		chunks.setBounds(451, 240, 86, 25);
 		chunks.setText("chunks");
 
 		final Label aprecision = new Label(composite_1, SWT.NONE);
+		aprecision.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		aprecision.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		aprecision.setEnabled(false);
-		aprecision.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		aprecision.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		aprecision.setBounds(390, 288, 148, 25);
 		aprecision.setText("ANOVA Precision:");
 
 		decimalPlacesBox = new Text(composite_1, SWT.BORDER);
-		decimalPlacesBox.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		decimalPlacesBox.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		decimalPlacesBox.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		decimalPlacesBox.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		decimalPlacesBox.setEnabled(false);
 		decimalPlacesBox.setBounds(390, 319, 55, 25);
 
 		final Label dplace = new Label(composite_1, SWT.NONE);
+		dplace.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		dplace.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		dplace.setEnabled(false);
 		dplace.setText("decimal places");
 		dplace.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -874,7 +989,7 @@ public class Hello {
 					e1.printStackTrace();
 					return;
 				}
-				
+
 				splash.splashOff(); // done with progress bar
 				System.out.println("Done writing ANOVAs!");
 			}
@@ -918,6 +1033,8 @@ public class Hello {
 		clearBtn.setText("Clear");
 
 		outputDirectoryBox = new Text(composite_1, SWT.BORDER);
+		outputDirectoryBox.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		outputDirectoryBox.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		outputDirectoryBox.setEnabled(false);
 		outputDirectoryBox.setBounds(390, 399, 316, 25);
 
@@ -1069,45 +1186,62 @@ public class Hello {
 				lblOutputDir.setEnabled(true);
 			}
 		});
-		btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		btnLoadGroupsAnd.setBounds(246, 164, 276, 25);
 		btnLoadGroupsAnd.setText("Load Groups and Conditions");
 
 		Label lblPleaseSelect = new Label(composite_1, SWT.NONE);
-		lblPleaseSelect.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		lblPleaseSelect.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		lblPleaseSelect.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblPleaseSelect.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		lblPleaseSelect.setBounds(30, 22, 394, 25);
 		lblPleaseSelect
 				.setText("<< Please select subject(s) from the subject list to begin");
-		
+
 		Label lblNewLabel_4 = new Label(composite_1, SWT.NONE);
-		lblNewLabel_4.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		lblNewLabel_4.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		lblNewLabel_4.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblNewLabel_4.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		lblNewLabel_4.setBounds(51, 115, 85, 25);
 		lblNewLabel_4.setText("Analyzing:");
 
 		CTabItem tbtmMachineLearning = new CTabItem(tabFolder, SWT.NONE);
-		tbtmMachineLearning.setFont(SWTResourceManager.getFont("Segoe UI", 14,
-				SWT.BOLD));
+		tbtmMachineLearning.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		tbtmMachineLearning.setText("  Data Mining ");
 
 		Composite composite_2 = new Composite(tabFolder, SWT.NONE);
+		composite_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		composite_2.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		tbtmMachineLearning.setControl(composite_2);
 
 		final Spinner spinner_avgseg = new Spinner(composite_2, SWT.BORDER);
+		spinner_avgseg.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		spinner_avgseg.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		spinner_avgseg.setBounds(654, 156, 47, 22);
 
 		final Spinner spinner_seqlen = new Spinner(composite_2, SWT.BORDER);
+		spinner_seqlen.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		spinner_seqlen.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		spinner_seqlen.setEnabled(false);
 		spinner_seqlen.setBounds(654, 208, 47, 22);
 
 		final Spinner spinner_fbs = new Spinner(composite_2, SWT.BORDER);
+		spinner_fbs.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		spinner_fbs.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		spinner_fbs.setEnabled(false);
 		spinner_fbs.setBounds(654, 306, 47, 22);
 
 		final Spinner spinner_alphsize = new Spinner(composite_2, SWT.BORDER);
+		spinner_alphsize.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		spinner_alphsize.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		spinner_alphsize.setEnabled(false);
 		spinner_alphsize.setBounds(654, 240, 47, 22);
 
 		final Button radioAS = new Button(composite_2, SWT.RADIO);
+		radioAS.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		radioAS.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -1123,6 +1257,7 @@ public class Hello {
 		radioAS.setText("Averaged Segments");
 
 		final Button radioSAX = new Button(composite_2, SWT.RADIO);
+		radioSAX.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		radioSAX.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -1137,6 +1272,7 @@ public class Hello {
 		radioSAX.setText("SAX Segments");
 
 		Button radioFBS = new Button(composite_2, SWT.RADIO);
+		radioFBS.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		radioFBS.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -1155,16 +1291,22 @@ public class Hello {
 
 		final List list_1 = new List(composite_2, SWT.BORDER | SWT.MULTI
 				| SWT.V_SCROLL | SWT.H_SCROLL);
+		list_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		list_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		list_1.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		list_1.setBounds(30, 120, 126, 339);
 		step2.add(list_1);
 
 		text_dmoutput = new Text(composite_2, SWT.BORDER);
+		text_dmoutput.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		text_dmoutput.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		text_dmoutput.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		text_dmoutput.setBounds(431, 383, 212, 25);
 
 		Label lbldmoutput = new Label(composite_2, SWT.NONE);
+		lbldmoutput.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lbldmoutput.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lbldmoutput.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		lbldmoutput.setBounds(431, 350, 161, 25);
@@ -1187,6 +1329,8 @@ public class Hello {
 		step1.add(btnHbO_1);
 
 		text_dm_sub = new Text(composite_2, SWT.BORDER);
+		text_dm_sub.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		text_dm_sub.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		text_dm_sub.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		text_dm_sub.setBounds(143, 30, 255, 25);
@@ -1208,6 +1352,8 @@ public class Hello {
 
 		final List list_2 = new List(composite_2, SWT.BORDER | SWT.V_SCROLL
 				| SWT.H_SCROLL);
+		list_2.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		list_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		list_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		list_2.setBounds(174, 120, 224, 339);
 
@@ -1460,18 +1606,24 @@ public class Hello {
 		step1.add(btnNext);
 
 		Label lblSubjectName_1 = new Label(composite_2, SWT.NONE);
+		lblSubjectName_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblSubjectName_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblSubjectName_1.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		lblSubjectName_1.setBounds(30, 30, 106, 25);
 		lblSubjectName_1.setText("Subject Name:");
 
 		Label lblNewLabel_1 = new Label(composite_2, SWT.NONE);
+		lblNewLabel_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblNewLabel_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblNewLabel_1.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		lblNewLabel_1.setBounds(30, 90, 126, 25);
 		lblNewLabel_1.setText("Conditions:");
 
 		Label lblDataRepresentation = new Label(composite_2, SWT.NONE);
+		lblDataRepresentation.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblDataRepresentation.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblDataRepresentation.setFont(SWTResourceManager.getFont("Segoe UI",
 				12, SWT.NORMAL));
 		lblDataRepresentation.setBounds(430, 90, 196, 25);
@@ -1493,24 +1645,34 @@ public class Hello {
 		step2.add(btnCancel_DM);
 
 		Label lblSelectProcess = new Label(composite_2, SWT.NONE);
+		lblSelectProcess.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblSelectProcess.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblSelectProcess.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		lblSelectProcess.setBounds(174, 90, 117, 25);
 		lblSelectProcess.setText("Processes:");
 
 		Label lblSegments = new Label(composite_2, SWT.NONE);
+		lblSegments.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblSegments.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblSegments.setBounds(489, 159, 55, 15);
 		lblSegments.setText("Segments:");
 
 		Label lblNewLabel_2 = new Label(composite_2, SWT.NONE);
+		lblNewLabel_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblNewLabel_2.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblNewLabel_2.setText("Sequence Length:");
 		lblNewLabel_2.setBounds(483, 211, 123, 15);
 
 		Label lblNewLabel_3 = new Label(composite_2, SWT.NONE);
+		lblNewLabel_3.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblNewLabel_3.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblNewLabel_3.setBounds(489, 309, 55, 15);
 		lblNewLabel_3.setText("Segments:");
 
 		Label lblNewLabel_5 = new Label(composite_2, SWT.NONE);
+		lblNewLabel_5.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblNewLabel_5.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblNewLabel_5.setBounds(490, 235, 102, 15);
 		lblNewLabel_5.setText("Alphabet Size:");
 
@@ -1556,41 +1718,47 @@ public class Hello {
 		btnRemove.setText("Remove Files");
 
 		Label lblSubjectName2 = new Label(composite_4, SWT.NONE);
+		lblSubjectName2.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblSubjectName2.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblSubjectName2.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		lblSubjectName2.setBounds(30, 30, 105, 25);
 		lblSubjectName2.setText("Subject Name:");
 
 		text_subName2 = new Text(composite_4, SWT.BORDER);
+		text_subName2.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		text_subName2.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		text_subName2.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		text_subName2.setBounds(140, 30, 396, 25);
 
 		final Spinner num_channels_H = new Spinner(composite_4, SWT.BORDER);
+		num_channels_H.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		num_channels_H.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		num_channels_H.setSelection(52);
 		num_channels_H.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		num_channels_H.setBounds(422, 75, 47, 25);
 
 		Label lblNumberOfChannels = new Label(composite_4, SWT.NONE);
+		lblNumberOfChannels.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblNumberOfChannels.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblNumberOfChannels.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		lblNumberOfChannels.setBounds(265, 75, 149, 25);
 		lblNumberOfChannels.setText("Number of Channels:");
 
-		final Label label_4 = new Label(composite_4, SWT.NONE);
-		label_4.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		label_4.setVisible(false);
-		label_4.setText("File Does Not Exist");
-		label_4.setBounds(306, 339, 105, 15);
-
 		final Spinner num_sessions_h = new Spinner(composite_4, SWT.BORDER);
+		num_sessions_h.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		num_sessions_h.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		num_sessions_h.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		num_sessions_h.setMinimum(1);
 		num_sessions_h.setBounds(182, 75, 47, 25);
 
 		final Label lblOf_H = new Label(composite_4, SWT.NONE);
+		lblOf_H.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		lblOf_H.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblOf_H.setAlignment(SWT.CENTER);
 		lblOf_H.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		lblOf_H.setText("1 of 1");
@@ -1598,14 +1766,17 @@ public class Hello {
 		loadHatachi.add(lblOf_H);
 
 		final Button btnHb = new Button(composite_4, SWT.CHECK);
+		btnHb.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnHb.setBounds(512, 75, 46, 16);
 		btnHb.setText("Hb");
 
 		final Button btnHbo = new Button(composite_4, SWT.CHECK);
+		btnHbo.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnHbo.setBounds(564, 75, 47, 16);
 		btnHbo.setText("HbO");
 
 		final Button button_2 = new Button(composite_4, SWT.NONE);
+		button_2.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		button_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		button_2.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -1788,18 +1959,21 @@ public class Hello {
 		loadHatachi.add(btnAdd);
 
 		CTabItem tbtmNewItem_2 = new CTabItem(tabFolder_1, SWT.NONE);
-		tbtmNewItem_2.setFont(SWTResourceManager.getFont("Segoe UI", 13,
-				SWT.BOLD));
+		tbtmNewItem_2.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.NORMAL));
 		tbtmNewItem_2.setText("  Hitachi  ");
 		tbtmNewItem_2.setControl(composite_4);
 
 		Label label_3 = new Label(composite_4, SWT.NONE);
+		label_3.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		label_3.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		label_3.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		label_3.setText("Conditions File:");
 		label_3.setBounds(30, 270, 111, 25);
 		loadHatachi.add(label_3);
 
 		text_7 = new Text(composite_4, SWT.BORDER);
+		text_7.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		text_7.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		text_7.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		text_7.setBounds(146, 270, 396, 25);
 		loadHatachi.add(text_7);
@@ -1811,6 +1985,7 @@ public class Hello {
 		 * { =======
 		 */
 		Button btnBrowse_2 = new Button(composite_4, SWT.NONE);
+		btnBrowse_2.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnBrowse_2.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		btnBrowse_2.setBounds(548, 270, 127, 25);
@@ -1825,17 +2000,22 @@ public class Hello {
 		loadHatachi.add(btnBrowse_2);
 
 		Label label_2 = new Label(composite_4, SWT.NONE);
+		label_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		label_2.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		label_2.setText("Preprocessing Options:");
 		label_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD));
 		label_2.setBounds(30, 128, 189, 25);
 		loadHatachi.add(label_2);
 
 		Label label_5 = new Label(composite_4, SWT.NONE);
+		label_5.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		label_5.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		label_5.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		label_5.setText("Number of Sessions:");
 		label_5.setBounds(30, 75, 149, 25);
 
 		final Button btnCancel = new Button(composite_4, SWT.NONE);
+		btnCancel.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnCancel.setFont(SWTResourceManager
 				.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnCancel.addSelectionListener(new SelectionAdapter() {
@@ -1913,11 +2093,11 @@ public class Hello {
 		btnNewButton_1.setText("Change Workspace");
 
 		Label lblSubjectList = new Label(shlFnirsDataProcessing, SWT.NONE);
+		lblSubjectList.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblSubjectList.setAlignment(SWT.CENTER);
 		lblSubjectList.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.BOLD));
-		lblSubjectList.setBackground(SWTResourceManager
-				.getColor(SWT.COLOR_WHITE));
+		lblSubjectList.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		lblSubjectList.setBounds(10, 10, 226, 25);
 		lblSubjectList.setText("Subject List");
 
