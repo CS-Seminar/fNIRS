@@ -297,6 +297,7 @@ public class Hello {
 		num_sessions.setBounds(524, 32, 47, 25);
 
 		final Button btnEnter_1 = new Button(composite_3, SWT.NONE);
+		btnEnter_1.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnEnter_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnEnter_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnEnter_1.setFont(SWTResourceManager.getFont("Segoe UI", 12,
@@ -330,6 +331,7 @@ public class Hello {
 		btnEnter_1.setText("Enter");
 
 		Button btnEnter = new Button(composite_3, SWT.NONE);
+		btnEnter.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnEnter.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnEnter.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnEnter.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -445,6 +447,7 @@ public class Hello {
 		text_subName.setBounds(147, 32, 213, 25);
 
 		Button btnBrowse = new Button(composite_3, SWT.NONE);
+		btnBrowse.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnBrowse.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnBrowse.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnBrowse.setFont(SWTResourceManager
@@ -594,6 +597,7 @@ public class Hello {
 		loadItems.add(text_6);
 
 		Button btnBrowse_3 = new Button(composite_3, SWT.NONE);
+		btnBrowse_3.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnBrowse_3.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnBrowse_3.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnBrowse_3.setFont(SWTResourceManager.getFont("Segoe UI", 12,
@@ -619,6 +623,7 @@ public class Hello {
 		lblNumberOfSessions.setText("Sessions:");
 
 		final Button button_3 = new Button(composite_3, SWT.NONE);
+		button_3.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		button_3.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		button_3.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		button_3.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -679,6 +684,7 @@ public class Hello {
 		loadHatachi.add(text_5);
 
 		final Button btnNewButton = new Button(composite_4, SWT.NONE);
+		btnNewButton.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnNewButton
 				.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnNewButton
@@ -696,6 +702,7 @@ public class Hello {
 		loadHatachi.add(btnNewButton);
 
 		final Button btnBrowse_1 = new Button(composite_4, SWT.NONE);
+		btnBrowse_1.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnBrowse_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnBrowse_1.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnBrowse_1.setFont(SWTResourceManager.getFont("Segoe UI", 12,
@@ -729,6 +736,7 @@ public class Hello {
 		loadHatachi.add(lblHbFile);
 
 		Button btnAdd = new Button(composite_4, SWT.NONE);
+		btnAdd.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnAdd.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnAdd.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnAdd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -764,6 +772,7 @@ public class Hello {
 		groupFileBox.setBounds(172, 69, 432, 25);
 
 		Button btnNewButton_2 = new Button(composite_1, SWT.NONE);
+		btnNewButton_2.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnNewButton_2.setBackground(SWTResourceManager
 				.getColor(SWT.COLOR_BLACK));
 		btnNewButton_2.setFont(SWTResourceManager.getFont("Segoe UI", 12,
@@ -886,6 +895,7 @@ public class Hello {
 		dplace.setVisible(false);
 
 		final Button anovabtn = new Button(composite_1, SWT.NONE);
+		anovabtn.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		anovabtn.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		anovabtn.setVisible(false);
 		anovabtn.addSelectionListener(new SelectionAdapter() {
@@ -1030,6 +1040,7 @@ public class Hello {
 		anovabtn.setText("Compute P-values");
 
 		final Button clearBtn = new Button(composite_1, SWT.NONE);
+		clearBtn.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		clearBtn.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		clearBtn.setVisible(false);
 		clearBtn.addSelectionListener(new SelectionAdapter() {
@@ -1072,6 +1083,7 @@ public class Hello {
 		outputDirectoryBox.setVisible(false);
 
 		Button btnLoadGroupsAnd = new Button(composite_1, SWT.NONE);
+		btnLoadGroupsAnd.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnLoadGroupsAnd.setBackground(SWTResourceManager
 				.getColor(SWT.COLOR_BLACK));
 		btnLoadGroupsAnd.addSelectionListener(new SelectionAdapter() {
@@ -1433,6 +1445,7 @@ public class Hello {
 		list_2.setSelection(0);
 
 		Button btnRun = new Button(composite_2, SWT.NONE);
+		btnRun.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnRun.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnRun.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnRun.addSelectionListener(new SelectionAdapter() {
@@ -1625,6 +1638,7 @@ public class Hello {
 		step2.add(btnRun);
 
 		Button btnNext = new Button(composite_2, SWT.NONE);
+		btnNext.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnNext.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnNext.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnNext.addSelectionListener(new SelectionAdapter() {
@@ -1708,6 +1722,7 @@ public class Hello {
 		lblDataRepresentation.setText("Data Representation:");
 
 		Button btnCancel_DM = new Button(composite_2, SWT.NONE);
+		btnCancel_DM.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnCancel_DM
 				.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnCancel_DM.setFont(SWTResourceManager.getFont("Segoe UI", 12,
@@ -1834,6 +1849,7 @@ public class Hello {
 		 */
 
 		Button btnRemove = new Button(shlFnirsDataProcessing, SWT.FLAT);
+		btnRemove.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnRemove.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnRemove.setFont(SWTResourceManager
 				.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -1926,6 +1942,7 @@ public class Hello {
 		btnHbo.setText("HbO");
 
 		final Button button_2 = new Button(composite_4, SWT.NONE);
+		button_2.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		button_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		button_2.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		button_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -2166,6 +2183,7 @@ public class Hello {
 		loadOther.add(text_hboother);
 
 		final Button browse_hbother = new Button(composite_other, SWT.NONE);
+		browse_hbother.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		browse_hbother.setBackground(SWTResourceManager
 				.getColor(SWT.COLOR_BLACK));
 		browse_hbother.addSelectionListener(new SelectionAdapter() {
@@ -2177,10 +2195,11 @@ public class Hello {
 		browse_hbother.setText("Browse...");
 		browse_hbother.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
-		browse_hbother.setBounds(548, 198, 127, 28);
+		browse_hbother.setBounds(548, 198, 133, 28);
 		loadOther.add(browse_hbother);
 
 		final Button browse_hboother = new Button(composite_other, SWT.NONE);
+		browse_hboother.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		browse_hboother.setBackground(SWTResourceManager
 				.getColor(SWT.COLOR_BLACK));
 		browse_hboother.addSelectionListener(new SelectionAdapter() {
@@ -2192,7 +2211,7 @@ public class Hello {
 		browse_hboother.setText("Browse...");
 		browse_hboother.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
-		browse_hboother.setBounds(548, 248, 127, 28);
+		browse_hboother.setBounds(548, 248, 133, 28);
 		loadOther.add(browse_hboother);
 
 		final Label label_hboother = new Label(composite_other, SWT.NONE);
@@ -2251,6 +2270,7 @@ public class Hello {
 		button_hboother.setBounds(467, 85, 14, 28);
 
 		Button add_other = new Button(composite_other, SWT.NONE);
+		add_other.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		add_other.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		add_other.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -2341,7 +2361,7 @@ public class Hello {
 					text_subnameOther.setText("");
 					spinner_nsother.setSelection(1);
 				} else {
-					lbl_seshnum.setText(sessionNumOther + " of "
+					lbl_seshnum.setText("Session: " + sessionNumOther + " of "
 							+ spinner_nsother.getText());
 				}
 
@@ -2369,7 +2389,7 @@ public class Hello {
 		add_other.setText("Add");
 		add_other.setFont(SWTResourceManager
 				.getFont("Segoe UI", 12, SWT.NORMAL));
-		add_other.setBounds(469, 380, 100, 28);
+		add_other.setBounds(475, 380, 100, 28);
 		loadOther.add(add_other);
 
 		Label label_subNameOther = new Label(composite_other, SWT.NONE);
@@ -2392,6 +2412,7 @@ public class Hello {
 		text_subnameOther.setBounds(146, 42, 396, 25);
 
 		final Button enter_other = new Button(composite_other, SWT.NONE);
+		enter_other.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		enter_other.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		enter_other.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -2431,7 +2452,7 @@ public class Hello {
 
 				sessionNumOther = 1;
 
-				lbl_seshnum.setText("1 of " + spinner_nsother.getText());
+				lbl_seshnum.setText("Session: 1 of " + spinner_nsother.getText());
 
 				text_subnameOther.setEnabled(false);
 				spinner_nsother.setEnabled(false);
@@ -2467,6 +2488,7 @@ public class Hello {
 		loadOther.add(text_conditionsother);
 
 		Button browse_condother = new Button(composite_other, SWT.NONE);
+		browse_condother.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		browse_condother.setBackground(SWTResourceManager
 				.getColor(SWT.COLOR_BLACK));
 		browse_condother.addSelectionListener(new SelectionAdapter() {
@@ -2478,7 +2500,7 @@ public class Hello {
 		browse_condother.setText("Browse...");
 		browse_condother.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
-		browse_condother.setBounds(548, 298, 127, 28);
+		browse_condother.setBounds(548, 298, 133, 28);
 		loadOther.add(browse_condother);
 
 		Label label_ppoptions = new Label(composite_other, SWT.NONE);
@@ -2503,6 +2525,7 @@ public class Hello {
 		lbl_numSessionsOther.setBounds(30, 85, 63, 25);
 
 		Button cancel_other = new Button(composite_other, SWT.NONE);
+		cancel_other.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		cancel_other
 				.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		cancel_other.addSelectionListener(new SelectionAdapter() {
@@ -2526,7 +2549,7 @@ public class Hello {
 		cancel_other.setText("Cancel");
 		cancel_other.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
-		cancel_other.setBounds(575, 380, 100, 28);
+		cancel_other.setBounds(581, 380, 100, 28);
 		loadOther.add(cancel_other);
 
 		Label lblHb = new Label(composite_other, SWT.NONE);
@@ -2548,6 +2571,7 @@ public class Hello {
 		 * { =======
 		 */
 		Button btnBrowse_2 = new Button(composite_4, SWT.NONE);
+		btnBrowse_2.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnBrowse_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnBrowse_2.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnBrowse_2.setFont(SWTResourceManager.getFont("Segoe UI", 12,
@@ -2580,6 +2604,7 @@ public class Hello {
 		lblSessions.setBounds(30, 85, 69, 25);
 
 		final Button btnCancel = new Button(composite_4, SWT.NONE);
+		btnCancel.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnCancel.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnCancel.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		btnCancel.setFont(SWTResourceManager
@@ -2699,6 +2724,7 @@ public class Hello {
 		tabFolder_1.setSelection(0);
 
 		Button btnClear = new Button(shlFnirsDataProcessing, SWT.FLAT);
+		btnClear.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		btnClear.setBounds(10, 470, 226, 28);
 		btnClear.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnClear.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
