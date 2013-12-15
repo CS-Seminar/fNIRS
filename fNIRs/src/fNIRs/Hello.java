@@ -6,36 +6,18 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.TreeSet;
-
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Spinner;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.widgets.Composite;
-
 import com.mathworks.toolbox.javabuilder.*;
-
 import zombie.DataMining;
 import zombie.Preprocess;
-
 import com.rapidminer.operator.OperatorException;
 import com.thehowtotutorial.splashscreen.JSplash;
-
 import java.awt.Color;
-
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
