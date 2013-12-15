@@ -6,18 +6,25 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.InputMismatchException;
+
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.mathworks.toolbox.javabuilder.*;
+
 import zombie.DataMining;
 import zombie.Preprocess;
+
 import com.rapidminer.operator.OperatorException;
 import com.thehowtotutorial.splashscreen.JSplash;
+
 import java.awt.Color;
+
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
@@ -213,7 +220,7 @@ public class Hello {
 		CTabItem tbtmLoadFiles = new CTabItem(tabFolder, SWT.BORDER | SWT.FLAT);
 		tbtmLoadFiles.setFont(SWTResourceManager.getFont("Segoe UI", 14,
 				SWT.BOLD));
-		tbtmLoadFiles.setText("  Load File(s) / Preprocessing  ");
+		tbtmLoadFiles.setText("  Load Subjects");
 
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		composite.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
@@ -387,12 +394,20 @@ public class Hello {
 					return;
 				}
 
-				if (sessionNum == 1) {
-					workspace.addSubject(subjectName, newFile, condFile, freq,
-							hpf, lpf, slideavg, interval);
-				} else {
-					workspace.concatSession(subjectName, newFile, condFile,
-							freq, hpf, lpf, slideavg, interval);
+				try {
+					if (sessionNum == 1) {
+						workspace.addSubject(subjectName, newFile, condFile,
+								freq, hpf, lpf, slideavg, interval);
+					} else {
+						workspace.concatSession(subjectName, newFile, condFile,
+								freq, hpf, lpf, slideavg, interval);
+					}
+				} catch (InputMismatchException ime) {
+					splash.splashOff();
+					ime.printStackTrace();
+					workspace.removeSubject(subjectName);
+					infoBox("Error", "Conditions file must be a text file.");
+					return;
 				}
 				sessionNum++;
 
@@ -634,6 +649,7 @@ public class Hello {
 				btnEnter_1.setEnabled(true);
 				text_subName.setText("");
 				num_sessions.setSelection(1);
+				subjectName = "";
 			}
 		});
 		button_3.setText("Cancel");
@@ -1429,10 +1445,11 @@ public class Hello {
 		for (String template : workspace.getTemplates()) {
 			list_2.add(template);
 		}
-		
+
 		list_2.setSelection(0);
 
 		Button btnRun = new Button(composite_2, SWT.NONE);
+		btnRun.setEnabled(false);
 		btnRun.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnRun.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnRun.addSelectionListener(new SelectionAdapter() {
@@ -1584,6 +1601,11 @@ public class Hello {
 					File inputFile = workspace.getRMInput(name);
 					File outputFile = new File(workspace.getDMPath() + "\\"
 							+ text_dmoutput.getText() + ".xls");
+
+					if (outputFile.exists()) {
+						outputFile.delete();
+					}
+
 					try {
 						rapidDriver.run(inputFile,
 								rapidDriver.generateProcess(inputFile,
@@ -1591,12 +1613,18 @@ public class Hello {
 												.getSelection()[0])),
 								outputFile);
 					} catch (IOException e1) {
+						splash.splashOff();
 						e1.printStackTrace();
-						return;
+						infoBox("Error", "Run failed.");
+						enableList(step1);
+						list_1.removeAll();
 					}
 				} catch (OperatorException e1) {
+					splash.splashOff();
 					e1.printStackTrace();
-					return;
+					infoBox("Error", "Run failed.");
+					enableList(step1);
+					list_1.removeAll();
 				}
 
 				splash.setProgress(95, "Gathering brain bits...");
@@ -1674,7 +1702,7 @@ public class Hello {
 			}
 		});
 		btnNext.setBounds(575, 30, 136, 28);
-		btnNext.setText("Next");
+		btnNext.setText("Fill Conditions");
 		step1.add(btnNext);
 
 		Label lblSubjectName_1 = new Label(composite_2, SWT.NONE);
@@ -1708,6 +1736,7 @@ public class Hello {
 		lblDataRepresentation.setText("Data Representation:");
 
 		Button btnCancel_DM = new Button(composite_2, SWT.NONE);
+		btnCancel_DM.setEnabled(false);
 		btnCancel_DM
 				.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnCancel_DM.setFont(SWTResourceManager.getFont("Segoe UI", 12,
@@ -1841,6 +1870,18 @@ public class Hello {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
+				if (list.getSelection().length == 0)
+					return;
+
+				MessageBox warn = new MessageBox(shlFnirsDataProcessing,
+						SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+				warn.setText("Warning!");
+				warn.setMessage("Are you sure you want to remove all data on the selected subjects?");
+
+				int result = warn.open();
+				if (result != SWT.YES)
+					return;
+
 				for (String subject : list.getSelection()) {
 					workspace.removeSubject(subject);
 				}
@@ -1856,7 +1897,7 @@ public class Hello {
 		});
 
 		btnRemove.setBounds(10, 504, 226, 28);
-		btnRemove.setText("Remove Files");
+		btnRemove.setText("Remove Subject(s)");
 
 		Label lblSubjectName2 = new Label(composite_4, SWT.NONE);
 		lblSubjectName2.setBackground(SWTResourceManager
@@ -2011,7 +2052,9 @@ public class Hello {
 								channels);
 						HbFile = new File("Hb");
 					} catch (MWException e1) {
+						splash.splashOff();
 						e1.printStackTrace();
+						infoBox("Error", "Hb File must be an excel csv file.");
 						return;
 					}
 				} else {
@@ -2032,7 +2075,9 @@ public class Hello {
 								channels);
 						HbOFile = new File("HbO");
 					} catch (MWException e1) {
+						splash.splashOff();
 						e1.printStackTrace();
+						infoBox("Error", "HbO File must be an excel csv file.");
 						return;
 					}
 				} else {
@@ -2046,13 +2091,22 @@ public class Hello {
 					e1.printStackTrace();
 				}
 
-				if (sessionNumH == 1) {
-					workspace.addSubject(subjectNameH, HbFile, HbOFile,
-							condFile);
-				} else {
-					workspace.concatSession(subjectNameH, HbFile, HbOFile,
-							condFile);
+				try {
+					if (sessionNumH == 1) {
+						workspace.addSubject(subjectNameH, HbFile, HbOFile,
+								condFile);
+					} else {
+						workspace.concatSession(subjectNameH, HbFile, HbOFile,
+								condFile);
+					}
+				} catch (InputMismatchException ime) {
+					splash.splashOff();
+					ime.printStackTrace();
+					workspace.removeSubject(subjectNameH);
+					infoBox("Error", "Conditions file must be a text file.");
+					return;
 				}
+
 				sessionNumH++;
 
 				splash.setProgress(40, "Searching for brains...");
@@ -2250,6 +2304,8 @@ public class Hello {
 		button_hboother.setText("HbO");
 		button_hboother.setBounds(467, 85, 14, 28);
 
+		final Button enter_other = new Button(composite_other, SWT.NONE);
+
 		Button add_other = new Button(composite_other, SWT.NONE);
 		add_other.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		add_other.addSelectionListener(new SelectionAdapter() {
@@ -2309,12 +2365,20 @@ public class Hello {
 				splash.splashOn();
 				splash.setAlwaysOnTop(false);
 
-				if (sessionNumOther == 1) {
-					workspace.addSubject(subjectNameOther, HbFile, HbOFile,
-							condFile);
-				} else {
-					workspace.concatSession(subjectNameOther, HbFile, HbOFile,
-							condFile);
+				try {
+					if (sessionNumOther == 1) {
+						workspace.addSubject(subjectNameOther, HbFile, HbOFile,
+								condFile);
+					} else {
+						workspace.concatSession(subjectNameOther, HbFile,
+								HbOFile, condFile);
+					}
+				} catch (InputMismatchException ime) {
+					splash.splashOff();
+					ime.printStackTrace();
+					workspace.removeSubject(subjectNameOther);
+					infoBox("Error", "Conditions file must be a text file.");
+					return;
 				}
 				sessionNumOther++;
 
@@ -2333,7 +2397,7 @@ public class Hello {
 					}
 					text_subnameOther.setEnabled(true);
 					spinner_nsother.setEnabled(true);
-					button_2.setEnabled(true);
+					enter_other.setEnabled(true);
 
 					button_hbother.setEnabled(true);
 					button_hboother.setEnabled(true);
@@ -2391,7 +2455,6 @@ public class Hello {
 				SWT.NORMAL));
 		text_subnameOther.setBounds(146, 42, 396, 25);
 
-		final Button enter_other = new Button(composite_other, SWT.NONE);
 		enter_other.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		enter_other.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -2521,6 +2584,7 @@ public class Hello {
 
 				text_subnameOther.setText("");
 				spinner_nsother.setSelection(1);
+				subjectNameOther = "";
 			}
 		});
 		cancel_other.setText("Cancel");
@@ -2601,6 +2665,7 @@ public class Hello {
 
 				text_subName2.setText("");
 				num_sessions_h.setSelection(1);
+				subjectNameH = "";
 			}
 		});
 		btnCancel.setBounds(591, 380, 100, 25);
@@ -2668,6 +2733,11 @@ public class Hello {
 				for (String template : workspace.getTemplates()) {
 					list_2.add(template);
 				}
+
+				list_2.setSelection(0);
+
+				text_dm_sub.setText("");
+				text_dmoutput.setText("");
 
 			}
 		});
