@@ -6,18 +6,25 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.InputMismatchException;
+
 import org.eclipse.swt.widgets.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.wb.swt.SWTResourceManager;
+
 import com.mathworks.toolbox.javabuilder.*;
+
 import zombie.DataMining;
 import zombie.Preprocess;
+
 import com.rapidminer.operator.OperatorException;
 import com.thehowtotutorial.splashscreen.JSplash;
+
 import java.awt.Color;
+
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
@@ -162,7 +169,7 @@ public class Hello {
 				Hello.class, "/fNIRs/logo.png"));
 		shlFnirsDataProcessing.setBackground(SWTResourceManager
 				.getColor(SWT.COLOR_BLACK));
-		shlFnirsDataProcessing.setSize(1000, 600);
+		shlFnirsDataProcessing.setSize(1000, 568);
 		shlFnirsDataProcessing
 				.setText("Zombie MiNIR - fNIRs Data Processing and Analysis");
 
@@ -186,18 +193,6 @@ public class Hello {
 
 		workspace.loadSubjects(list);
 
-		Menu menu = new Menu(shlFnirsDataProcessing, SWT.BAR);
-		shlFnirsDataProcessing.setMenuBar(menu);
-
-		MenuItem mntmHelp_1 = new MenuItem(menu, SWT.CASCADE);
-		mntmHelp_1.setText("Help");
-
-		Menu menu_1 = new Menu(mntmHelp_1);
-		mntmHelp_1.setMenu(menu_1);
-
-		MenuItem mntmHelp = new MenuItem(menu_1, SWT.NONE);
-		mntmHelp.setText("Tutorial");
-
 		CTabFolder tabFolder = new CTabFolder(shlFnirsDataProcessing,
 				SWT.BORDER | SWT.FLAT);
 		tabFolder.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
@@ -213,7 +208,7 @@ public class Hello {
 		CTabItem tbtmLoadFiles = new CTabItem(tabFolder, SWT.BORDER | SWT.FLAT);
 		tbtmLoadFiles.setFont(SWTResourceManager.getFont("Segoe UI", 14,
 				SWT.BOLD));
-		tbtmLoadFiles.setText("  Load File(s) / Preprocessing  ");
+		tbtmLoadFiles.setText("  Load Subjects");
 
 		Composite composite = new Composite(tabFolder, SWT.NONE);
 		composite.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
@@ -389,12 +384,20 @@ public class Hello {
 					return;
 				}
 
-				if (sessionNum == 1) {
-					workspace.addSubject(subjectName, newFile, condFile, freq,
-							hpf, lpf, slideavg, interval);
-				} else {
-					workspace.concatSession(subjectName, newFile, condFile,
-							freq, hpf, lpf, slideavg, interval);
+				try {
+					if (sessionNum == 1) {
+						workspace.addSubject(subjectName, newFile, condFile,
+								freq, hpf, lpf, slideavg, interval);
+					} else {
+						workspace.concatSession(subjectName, newFile, condFile,
+								freq, hpf, lpf, slideavg, interval);
+					}
+				} catch (InputMismatchException ime) {
+					splash.splashOff();
+					ime.printStackTrace();
+					workspace.removeSubject(subjectName);
+					infoBox("Error", "Conditions file must be a text file.");
+					return;
 				}
 				sessionNum++;
 
@@ -639,6 +642,7 @@ public class Hello {
 				btnEnter_1.setEnabled(true);
 				text_subName.setText("");
 				num_sessions.setSelection(1);
+				subjectName = "";
 			}
 		});
 		button_3.setText("Cancel");
@@ -800,6 +804,7 @@ public class Hello {
 
 		final List groupsList = new List(composite_1, SWT.BORDER | SWT.MULTI
 				| SWT.V_SCROLL | SWT.H_SCROLL);
+		groupsList.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		groupsList.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		groupsList.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		groupsList.setBounds(30, 229, 180, 237);
@@ -807,6 +812,7 @@ public class Hello {
 
 		final List conditionsList = new List(composite_1, SWT.BORDER
 				| SWT.MULTI | SWT.V_SCROLL | SWT.H_SCROLL);
+		conditionsList.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		conditionsList.setForeground(SWTResourceManager
 				.getColor(SWT.COLOR_WHITE));
 		conditionsList.setBackground(SWTResourceManager
@@ -1000,8 +1006,16 @@ public class Hello {
 					File outputFileHb = new File(outputDirectoryPath + "\\"
 							+ "p-values_Hb.csv");
 					// calculate ANOVAs and write them to the output file!!!
-					FNIRsStats.writeANOVAs(outputFileHb, StatsHb, groupsAryLst,
-							conditionsAryLst, numChunks, numPlaces);
+					try {
+						FNIRsStats.writeANOVAs(outputFileHb, StatsHb,
+								groupsAryLst, conditionsAryLst, numChunks,
+								numPlaces);
+					} catch (Exception ex) {
+						splash.splashOff();
+						ex.printStackTrace();
+						infoBox("Error", "Calculating p-values failed.");
+						return;
+					}
 				}
 
 				// update progress bar:
@@ -1017,9 +1031,16 @@ public class Hello {
 				if (doHbO) {
 					File outputFileHbO = new File(outputDirectoryPath + "\\"
 							+ "p-values_HbO.csv");
-					FNIRsStats.writeANOVAs(outputFileHbO, StatsHbO,
-							groupsAryLst, conditionsAryLst, numChunks,
-							numPlaces);
+					try {
+						FNIRsStats.writeANOVAs(outputFileHbO, StatsHbO,
+								groupsAryLst, conditionsAryLst, numChunks,
+								numPlaces);
+					} catch (Exception ex) {
+						splash.splashOff();
+						ex.printStackTrace();
+						infoBox("Error", "Calculating p-values failed.");
+						return;
+					}
 				}
 
 				// update progress bar:
@@ -1072,7 +1093,7 @@ public class Hello {
 		});
 		clearBtn.setBounds(551, 436, 155, 28);
 		clearBtn.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		clearBtn.setText("Clear");
+		clearBtn.setText("Cancel");
 
 		outputDirectoryBox = new Text(composite_1, SWT.BORDER);
 		outputDirectoryBox.setForeground(SWTResourceManager
@@ -1441,11 +1462,12 @@ public class Hello {
 		for (String template : workspace.getTemplates()) {
 			list_2.add(template);
 		}
-		
+
 		list_2.setSelection(0);
 
 		Button btnRun = new Button(composite_2, SWT.NONE);
 		btnRun.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
+		btnRun.setEnabled(false);
 		btnRun.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnRun.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
 		btnRun.addSelectionListener(new SelectionAdapter() {
@@ -1597,6 +1619,11 @@ public class Hello {
 					File inputFile = workspace.getRMInput(name);
 					File outputFile = new File(workspace.getDMPath() + "\\"
 							+ text_dmoutput.getText() + ".xls");
+
+					if (outputFile.exists()) {
+						outputFile.delete();
+					}
+
 					try {
 						rapidDriver.run(inputFile,
 								rapidDriver.generateProcess(inputFile,
@@ -1604,12 +1631,18 @@ public class Hello {
 												.getSelection()[0])),
 								outputFile);
 					} catch (IOException e1) {
+						splash.splashOff();
 						e1.printStackTrace();
-						return;
+						infoBox("Error", "Run failed.");
+						enableList(step1);
+						list_1.removeAll();
 					}
 				} catch (OperatorException e1) {
+					splash.splashOff();
 					e1.printStackTrace();
-					return;
+					infoBox("Error", "Run failed.");
+					enableList(step1);
+					list_1.removeAll();
 				}
 
 				splash.setProgress(95, "Gathering brain bits...");
@@ -1688,7 +1721,7 @@ public class Hello {
 			}
 		});
 		btnNext.setBounds(575, 30, 136, 28);
-		btnNext.setText("Next");
+		btnNext.setText("Fill Conditions");
 		step1.add(btnNext);
 
 		Label lblSubjectName_1 = new Label(composite_2, SWT.NONE);
@@ -1723,6 +1756,7 @@ public class Hello {
 
 		Button btnCancel_DM = new Button(composite_2, SWT.NONE);
 		btnCancel_DM.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
+		btnCancel_DM.setEnabled(false);
 		btnCancel_DM
 				.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		btnCancel_DM.setFont(SWTResourceManager.getFont("Segoe UI", 12,
@@ -1857,6 +1891,18 @@ public class Hello {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
+				if (list.getSelection().length == 0)
+					return;
+
+				MessageBox warn = new MessageBox(shlFnirsDataProcessing,
+						SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+				warn.setText("Warning!");
+				warn.setMessage("Are you sure you want to remove all data on the selected subjects?");
+
+				int result = warn.open();
+				if (result != SWT.YES)
+					return;
+
 				for (String subject : list.getSelection()) {
 					workspace.removeSubject(subject);
 				}
@@ -1872,7 +1918,7 @@ public class Hello {
 		});
 
 		btnRemove.setBounds(10, 504, 226, 28);
-		btnRemove.setText("Remove Files");
+		btnRemove.setText("Remove Subject(s)");
 
 		Label lblSubjectName2 = new Label(composite_4, SWT.NONE);
 		lblSubjectName2.setBackground(SWTResourceManager
@@ -2028,7 +2074,9 @@ public class Hello {
 								channels);
 						HbFile = new File("Hb");
 					} catch (MWException e1) {
+						splash.splashOff();
 						e1.printStackTrace();
+						infoBox("Error", "Hb File must be an excel csv file.");
 						return;
 					}
 				} else {
@@ -2049,7 +2097,9 @@ public class Hello {
 								channels);
 						HbOFile = new File("HbO");
 					} catch (MWException e1) {
+						splash.splashOff();
 						e1.printStackTrace();
+						infoBox("Error", "HbO File must be an excel csv file.");
 						return;
 					}
 				} else {
@@ -2063,13 +2113,22 @@ public class Hello {
 					e1.printStackTrace();
 				}
 
-				if (sessionNumH == 1) {
-					workspace.addSubject(subjectNameH, HbFile, HbOFile,
-							condFile);
-				} else {
-					workspace.concatSession(subjectNameH, HbFile, HbOFile,
-							condFile);
+				try {
+					if (sessionNumH == 1) {
+						workspace.addSubject(subjectNameH, HbFile, HbOFile,
+								condFile);
+					} else {
+						workspace.concatSession(subjectNameH, HbFile, HbOFile,
+								condFile);
+					}
+				} catch (InputMismatchException ime) {
+					splash.splashOff();
+					ime.printStackTrace();
+					workspace.removeSubject(subjectNameH);
+					infoBox("Error", "Conditions file must be a text file.");
+					return;
 				}
+
 				sessionNumH++;
 
 				splash.setProgress(40, "Searching for brains...");
@@ -2269,6 +2328,8 @@ public class Hello {
 		button_hboother.setText("HbO");
 		button_hboother.setBounds(467, 85, 14, 28);
 
+		final Button enter_other = new Button(composite_other, SWT.NONE);
+
 		Button add_other = new Button(composite_other, SWT.NONE);
 		add_other.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
 		add_other.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
@@ -2299,7 +2360,6 @@ public class Hello {
 								.toAbsolutePath(),
 								StandardCopyOption.REPLACE_EXISTING);
 					} catch (IOException e2) {
-						// TODO Auto-generated catch block
 						e2.printStackTrace();
 						return;
 					}
@@ -2313,7 +2373,6 @@ public class Hello {
 								.toAbsolutePath(),
 								StandardCopyOption.REPLACE_EXISTING);
 					} catch (IOException e2) {
-						// TODO Auto-generated catch block
 						e2.printStackTrace();
 						return;
 					}
@@ -2329,12 +2388,20 @@ public class Hello {
 				splash.splashOn();
 				splash.setAlwaysOnTop(false);
 
-				if (sessionNumOther == 1) {
-					workspace.addSubject(subjectNameOther, HbFile, HbOFile,
-							condFile);
-				} else {
-					workspace.concatSession(subjectNameOther, HbFile, HbOFile,
-							condFile);
+				try {
+					if (sessionNumOther == 1) {
+						workspace.addSubject(subjectNameOther, HbFile, HbOFile,
+								condFile);
+					} else {
+						workspace.concatSession(subjectNameOther, HbFile,
+								HbOFile, condFile);
+					}
+				} catch (InputMismatchException ime) {
+					splash.splashOff();
+					ime.printStackTrace();
+					workspace.removeSubject(subjectNameOther);
+					infoBox("Error", "Conditions file must be a text file.");
+					return;
 				}
 				sessionNumOther++;
 
@@ -2353,7 +2420,7 @@ public class Hello {
 					}
 					text_subnameOther.setEnabled(true);
 					spinner_nsother.setEnabled(true);
-					button_2.setEnabled(true);
+					enter_other.setEnabled(true);
 
 					button_hbother.setEnabled(true);
 					button_hboother.setEnabled(true);
@@ -2411,10 +2478,10 @@ public class Hello {
 				SWT.NORMAL));
 		text_subnameOther.setBounds(146, 42, 396, 25);
 
-		final Button enter_other = new Button(composite_other, SWT.NONE);
-		enter_other.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
-		enter_other.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		enter_other.addSelectionListener(new SelectionAdapter() {
+		final Button enter_other1 = new Button(composite_other, SWT.NONE);
+		enter_other1.setCursor(SWTResourceManager.getCursor(SWT.CURSOR_HAND));
+		enter_other1.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+		enter_other1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				subjectNameOther = text_subnameOther.getText();
@@ -2456,15 +2523,15 @@ public class Hello {
 
 				text_subnameOther.setEnabled(false);
 				spinner_nsother.setEnabled(false);
-				enter_other.setEnabled(false);
+				enter_other1.setEnabled(false);
 				button_hbother.setEnabled(false);
 				button_hboother.setEnabled(false);
 			}
 		});
-		enter_other.setText("Enter");
-		enter_other.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+		enter_other1.setText("Enter");
+		enter_other1.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
-		enter_other.setBounds(548, 40, 133, 28);
+		enter_other1.setBounds(548, 40, 133, 28);
 
 		Label lbl_conditionsother = new Label(composite_other, SWT.NONE);
 		lbl_conditionsother.setForeground(SWTResourceManager
@@ -2537,13 +2604,14 @@ public class Hello {
 				}
 				text_subnameOther.setEnabled(true);
 				spinner_nsother.setEnabled(true);
-				enter_other.setEnabled(true);
+				enter_other1.setEnabled(true);
 
 				button_hbother.setEnabled(true);
 				button_hboother.setEnabled(true);
 
 				text_subnameOther.setText("");
 				spinner_nsother.setSelection(1);
+				subjectNameOther = "";
 			}
 		});
 		cancel_other.setText("Cancel");
@@ -2626,6 +2694,7 @@ public class Hello {
 
 				text_subName2.setText("");
 				num_sessions_h.setSelection(1);
+				subjectNameH = "";
 			}
 		});
 		btnCancel.setBounds(591, 380, 100, 25);
@@ -2693,6 +2762,11 @@ public class Hello {
 				for (String template : workspace.getTemplates()) {
 					list_2.add(template);
 				}
+
+				list_2.setSelection(0);
+
+				text_dm_sub.setText("");
+				text_dmoutput.setText("");
 
 			}
 		});
