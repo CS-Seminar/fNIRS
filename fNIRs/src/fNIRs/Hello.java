@@ -430,12 +430,12 @@ public class Hello {
 		});
 		btnEnter.setText("Add");
 		loadItems.add(btnEnter);
-		
+
 		text_subName = new Text(composite_3, SWT.BORDER);
 		text_subName.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 				SWT.NORMAL));
 		text_subName.setBounds(140, 30, 220, 25);
-		
+
 		Button btnBrowse = new Button(composite_3, SWT.NONE);
 		btnBrowse.setFont(SWTResourceManager
 				.getFont("Segoe UI", 12, SWT.NORMAL));
@@ -658,16 +658,19 @@ public class Hello {
 		tbtmStats.setControl(composite_1);
 
 		Label lblChannelGrouping = new Label(composite_1, SWT.NONE);
-		lblChannelGrouping.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		lblChannelGrouping.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		lblChannelGrouping.setBounds(29, 53, 161, 25);
 		lblChannelGrouping.setText("Channel Grouping:");
 
 		groupFileBox = new Text(composite_1, SWT.BORDER);
-		groupFileBox.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		groupFileBox.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		groupFileBox.setBounds(30, 84, 555, 25);
 
 		Button btnNewButton_2 = new Button(composite_1, SWT.NONE);
-		btnNewButton_2.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		btnNewButton_2.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		btnNewButton_2.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -723,7 +726,8 @@ public class Hello {
 		lblOutputDir.setBounds(390, 368, 180, 25);
 
 		numChunksBox = new Text(composite_1, SWT.BORDER);
-		numChunksBox.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		numChunksBox.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		numChunksBox.setEnabled(false);
 		numChunksBox.setBounds(390, 241, 55, 25);
 
@@ -735,12 +739,14 @@ public class Hello {
 
 		final Label aprecision = new Label(composite_1, SWT.NONE);
 		aprecision.setEnabled(false);
-		aprecision.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		aprecision.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		aprecision.setBounds(390, 288, 148, 25);
 		aprecision.setText("ANOVA Precision:");
 
 		decimalPlacesBox = new Text(composite_1, SWT.BORDER);
-		decimalPlacesBox.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		decimalPlacesBox.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		decimalPlacesBox.setEnabled(false);
 		decimalPlacesBox.setBounds(390, 319, 55, 25);
 
@@ -883,7 +889,7 @@ public class Hello {
 					e1.printStackTrace();
 					return;
 				}
-				
+
 				splash.splashOff(); // done with progress bar
 				System.out.println("Done writing ANOVAs!");
 			}
@@ -1078,18 +1084,21 @@ public class Hello {
 				lblOutputDir.setEnabled(true);
 			}
 		});
-		btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		btnLoadGroupsAnd.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		btnLoadGroupsAnd.setBounds(246, 164, 276, 25);
 		btnLoadGroupsAnd.setText("Load Groups and Conditions");
 
 		Label lblPleaseSelect = new Label(composite_1, SWT.NONE);
-		lblPleaseSelect.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		lblPleaseSelect.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		lblPleaseSelect.setBounds(30, 22, 394, 25);
 		lblPleaseSelect
 				.setText("<< Please select subject(s) from the subject list to begin");
-		
+
 		Label lblNewLabel_4 = new Label(composite_1, SWT.NONE);
-		lblNewLabel_4.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		lblNewLabel_4.setFont(SWTResourceManager.getFont("Segoe UI", 12,
+				SWT.NORMAL));
 		lblNewLabel_4.setBounds(51, 115, 85, 25);
 		lblNewLabel_4.setText("Analyzing:");
 
@@ -2275,7 +2284,7 @@ public class Hello {
 		for (Control item : loadHatachi) {
 			item.setVisible(false);
 		}
-		
+
 		for (Control item : loadOther) {
 			item.setVisible(false);
 		}
