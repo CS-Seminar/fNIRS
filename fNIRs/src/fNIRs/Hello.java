@@ -169,7 +169,7 @@ public class Hello {
 				Hello.class, "/fNIRs/logo.png"));
 		shlFnirsDataProcessing.setBackground(SWTResourceManager
 				.getColor(SWT.COLOR_BLACK));
-		shlFnirsDataProcessing.setSize(1000, 600);
+		shlFnirsDataProcessing.setSize(1000, 568);
 		shlFnirsDataProcessing
 				.setText("Zombie MiNIR - fNIRs Data Processing and Analysis");
 
@@ -192,18 +192,6 @@ public class Hello {
 		list.setLayoutData(data);
 
 		workspace.loadSubjects(list);
-
-		Menu menu = new Menu(shlFnirsDataProcessing, SWT.BAR);
-		shlFnirsDataProcessing.setMenuBar(menu);
-
-		MenuItem mntmHelp_1 = new MenuItem(menu, SWT.CASCADE);
-		mntmHelp_1.setText("Help");
-
-		Menu menu_1 = new Menu(mntmHelp_1);
-		mntmHelp_1.setMenu(menu_1);
-
-		MenuItem mntmHelp = new MenuItem(menu_1, SWT.NONE);
-		mntmHelp.setText("Tutorial");
 
 		CTabFolder tabFolder = new CTabFolder(shlFnirsDataProcessing,
 				SWT.BORDER | SWT.FLAT);
