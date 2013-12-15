@@ -30,63 +30,110 @@
 	<parameter key="13" value="14.true.real.attribute"/>
 	<parameter key="14" value="15.true.real.attribute"/>
 	<parameter key="15" value="16.true.real.attribute"/>
-	<parameter key="16" value="label.true.polynominal.label"/>
+	<parameter key="16" value="17.true.real.attribute"/>
+	<parameter key="17" value="18.true.real.attribute"/>
+	<parameter key="18" value="19.true.real.attribute"/>
+	<parameter key="19" value="20.true.real.attribute"/>
+	<parameter key="20" value="21.true.real.attribute"/>
+	<parameter key="21" value="22.true.real.attribute"/>
+	<parameter key="22" value="23.true.real.attribute"/>
+	<parameter key="23" value="24.true.real.attribute"/>
+	<parameter key="24" value="25.true.real.attribute"/>
+	<parameter key="25" value="26.true.real.attribute"/>
+	<parameter key="26" value="27.true.real.attribute"/>
+	<parameter key="27" value="28.true.real.attribute"/>
+	<parameter key="28" value="29.true.real.attribute"/>
+	<parameter key="29" value="30.true.real.attribute"/>
+	<parameter key="30" value="31.true.real.attribute"/>
+	<parameter key="31" value="32.true.real.attribute"/>
+	<parameter key="32" value="33.true.real.attribute"/>
+	<parameter key="33" value="34.true.real.attribute"/>
+	<parameter key="34" value="35.true.real.attribute"/>
+	<parameter key="35" value="36.true.real.attribute"/>
+	<parameter key="36" value="37.true.real.attribute"/>
+	<parameter key="37" value="38.true.real.attribute"/>
+	<parameter key="38" value="39.true.real.attribute"/>
+	<parameter key="39" value="40.true.real.attribute"/>
+	<parameter key="40" value="41.true.real.attribute"/>
+	<parameter key="41" value="42.true.real.attribute"/>
+	<parameter key="42" value="43.true.real.attribute"/>
+	<parameter key="43" value="44.true.real.attribute"/>
+	<parameter key="44" value="45.true.real.attribute"/>
+	<parameter key="45" value="46.true.real.attribute"/>
+	<parameter key="46" value="47.true.real.attribute"/>
+	<parameter key="47" value="48.true.real.attribute"/>
+	<parameter key="48" value="49.true.real.attribute"/>
+	<parameter key="49" value="50.true.real.attribute"/>
+	<parameter key="50" value="51.true.real.attribute"/>
+	<parameter key="51" value="52.true.real.attribute"/>
+	<parameter key="52" value="53.true.real.attribute"/>
+	<parameter key="53" value="54.true.real.attribute"/>
+	<parameter key="54" value="55.true.real.attribute"/>
+	<parameter key="55" value="56.true.real.attribute"/>
+	<parameter key="56" value="57.true.real.attribute"/>
+	<parameter key="57" value="58.true.real.attribute"/>
+	<parameter key="58" value="59.true.real.attribute"/>
+	<parameter key="59" value="60.true.real.attribute"/>
+	<parameter key="60" value="61.true.real.attribute"/>
+	<parameter key="61" value="62.true.real.attribute"/>
+	<parameter key="62" value="63.true.real.attribute"/>
+	<parameter key="63" value="64.true.real.attribute"/>
+	<parameter key="64" value="65.true.real.attribute"/>
+	<parameter key="65" value="66.true.real.attribute"/>
+	<parameter key="66" value="67.true.real.attribute"/>
+	<parameter key="67" value="68.true.real.attribute"/>
+	<parameter key="68" value="69.true.real.attribute"/>
+	<parameter key="69" value="70.true.real.attribute"/>
+	<parameter key="70" value="71.true.real.attribute"/>
+	<parameter key="71" value="72.true.real.attribute"/>
+	<parameter key="72" value="73.true.real.attribute"/>
+	<parameter key="73" value="74.true.real.attribute"/>
+	<parameter key="74" value="75.true.real.attribute"/>
+	<parameter key="75" value="76.true.real.attribute"/>
+	<parameter key="76" value="77.true.real.attribute"/>
+	<parameter key="77" value="78.true.real.attribute"/>
+	<parameter key="78" value="79.true.real.attribute"/>
+	<parameter key="79" value="80.true.real.attribute"/>
+	<parameter key="80" value="81.true.real.attribute"/>
+	<parameter key="81" value="82.true.real.attribute"/>
+	<parameter key="82" value="83.true.real.attribute"/>
+	<parameter key="83" value="84.true.real.attribute"/>
+	<parameter key="84" value="85.true.real.attribute"/>
+	<parameter key="85" value="86.true.real.attribute"/>
+	<parameter key="86" value="87.true.real.attribute"/>
+	<parameter key="87" value="88.true.real.attribute"/>
+	<parameter key="88" value="89.true.real.attribute"/>
+	<parameter key="89" value="90.true.real.attribute"/>
+	<parameter key="90" value="91.true.real.attribute"/>
+	<parameter key="91" value="92.true.real.attribute"/>
+	<parameter key="92" value="93.true.real.attribute"/>
+	<parameter key="93" value="94.true.real.attribute"/>
+	<parameter key="94" value="95.true.real.attribute"/>
+	<parameter key="95" value="96.true.real.attribute"/>
+	<parameter key="96" value="97.true.real.attribute"/>
+	<parameter key="97" value="98.true.real.attribute"/>
+	<parameter key="98" value="99.true.real.attribute"/>
+	<parameter key="99" value="100.true.real.attribute"/>
+	<parameter key="100" value="101.true.real.attribute"/>
+	<parameter key="101" value="102.true.real.attribute"/>
+	<parameter key="102" value="103.true.real.attribute"/>
+	<parameter key="103" value="104.true.real.attribute"/>
+	<parameter key="104" value="label.true.polynominal.label"/>
 	</list>
       </operator>
-      <operator activated="true" class="parse_numbers" compatibility="5.3.013" expanded="true" height="76" name="Parse Numbers" width="90" x="112" y="165">
-        <parameter key="attribute_filter_type" value="single"/>
-        <parameter key="attribute" value="label"/>
-        <parameter key="include_special_attributes" value="true"/>
+      <operator activated="true" class="neural_net" compatibility="5.3.013" expanded="true" height="76" name="Neural Net (2)" width="90" x="112" y="210">
+        <list key="hidden_layers"/>
       </operator>
-      <operator activated="true" class="split_validation" compatibility="5.3.013" expanded="true" height="112" name="Validation (2)" width="90" x="246" y="165">
-        <process expanded="true">
-          <operator activated="true" class="support_vector_machine_evolutionary" compatibility="5.3.013" expanded="true" height="76" name="SVM (2)" width="90" x="45" y="30"/>
-          <connect from_port="training" to_op="SVM (2)" to_port="training set"/>
-          <connect from_op="SVM (2)" from_port="model" to_port="model"/>
-          <connect from_op="SVM (2)" from_port="exampleSet" to_port="through 1"/>
-          <portSpacing port="source_training" spacing="0"/>
-          <portSpacing port="sink_model" spacing="0"/>
-          <portSpacing port="sink_through 1" spacing="0"/>
-          <portSpacing port="sink_through 2" spacing="0"/>
-        </process>
-        <process expanded="true">
-          <operator activated="true" class="apply_model" compatibility="5.3.013" expanded="true" height="76" name="Apply Model (2)" width="90" x="45" y="30">
-            <list key="application_parameters"/>
-          </operator>
-          <operator activated="true" class="performance_regression" compatibility="5.3.013" expanded="true" height="76" name="Performance (3)" width="90" x="179" y="30">
-            <parameter key="absolute_error" value="true"/>
-            <parameter key="relative_error" value="true"/>
-            <parameter key="relative_error_lenient" value="true"/>
-            <parameter key="relative_error_strict" value="true"/>
-            <parameter key="normalized_absolute_error" value="true"/>
-            <parameter key="root_relative_squared_error" value="true"/>
-            <parameter key="squared_error" value="true"/>
-            <parameter key="correlation" value="true"/>
-            <parameter key="squared_correlation" value="true"/>
-            <parameter key="prediction_average" value="true"/>
-            <parameter key="spearman_rho" value="true"/>
-            <parameter key="kendall_tau" value="true"/>
-          </operator>
-          <connect from_port="model" to_op="Apply Model (2)" to_port="model"/>
-          <connect from_port="test set" to_op="Apply Model (2)" to_port="unlabelled data"/>
-          <connect from_op="Apply Model (2)" from_port="labelled data" to_op="Performance (3)" to_port="labelled data"/>
-          <connect from_op="Performance (3)" from_port="performance" to_port="averagable 1"/>
-          <portSpacing port="source_model" spacing="0"/>
-          <portSpacing port="source_test set" spacing="0"/>
-          <portSpacing port="source_through 1" spacing="0"/>
-          <portSpacing port="source_through 2" spacing="0"/>
-          <portSpacing port="sink_averagable 1" spacing="0"/>
-          <portSpacing port="sink_averagable 2" spacing="0"/>
-        </process>
+      <operator activated="true" class="apply_model" compatibility="5.3.013" expanded="true" height="76" name="Apply Model (2)" width="90" x="380" y="165">
+        <list key="application_parameters"/>
       </operator>
-      <operator activated="true" class="performance_to_data" compatibility="5.3.013" expanded="true" height="76" name="Performance to Data" width="90" x="380" y="165"/>
       <operator activated="true" class="write_excel" compatibility="5.3.013" expanded="true" height="76" name="Write Excel" width="90" x="514" y="165">
         <parameter key="excel_file" value="C:\Users\jssmith\Desktop\output.xls"/>
       </operator>
-      <connect from_op="Read Excel" from_port="output" to_op="Parse Numbers" to_port="example set input"/>
-      <connect from_op="Parse Numbers" from_port="example set output" to_op="Validation (2)" to_port="training"/>
-      <connect from_op="Validation (2)" from_port="averagable 1" to_op="Performance to Data" to_port="performance vector"/>
-      <connect from_op="Performance to Data" from_port="example set" to_op="Write Excel" to_port="input"/>
+      <connect from_op="Read Excel" from_port="output" to_op="Neural Net (2)" to_port="training set"/>
+      <connect from_op="Neural Net (2)" from_port="model" to_op="Apply Model (2)" to_port="model"/>
+      <connect from_op="Neural Net (2)" from_port="exampleSet" to_op="Apply Model (2)" to_port="unlabelled data"/>
+      <connect from_op="Apply Model (2)" from_port="labelled data" to_op="Write Excel" to_port="input"/>
       <connect from_op="Write Excel" from_port="through" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
