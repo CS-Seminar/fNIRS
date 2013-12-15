@@ -701,7 +701,7 @@ public class Hello {
                     ArrayList<String> groupsAryLst =
                         new ArrayList<String>(Arrays.asList(groupsAry));
                     if (groupsAryLst.isEmpty()) { // if no groups were selected,
-                        // diplay error message box:
+                        // display error message box:
                         infoBox("Error",
                                 "Please select at least one channel grouping to analyze.");
                         return; // and stop executing the ANOVA stuff.
@@ -716,7 +716,7 @@ public class Hello {
                         conditionsAryLst.add(Integer.valueOf(condition));
                     }
                     if (conditionsAryLst.isEmpty()) { // if no conditions were selected,
-                        // diplay error message box:
+                        // display error message box:
                         infoBox("Error",
                                 "Please select at least one condition to analyze.");
                         return; // and stop executing the ANOVA stuff.
@@ -726,7 +726,7 @@ public class Hello {
                     //    from the text box, then convert it to an int and store:
                     String numChunksStr = numChunksBox.getText();
                     if (numChunksStr.equals("")) {
-                        // diplay error message box:
+                        // display error message box:
                         infoBox("Error", "Please enter a number of \"chunks\" to split the " +
                                 "data into and average before calculating ANOVA p-values.");
                         return; // and stop executing the ANOVA stuff.
@@ -737,7 +737,7 @@ public class Hello {
                     //    convert it to an int and store:
                     String numPlacesStr = decimalPlacesBox.getText();
                     if (numPlacesStr.equals("")) {
-                        // diplay error message box:
+                        // display error message box:
                         infoBox("Error", "Please enter a number of decimal places to output " +
                                 "for the p-values.");
                         return; // and stop executing the ANOVA stuff.
@@ -761,6 +761,12 @@ public class Hello {
 		    
 		    // create a directory for the output files:
                     String outputDirectoryName = outputDirectoryBox.getText();
+		    if (outputDirectoryName.equals("")) {
+                        // display error message box:
+                        infoBox("Error", "Please enter a name for the output file " +
+				         "subdirectory.");
+                        return; // and stop executing the ANOVA stuff.
+                    }
                     String outputDirectoryPath =
                         workspace.getStatsPath() + "\\" + outputDirectoryName;
                     File statsOutputDirectory = new File(outputDirectoryPath);

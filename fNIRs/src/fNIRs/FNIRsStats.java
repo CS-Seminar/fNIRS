@@ -624,27 +624,21 @@ public class FNIRsStats {
                 }
             }
 	    // output errors if the program is running with a console:
-            if (!DuplicatedChannels.isEmpty()) {
+            if (channelsDuplicated()) {
                 // THIS IS STATISTICALLY PRETTY BAD UNLESS THEY'RE NOT COMPARING
                 //    THOSE TWO GROUPS...WHICH IS TOTALLY POSSIBLE, I GUESS.
                 //    MAYBE THIS IS BEYOND THE SCOPE OF OUR PROJECT TO CHECK?
 		localError(getDuplicatedChannelsMsg());
-            } else {
-		// remember there are no duplicated channels:
-		DuplicatedChannels = null; 
 	    }
-            if (!MissingChannels.isEmpty()) {
-		// remember there are no missing channels:		
+            if (channelsMissing()) {
 		localError(getMissingChannelsMsg());
-	    } else {
-		MissingChannels = null;
 	    }
 	}
 	boolean channelsMissing() {
-	    return (MissingChannels == null);
+	    return !MissingChannels.isEmpty();
 	}
 	boolean channelsDuplicated() {
-	    return (DuplicatedChannels == null);
+	    return !DuplicatedChannels.isEmpty();
 	}	
 	TreeSet<Integer> getMissingChannels() {
 	    return MissingChannels;
@@ -1284,7 +1278,7 @@ public class FNIRsStats {
 		    return startIndex;
 		} catch (IndexOutOfBoundsException ex) {
 		    //we've gone beyond the end of the sequence
-		    System.out.println("GOTIT!");
+		    //System.out.println("GOTIT!");
 		    return -1;
 		} catch (Exception ex) {
 		    // real problem: 
@@ -1403,7 +1397,8 @@ public class FNIRsStats {
 	container.add(toPrimitiveDoubleArray(groups1.getGroup(groupName).getData(1)));
 
 	OneWayAnova myANOVA = new OneWayAnova();
-	double result = myANOVA.anovaPValue(container);
+	double result = -1;
+	result = myANOVA.anovaPValue(container);
 	System.out.println("Result: " + result);
 	
 	// outputANOVAs(groups1,
