@@ -1006,8 +1006,16 @@ public class Hello {
 					File outputFileHb = new File(outputDirectoryPath + "\\"
 							+ "p-values_Hb.csv");
 					// calculate ANOVAs and write them to the output file!!!
-					FNIRsStats.writeANOVAs(outputFileHb, StatsHb, groupsAryLst,
-							conditionsAryLst, numChunks, numPlaces);
+					try {
+						FNIRsStats.writeANOVAs(outputFileHb, StatsHb,
+								groupsAryLst, conditionsAryLst, numChunks,
+								numPlaces);
+					} catch (Exception ex) {
+						splash.splashOff();
+						ex.printStackTrace();
+						infoBox("Error", "Calculating p-values failed.");
+						return;
+					}
 				}
 
 				// update progress bar:
@@ -1023,9 +1031,16 @@ public class Hello {
 				if (doHbO) {
 					File outputFileHbO = new File(outputDirectoryPath + "\\"
 							+ "p-values_HbO.csv");
-					FNIRsStats.writeANOVAs(outputFileHbO, StatsHbO,
-							groupsAryLst, conditionsAryLst, numChunks,
-							numPlaces);
+					try {
+						FNIRsStats.writeANOVAs(outputFileHbO, StatsHbO,
+								groupsAryLst, conditionsAryLst, numChunks,
+								numPlaces);
+					} catch (Exception ex) {
+						splash.splashOff();
+						ex.printStackTrace();
+						infoBox("Error", "Calculating p-values failed.");
+						return;
+					}
 				}
 
 				// update progress bar:
@@ -1077,7 +1092,7 @@ public class Hello {
 		});
 		clearBtn.setBounds(551, 436, 155, 28);
 		clearBtn.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
-		clearBtn.setText("Clear");
+		clearBtn.setText("Cancel");
 
 		outputDirectoryBox = new Text(composite_1, SWT.BORDER);
 		outputDirectoryBox.setForeground(SWTResourceManager
