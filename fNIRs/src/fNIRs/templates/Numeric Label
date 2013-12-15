@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<process version="5.3.013">
+  <context>
+    <input/>
+    <output/>
+    <macros/>
+  </context>
+  <operator activated="true" class="process" compatibility="5.3.013" expanded="true" name="Process">
+    <process expanded="true">
+      <operator activated="true" class="read_excel" compatibility="5.3.013" expanded="true" height="60" name="Read Excel" width="90" x="45" y="30">
+        <parameter key="excel_file" value="C:\Users\jssmith\Desktop\RapidStuff\RM_input_file.xls"/>
+        <parameter key="first_row_as_names" value="false"/>
+        <list key="annotations">
+          <parameter key="0" value="Name"/>
+        </list>
+        #!#TEMPLATE#!#
+      </operator>
+      <operator activated="true" class="parse_numbers" compatibility="5.3.013" expanded="true" height="76" name="Parse Numbers" width="90" x="112" y="165">
+        <parameter key="attribute_filter_type" value="single"/>
+        <parameter key="attribute" value="label"/>
+        <parameter key="include_special_attributes" value="true"/>
+      </operator>
+      <operator activated="true" class="split_validation" compatibility="5.3.013" expanded="true" height="112" name="Validation (2)" width="90" x="246" y="165">
+        <process expanded="true">
+          <operator activated="true" class="support_vector_machine_evolutionary" compatibility="5.3.013" expanded="true" height="76" name="SVM (2)" width="90" x="45" y="30"/>
+          <connect from_port="training" to_op="SVM (2)" to_port="training set"/>
+          <connect from_op="SVM (2)" from_port="model" to_port="model"/>
+          <connect from_op="SVM (2)" from_port="exampleSet" to_port="through 1"/>
+          <portSpacing port="source_training" spacing="0"/>
+          <portSpacing port="sink_model" spacing="0"/>
+          <portSpacing port="sink_through 1" spacing="0"/>
+          <portSpacing port="sink_through 2" spacing="0"/>
+        </process>
+        <process expanded="true">
+          <operator activated="true" class="apply_model" compatibility="5.3.013" expanded="true" height="76" name="Apply Model (2)" width="90" x="45" y="30">
+            <list key="application_parameters"/>
+          </operator>
+          <operator activated="true" class="performance_regression" compatibility="5.3.013" expanded="true" height="76" name="Performance (3)" width="90" x="179" y="30">
+            <parameter key="absolute_error" value="true"/>
+            <parameter key="relative_error" value="true"/>
+            <parameter key="relative_error_lenient" value="true"/>
+            <parameter key="relative_error_strict" value="true"/>
+            <parameter key="normalized_absolute_error" value="true"/>
+            <parameter key="root_relative_squared_error" value="true"/>
+            <parameter key="squared_error" value="true"/>
+            <parameter key="correlation" value="true"/>
+            <parameter key="squared_correlation" value="true"/>
+            <parameter key="prediction_average" value="true"/>
+            <parameter key="spearman_rho" value="true"/>
+            <parameter key="kendall_tau" value="true"/>
+          </operator>
+          <connect from_port="model" to_op="Apply Model (2)" to_port="model"/>
+          <connect from_port="test set" to_op="Apply Model (2)" to_port="unlabelled data"/>
+          <connect from_op="Apply Model (2)" from_port="labelled data" to_op="Performance (3)" to_port="labelled data"/>
+          <connect from_op="Performance (3)" from_port="performance" to_port="averagable 1"/>
+          <portSpacing port="source_model" spacing="0"/>
+          <portSpacing port="source_test set" spacing="0"/>
+          <portSpacing port="source_through 1" spacing="0"/>
+          <portSpacing port="source_through 2" spacing="0"/>
+          <portSpacing port="sink_averagable 1" spacing="0"/>
+          <portSpacing port="sink_averagable 2" spacing="0"/>
+        </process>
+      </operator>
+      <operator activated="true" class="performance_to_data" compatibility="5.3.013" expanded="true" height="76" name="Performance to Data" width="90" x="380" y="165"/>
+      <operator activated="true" class="write_excel" compatibility="5.3.013" expanded="true" height="76" name="Write Excel" width="90" x="514" y="165">
+        <parameter key="excel_file" value="C:\Users\jssmith\Desktop\output.xls"/>
+      </operator>
+      <connect from_op="Read Excel" from_port="output" to_op="Parse Numbers" to_port="example set input"/>
+      <connect from_op="Parse Numbers" from_port="example set output" to_op="Validation (2)" to_port="training"/>
+      <connect from_op="Validation (2)" from_port="averagable 1" to_op="Performance to Data" to_port="performance vector"/>
+      <connect from_op="Performance to Data" from_port="example set" to_op="Write Excel" to_port="input"/>
+      <connect from_op="Write Excel" from_port="through" to_port="result 1"/>
+      <portSpacing port="source_input 1" spacing="0"/>
+      <portSpacing port="sink_result 1" spacing="0"/>
+      <portSpacing port="sink_result 2" spacing="0"/>
+    </process>
+  </operator>
+</process>

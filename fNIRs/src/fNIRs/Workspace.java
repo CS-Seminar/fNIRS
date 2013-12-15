@@ -46,13 +46,15 @@ public class Workspace {
 		makeDir(templates);
 		
 		// if not already there, add the default process template
-		File pTemp = new File(templates.getAbsolutePath()+"\\processTemplate");
-		if (!pTemp.exists()) {
-			try {
-				Files.copy(new File("src\\fNIRs\\processTemplate").toPath().toAbsolutePath(),pTemp.toPath().toAbsolutePath());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		for (String filename : new File("src\\fNIRs\\templates").list()) {
+			File pTemp = new File(templates.getAbsolutePath()+"\\"+filename);
+			if (!pTemp.exists()) {
+				try {
+					Files.copy(new File("src\\fNIRs\\templates\\"+filename).toPath().toAbsolutePath(),pTemp.toPath().toAbsolutePath());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 	}

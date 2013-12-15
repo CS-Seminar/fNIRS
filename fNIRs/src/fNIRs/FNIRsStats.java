@@ -50,7 +50,7 @@ import java.util.List; // for generalized findNextOccurrence method
 public class FNIRsStats {
     private static void localError(String errMsg){
 	System.out.println("Error: " + errMsg);
-        //System.exit(1); // PROBABLY DON'T WANT THIS IN FINAL PROGRAM--
+        // System.exit(1); // PROBABLY DON'T WANT THIS IN FINAL PROGRAM--
                           //    HANDLE THE EXCEPTION SOME OTHER WAY<
     }
     /* makeScanner
@@ -66,8 +66,12 @@ public class FNIRsStats {
             // WE WILL PROBABLY WANT TO INTEGRATE THIS INTO THE GUI
             // Print the name of the missing file:
             localError(fnf_exception.getMessage());
-            return null; // never executed
-        }
+            return null;
+        } catch (Exception ex) {
+	    localError("unknown problem creating FileReader for \"" + file +
+		       "\": " + ex.getMessage());
+            return null;
+	}
         // create Scanner to read easily from the input files:
         Scanner s = new Scanner(new BufferedReader(reader));
         s.useLocale(Locale.US); // tell the scanner that numbers in the input 
@@ -604,11 +608,23 @@ public class FNIRsStats {
                 //    THOSE TWO GROUPS...WHICH IS TOTALLY POSSIBLE, I GUESS.
                 //    MAYBE THIS IS BEYOND THE SCOPE OF OUR PROJECT TO CHECK?
 		localError(getDuplicatedChannelsMsg());
-            }
+            } else {
+		// remember there are no duplicated channels:
+		DuplicatedChannels = null; 
+	    }
             if (!MissingChannels.isEmpty()) {
+		// remember there are no missing channels:		
 		localError(getMissingChannelsMsg());
+	    } else {
+		MissingChannels = null;
 	    }
 	}
+	boolean channelsMissing() {
+	    return (MissingChannels != null);
+	}
+	boolean channelsDuplicated() {
+	    return (DuplicatedChannels != null);
+	}	
 	TreeSet<Integer> getMissingChannels() {
 	    return MissingChannels;
 	}
