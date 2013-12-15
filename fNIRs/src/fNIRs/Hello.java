@@ -90,11 +90,10 @@ public class Hello {
 		try {
 			JSplash splash = new JSplash(Hello.class.getClassLoader()
 					.getResource("splash.png"), true, true, false, "", null,
-					Color.BLACK, Color.BLACK);
-			splash.setAlwaysOnTop(true);
-			splash.splashOn();
-			splash.setAlwaysOnTop(false);
+					Color.GREEN, Color.BLACK);
+			splash.setForeground(Color.GREEN);
 			splash.setProgress(0, "Animating zombies...");
+			splash.splashOn();
 			Thread.sleep(200);
 			Hello window = new Hello();
 			splash.setProgress(8, "Fetching brains...");
@@ -380,9 +379,7 @@ public class Hello {
 				JSplash splash = new JSplash(Hello.class.getClassLoader()
 						.getResource("splash.png"), true, true, false, "",
 						null, Color.BLACK, Color.BLACK);
-				splash.setAlwaysOnTop(true);
 				splash.splashOn();
-				splash.setAlwaysOnTop(false);
 				splash.setProgress(0, "Zombies have arrived...");
 				try {
 					Thread.sleep(500);
@@ -972,9 +969,7 @@ public class Hello {
 				JSplash splash = new JSplash(Hello.class.getClassLoader()
 						.getResource("splash.png"), true, true, false, "",
 						null, Color.BLACK, Color.BLACK);
-				splash.setAlwaysOnTop(true);
 				splash.splashOn();
-				splash.setAlwaysOnTop(false);
 				splash.setProgress(0, "Searching for brains...");
 				try {
 					Thread.sleep(200);
@@ -1464,9 +1459,7 @@ public class Hello {
 				JSplash splash = new JSplash(Hello.class.getClassLoader()
 						.getResource("splash.png"), true, true, false, "",
 						null, Color.BLACK, Color.BLACK);
-				splash.setAlwaysOnTop(true);
 				splash.splashOn();
-				splash.setAlwaysOnTop(false);
 
 				if ((list_2.getSelectionIndices()).length < 1) {
 					infoBox("Warning!", "Select a process.");
@@ -2016,9 +2009,7 @@ public class Hello {
 				JSplash splash = new JSplash(Hello.class.getClassLoader()
 						.getResource("splash.png"), true, true, false, "",
 						null, Color.BLACK, Color.BLACK);
-				splash.setAlwaysOnTop(true);
 				splash.splashOn();
-				splash.setAlwaysOnTop(false);
 
 				splash.setProgress(0, "Finding deoxygenated brains...");
 
@@ -2323,7 +2314,6 @@ public class Hello {
 						.getResource("splash.png"), true, true, false, "",
 						null, Color.BLACK, Color.BLACK);
 				splash.splashOn();
-				splash.setAlwaysOnTop(true);
 
 				if (sessionNumOther == 1) {
 					workspace.addSubject(subjectNameOther, HbFile, HbOFile,
