@@ -173,8 +173,7 @@ public class Hello {
 	 * Create contents of the window.
 	 */
 	protected int createContents() {
-		shlFnirsDataProcessing = new Shell(SWT.CLOSE | SWT.MIN | SWT.RESIZE
-				| SWT.TITLE);
+		shlFnirsDataProcessing = new Shell(SWT.CLOSE | SWT.MIN | SWT.TITLE);
 		shlFnirsDataProcessing.setFont(SWTResourceManager.getFont("Segoe UI",
 				12, SWT.NORMAL));
 		shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(
