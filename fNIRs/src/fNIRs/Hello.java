@@ -50,7 +50,7 @@ public class Hello {
 
 	// stats stuff:
 	private FNIRsStats.GroupedChannels StatsHb, StatsHbO;
-	boolean doHb, doHbO;
+	private boolean doHb, doHbO;
 
 	private static RapidDriver rapidDriver;
 	private Text groupFileBox;
@@ -890,15 +890,15 @@ public class Hello {
 		anovabtn.setVisible(false);
 		anovabtn.addSelectionListener(new SelectionAdapter() {
 			@Override
-			/*
-			 * widgetSelected ANOVA button handler
+			/* widgetSelected
+			 *  ANOVA button handler
 			 */
 			public void widgetSelected(SelectionEvent e) {
 				// get the list of selected groups as a string array:
 				String[] groupsAry = groupsList.getSelection();
 				// convert it to an ArrayList so we can pass it to writeANOVAs:
-				ArrayList<String> groupsAryLst = new ArrayList<String>(Arrays
-						.asList(groupsAry));
+				ArrayList<String> groupsAryLst =
+				    new ArrayList<String>(Arrays.asList(groupsAry));
 				if (groupsAryLst.isEmpty()) { // if no groups were selected,
 					// diplay error message box:
 					infoBox("Error",
@@ -906,7 +906,7 @@ public class Hello {
 					return; // and stop executing the ANOVA stuff.
 				}
 
-				// get the list of selected conditions as a string array:
+				// get the list of selected conditions as a string array: 
 				String[] conditionsAry = conditionsList.getSelection();
 				// convert from String array to Integer ArrayList:
 				ArrayList<Integer> conditionsAryLst = new ArrayList<Integer>();
@@ -949,9 +949,10 @@ public class Hello {
 				}
 				int numPlaces = Integer.parseInt(numPlacesStr);
 
-				JSplash splash = new JSplash(Hello.class.getClassLoader()
-						.getResource("splash.png"), true, true, false, "",
-						null, Color.BLACK, Color.BLACK);
+				// initialize progress bar:
+				JSplash splash =
+				    new JSplash(Hello.class.getClassLoader().getResource("splash.png"),
+						true, true, false, "",null, Color.BLACK, Color.BLACK);
 				splash.setAlwaysOnTop(true);
 				splash.splashOn();
 				splash.setAlwaysOnTop(false);
@@ -965,6 +966,12 @@ public class Hello {
 
 				// create a directory for the output files:
 				String outputDirectoryName = outputDirectoryBox.getText();
+				if (outputDirectoryName.equals("")) {
+				    // display error message box:
+				    infoBox("Error", "Please enter a name for the output file " +
+					    "subdirectory.");
+				    return; // and stop executing the ANOVA stuff.
+				}
 				String outputDirectoryPath = workspace.getStatsPath() + "\\"
 						+ outputDirectoryName;
 				File statsOutputDirectory = new File(outputDirectoryPath);
@@ -1189,19 +1196,22 @@ public class Hello {
 
 				// Now, we can populate the group and condition names lists:
 				// first, figure out from where the group names can be obtained:
-				FNIRsStats.GroupedChannels statsData = null;
-				if (doHb) { // If the Hb data is defined,
-					statsData = StatsHb; // then we can get the lists from it.
-				} else { // Otherwise, the HbO data must be defined,
-					statsData = StatsHbO; // so we can get the lists from it
-											// instead.
-				}
-				// now actually populate the GUI's groups list:
-				for (String groupName : statsData.getGroupNames()) {
+				// FNIRsStats.GroupedChannels statsData = null;
+				// if (doHb) { // If the Hb data is defined,
+				// 	statsData = StatsHb; // then we can get the lists from it.
+				// } else { // Otherwise, the HbO data must be defined,
+				// 	statsData = StatsHbO; // so we can get the lists from it
+				// 							// instead.
+				// }
+				// // now actually populate the GUI's groups list:
+				// also populate the group and condition names lists using temp:
+				//				for (String groupName : statsData.getGroupNames()) {
+				for (String groupName : temp.getGroupNames()) {
 					groupsList.add(groupName);
 				}
 				// and the condition numbers list:
-				for (Integer condition : statsData.getConditions()) {
+				// for (Integer condition : statsData.getConditions()) {
+				for (Integer condition : temp.getConditions()) {
 					conditionsList.add(condition.toString());
 				}
 
@@ -2545,7 +2555,7 @@ public class Hello {
 		 * <<<<<<< HEAD Button btnBrowse_2 = new Button(composite_4, SWT.NONE);
 		 * btnBrowse_2.setFont(SWTResourceManager.getFont("Segoe UI", 12,
 		 * SWT.NORMAL)); btnBrowse_2.addSelectionListener(new SelectionAdapter()
-		 * { =======
+		 * { =========
 		 */
 		Button btnBrowse_2 = new Button(composite_4, SWT.NONE);
 		btnBrowse_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));

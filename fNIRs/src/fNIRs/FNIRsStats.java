@@ -85,7 +85,7 @@ public class FNIRsStats {
     	try {
 	    w = new FileWriter(file);
     	} catch (Exception ex) {
-	    localError(ex.getMessage());
+	    localError("unknown problem creating PrintWriter: " + ex.getMessage());
 	}
     	PrintWriter p = new PrintWriter(w, true); // set autoflush to true
 	return p;
@@ -95,6 +95,21 @@ public class FNIRsStats {
         for (int i = 0; i < lst.size(); i++) {
             System.out.println(i + "\t " + lst.get(i));
         }
+    }
+    // WHY DOESN'T THIS WORK?
+    public static <T> void printAry(T [] ary) {
+        System.out.println("Index\t Value");
+	int i = 0;
+	for (T x : ary) {
+	    System.out.println(i++ + "\t " + x);
+	}
+    }
+    public static void printDoubleAry(double[] ary) {
+        System.out.println("Index\t Value");
+	int i = 0;
+	for (double x : ary) {
+	    System.out.println(i++ + "\t " + x);
+	}
     }
     /* processAllSubjectData
      * IN:  dataFiles, a nonempty List of data files to process together for 
@@ -168,7 +183,8 @@ public class FNIRsStats {
 		// convert and add second's data sequence to position one in
 		//    dataSets:
 		dataSets.set(1, toPrimitiveDoubleArray(second.getData()));
-		double result = 0;
+		double result = -1; // not a valid ANOVA value so we know if
+                                    //    something went wrong
 		try {
 		    result = myANOVA.anovaPValue(dataSets);
 		    // if (first == second) { // if the two TDSs are the same TDS,
@@ -177,7 +193,13 @@ public class FNIRsStats {
 		    //		    }
 		} catch (Exception ex) {
 		    ostream.println();
-		    localError(ex.getMessage());
+		    System.out.println("foo");
+		    localError("unknown problem calculating ANOVA: " + ex.getMessage());
+		    System.out.println("---------------------------------------------------------------------------------------------------------------------------------------");
+		    for (double[] set : dataSets) {
+			printDoubleAry(set);
+			System.out.println("---------------------------------------");
+		    }
 		}
 		if (result != result) { // if result is NaN
 		    System.out.println("NaN on " + first.getGroupName() +
@@ -260,12 +282,13 @@ public class FNIRsStats {
 		//    dataSets:
 		//dataSets.add(second.getData().toArray());
 		dataSets.set(1, toPrimitiveDoubleArray(second.getData()));
-		double result = 0;
+		double result = -1; // so it'll be obvious something's wrong
+                                    //    later if this doesn't get changed
 		try {
 		    result = myANOVA.anovaPValue(dataSets);
 		} catch (Exception ex) {
 		    System.out.println();
-		    localError(ex.getMessage());
+		    localError("unknown problem calculating ANOVA: " + ex.getMessage());
 		}
 		System.out.printf("%-" + idFieldWidth + "." + precision +
 				  "f" + separator,
@@ -335,7 +358,8 @@ public class FNIRsStats {
 		// convert and add second's data sequence to position one in
 		//    dataSets:
 		dataSets.set(1,toPrimitiveDoubleArray(second.getData()));
-		double result = 0;
+		double result = -1; // not a valid ANOVA value so we know if
+                                    //    something went wrong
 		try {
 		    result = myANOVA.anovaPValue(dataSets);
 		    // if (first == second) { // if the two TDSs are the same TDS,
@@ -344,7 +368,7 @@ public class FNIRsStats {
 		    //		    }
 		} catch (Exception ex) {
 		    ostream.println();
-		    localError(ex.getMessage());
+		    localError("unknown problem calculating ANOVA: " + ex.getMessage());
 		}
 		if (result != result) { // if result is NaN
 		    System.out.println("NaN on " + first.getGroupName() +
@@ -416,12 +440,13 @@ public class FNIRsStats {
 		dataSets.set(1,
 			     toPrimitiveDoubleArray(second.getData())
 			     );
-		double result = 0;
+		double result = -1; // not a valid ANOVA value so we know if
+                                    //    something went wrong
 		try {
 		    result = myANOVA.anovaPValue(dataSets);
 		} catch (Exception ex) {
 		    System.out.println();
-		    localError(ex.getMessage());
+		    localError("unknown problem calculating ANOVA: " + ex.getMessage());
 		}
 		System.out.printf("%-" + idFieldWidth + "." + precision + "f  ",
 				  result);
@@ -603,27 +628,21 @@ public class FNIRsStats {
                 }
             }
 	    // output errors if the program is running with a console:
-            if (!DuplicatedChannels.isEmpty()) {
+            if (channelsDuplicated()) {
                 // THIS IS STATISTICALLY PRETTY BAD UNLESS THEY'RE NOT COMPARING
                 //    THOSE TWO GROUPS...WHICH IS TOTALLY POSSIBLE, I GUESS.
                 //    MAYBE THIS IS BEYOND THE SCOPE OF OUR PROJECT TO CHECK?
 		localError(getDuplicatedChannelsMsg());
-            } else {
-		// remember there are no duplicated channels:
-		DuplicatedChannels = null; 
 	    }
-            if (!MissingChannels.isEmpty()) {
-		// remember there are no missing channels:		
+            if (channelsMissing()) {
 		localError(getMissingChannelsMsg());
-	    } else {
-		MissingChannels = null;
 	    }
 	}
 	boolean channelsMissing() {
-	    return (MissingChannels != null);
+	    return !MissingChannels.isEmpty();
 	}
 	boolean channelsDuplicated() {
-	    return (DuplicatedChannels != null);
+	    return !DuplicatedChannels.isEmpty();
 	}	
 	TreeSet<Integer> getMissingChannels() {
 	    return MissingChannels;
@@ -703,7 +722,7 @@ public class FNIRsStats {
             } catch (InputMismatchException e) {
                 localError(e.getMessage());
             } catch (Exception e){
-                localError(e.getMessage());
+                localError("unknown problem reading data: " + e.getMessage());
             } finally {
                 s.close(); // scanner must be closed to signal it's okay to 
                            //    close its underlying stream
@@ -1129,13 +1148,14 @@ public class FNIRsStats {
             /* getData
              * IN:  condition, the number of the condition whose trials are to
              *         be averaged
-             * OUT: returns an ArrayList containing the average of the first
-             *         rows of all occurrences of condition in the input, the
-             *         average of the second rows, etc., with the resulting
-             *         ArrayList only as long as the shortest occurrence. That
-             *         is, it returns a data sequence that is the average of all
-             *         the times the experimental condition occurred in the 
-             *         input sequence.
+             * OUT: returns an ArrayList containing, in sequence, the average of 
+             *         all the first rows of all occurrences of condition in the 
+             *         input, the average of all the second rows, and so on, 
+             *         with the resulting ArrayList only as long as the shortest 
+             *         occurrence of a sequence corresponding to condition. That 
+             *         is, it returns a data sequence that is the average of all 
+             *         the times the given experimental condition occurred in 
+	     *         the input sequence.
              *      returns an empty ArrayList if there were no occurrences of
              *         the condition in the original input Hb or HbO file
              */
@@ -1145,67 +1165,73 @@ public class FNIRsStats {
                                         //    the condition in the data sequence
                                         //    (for calculating the averages)
                 int i = 0;
-                while (true){
-                    // length of current occurrence of condition:
-                    int numRowsFound = 0; 
-                    // find the starting index of the next occurrence of 
-                    //    condition in the sequence:
-                    i = myFindNextOccurrence(i, condition);
-                    if (i == -1) { // -1 returned if not found
-                        // If we found at least one occurrence of the
-                        //    condition:
-                        if (!avgSequence.isEmpty())
-                            // To average, divide the sum in each row by the
-                            //    number of occurrences of the condition
-                            //    that have been found:
-                            for (int j = 0; j < avgSequence.size(); j++)
-                                avgSequence.set(j,(avgSequence.get(j) /
-                                                   (double) numOccurrences));
-                        // return (possibly empty) avgSequence: 
-                        return avgSequence; 
-                    }
-                    do {
-                        // If this is the first occurrence of the condition,
-                        if (numOccurrences == 0) {
-                            // add each row of this occurrence of the condition 
-                            //    to the average by simply copying its value to 
-                            //    the average sequence as a new element:
-                            avgSequence.add(DataSequence.get(i));
-                            // Else, if this occurrence of the condition is 
-                            //    longer than the shortest one found so far,    
-                        } else if (numRowsFound >= avgSequence.size()){
-			    // System.out.println("avgSequence: ");
-			    // printList(avgSequence);
-                            i = skip(i); // skip the rest of it...
-                            break; // and find the next occurrence of the
-                                   //    condition 
-                        } else {
-                            // add each row of this occurrence of the condition
-                            //    to the average by adding it to the running sum
-                            //    contained in that row of the average sequence:
-                            avgSequence.set(numRowsFound,
-                                            (avgSequence.get(numRowsFound) +
-                                             DataSequence.get(i)));
-                        }
-                        numRowsFound++;
-                        // move on to the next row until we reach the next
-                        //    condition or there are no more rows:
-                        i++;
-                    } while ((i < Condition.size()) && 
-                             (Condition.get(i) == condition)); 
-                    // If this interval was shorter than the others:
-                    if (numRowsFound < avgSequence.size())
-                        // shorten the average sequence to match this one's
-                        //    length (by removing the extra trailing elements):
-                        removeAfter(avgSequence, numRowsFound);
-                    // avgSequence.subList(numRowsFound,
-                    //                        avgSequence.size()).clear();
-                    numOccurrences++;
-                }
+		    while (true){
+			// length of current occurrence of condition:
+			int numRowsFound = 0; 
+			// find the starting index of the next occurrence of 
+			//    condition in the sequence:
+			i = myFindNextOccurrence(i, condition);
+			if (i == -1) { // -1 returned if not found
+			    // If we found at least one occurrence of the
+			    //    condition:
+			    if (!avgSequence.isEmpty())
+				// To average, divide the sum in each row by the
+				//    number of occurrences of the condition
+				//    that have been found:
+				for (int j = 0; j < avgSequence.size(); j++)
+				    avgSequence.set(j,(avgSequence.get(j) /
+						       (double) numOccurrences));
+			    // return (possibly empty) average sequence: 
+			    return avgSequence; 
+			}
+			do {
+			    // If this is the first occurrence of the condition,
+			    if (numOccurrences == 0) {
+				// add each row of this occurrence of the condition 
+				//    to the average by simply copying its value to 
+				//    the average sequence as a new element:
+				avgSequence.add(DataSequence.get(i));
+				// Else, if this occurrence of the condition is 
+				//    longer than the shortest one found so far,    
+			    } else if (numRowsFound >= avgSequence.size()){
+				// System.out.println("avgSequence: ");
+				// printList(avgSequence);
+				i = skip(i); // skip the rest of it...
+				break; // and find the next occurrence of the
+				       //    condition 
+			    } else {
+				// add each row of this occurrence of the condition
+				//    to the average by adding it to the running sum
+				//    contained in that row of the average sequence:
+				avgSequence.set(numRowsFound,
+						(avgSequence.get(numRowsFound) +
+						 DataSequence.get(i)));
+			    }
+			    numRowsFound++;
+			    // move on to the next row until we reach the next
+			    //    condition or there are no more rows:
+			    i++;
+			} while ((i < Condition.size()) && 
+				 (Condition.get(i) == condition)); 
+			// If this interval was shorter than the others:
+			if (numRowsFound < avgSequence.size())
+			    // shorten the average sequence to match this one's
+			    //    length (by removing the extra trailing elements):
+			    removeAfter(avgSequence, numRowsFound);
+			// avgSequence.subList(numRowsFound,
+			//                        avgSequence.size()).clear();
+			numOccurrences++;
+		    }
             }
             private int myFindNextOccurrence(int startIndex, int condition){
-                if (startIndex >= Condition.size() - 1)
+		// if we're already past the end of the sequence (as signaled by
+		//    this function's or skip's earlier return):
+		if (startIndex == -1) {
+		    return startIndex;
+		}
+                if (startIndex >= Condition.size() - 1) {
                     return -1;
+		}
                 while (Condition.get(startIndex) != condition) {
                     if (startIndex >= Condition.size() - 1)
                         return -1;
@@ -1237,17 +1263,35 @@ public class FNIRsStats {
              * IN:  startIndex, the index of the condition to skip
              * OUT: returns the index of the first row in the data sequence that
              *         is not part of an occurrence of the condition
+	     *      returns -1 if there is no row after startIndex without the
+	     *         same condition as the one at startIndex
              */
             private int skip(int startIndex) {
 		//System.out.print("Skipping past index: ");
 		//System.out.println(startIndex);
-                // store the condition to skip:
-                int condition = Condition.get(startIndex);
-                // increment the index until we pass the current condition:
-                while (Condition.get(++startIndex) == condition);
-		//System.out.print("Index is now: ");
-		//System.out.println(startIndex);
-                return startIndex;
+		int condition = -1; // not a valid condition (so we can tell later if
+                                    //    something goes wrong)
+		try { // in case we throw an IndexOutOfBoundsException on element
+                      //    access (which will happen if i goes beyond the end of
+                      //    the )
+		    // store the condition to skip:
+		    condition = Condition.get(startIndex);
+		    // increment the index until we pass the current condition:
+		    while (Condition.get(++startIndex) == condition); 
+		    //System.out.print("Index is now: ");
+		    //System.out.println(startIndex);
+		    return startIndex;
+		} catch (IndexOutOfBoundsException ex) {
+		    //we've gone beyond the end of the sequence
+		    //System.out.println("GOTIT!");
+		    return -1;
+		} catch (Exception ex) {
+		    // real problem: 
+		    localError("unknown problem accessing data for condition " +
+			       condition + " from group " + getName() + ": " +
+			       ex.getMessage());
+		    return -2;
+		}
             }
 	    // class variables for Group:
             private final String Name; 
@@ -1358,7 +1402,8 @@ public class FNIRsStats {
 	container.add(toPrimitiveDoubleArray(groups1.getGroup(groupName).getData(1)));
 
 	OneWayAnova myANOVA = new OneWayAnova();
-	double result = myANOVA.anovaPValue(container);
+	double result = -1;
+	result = myANOVA.anovaPValue(container);
 	System.out.println("Result: " + result);
 	
 	// outputANOVAs(groups1,
