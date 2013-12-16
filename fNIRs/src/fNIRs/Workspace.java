@@ -323,14 +323,5 @@ public class Workspace {
 	String [] getTemplates() {
 		return templates.list();
 	}
-	
-	public static void main(String[] args) {
-		File first = new File("first.txt");
-		File second = new File("second.txt");
-		
-		Workspace w = new Workspace();
-		
-		w.concatFiles(first,second);
-	}
 
 }
