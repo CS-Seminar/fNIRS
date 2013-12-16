@@ -186,7 +186,8 @@ public class Hello {
 				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.CENTER);
 		list.setForeground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
 		list.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		list.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		list.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD
+				| SWT.ITALIC));
 		list.setBounds(10, 38, 226, 392);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		list.setLayoutData(data);
@@ -918,7 +919,7 @@ public class Hello {
 				ArrayList<String> groupsAryLst = new ArrayList<String>(Arrays
 						.asList(groupsAry));
 				if (groupsAryLst.isEmpty()) { // if no groups were selected,
-					// diplay error message box:
+					// display error message box:
 					infoBox("Error",
 							"Please select at least one channel grouping to analyze.");
 					return; // and stop executing the ANOVA stuff.
@@ -935,7 +936,7 @@ public class Hello {
 				}
 				if (conditionsAryLst.isEmpty()) { // if no conditions were
 													// selected,
-					// diplay error message box:
+					// display error message box:
 					infoBox("Error",
 							"Please select at least one condition to analyze.");
 					return; // and stop executing the ANOVA stuff.
@@ -946,7 +947,7 @@ public class Hello {
 				// from the text box, then convert it to an int and store:
 				String numChunksStr = numChunksBox.getText();
 				if (numChunksStr.equals("")) {
-					// diplay error message box:
+					// display error message box:
 					infoBox("Error",
 							"Please enter a number of \"chunks\" to split the "
 									+ "data into and average before calculating ANOVA p-values.");
@@ -959,7 +960,7 @@ public class Hello {
 				// convert it to an int and store:
 				String numPlacesStr = decimalPlacesBox.getText();
 				if (numPlacesStr.equals("")) {
-					// diplay error message box:
+					// display error message box:
 					infoBox("Error",
 							"Please enter a number of decimal places to output "
 									+ "for the p-values.");
@@ -1010,46 +1011,41 @@ public class Hello {
 				// execute the requested ANOVAs and write them to the output
 				// file(s)!
 
-				// (possibly) execute Hb ANOVAs:
-				if (doHb) {
-					File outputFileHb = new File(outputDirectoryPath + "\\"
-							+ "p-values_Hb.csv");
-					// calculate ANOVAs and write them to the output file!!!
-					try {
+				try {
+					// (possibly) execute Hb ANOVAs:
+					if (doHb) {
+						File outputFileHb = new File(outputDirectoryPath + "\\"
+								+ "p-values_Hb.csv");
+						// calculate ANOVAs and write them to the output file!!!
 						FNIRsStats.writeANOVAs(outputFileHb, StatsHb,
 								groupsAryLst, conditionsAryLst, numChunks,
 								numPlaces);
-					} catch (Exception ex) {
-						splash.splashOff();
-						ex.printStackTrace();
-						infoBox("Error", "Calculating p-values failed.");
+					}
+
+					// update progress bar:
+					splash.setProgress(55, "Running HbO ANOVA...");
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
 						return;
 					}
-				}
 
-				// update progress bar:
-				splash.setProgress(55, "Running HbO ANOVA...");
-				try {
-					Thread.sleep(200);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-					return;
-				}
-
-				// (possibly) execute HbO ANOVAs:
-				if (doHbO) {
-					File outputFileHbO = new File(outputDirectoryPath + "\\"
-							+ "p-values_HbO.csv");
-					try {
+					// (possibly) execute HbO ANOVAs:
+					if (doHbO) {
+						File outputFileHbO = new File(outputDirectoryPath
+								+ "\\" + "p-values_HbO.csv");
+						// calculate ANOVAs and write them to the output file!!!
 						FNIRsStats.writeANOVAs(outputFileHbO, StatsHbO,
 								groupsAryLst, conditionsAryLst, numChunks,
 								numPlaces);
-					} catch (Exception ex) {
-						splash.splashOff();
-						ex.printStackTrace();
-						infoBox("Error", "Calculating p-values failed.");
-						return;
+
 					}
+				} catch (Exception ex) {
+					splash.splashOff();
+					ex.printStackTrace();
+					infoBox("Error", "Problem calculating p-values.");
+					return;
 				}
 
 				// update progress bar:
@@ -2538,7 +2534,6 @@ public class Hello {
 
 				lbl_seshnum.setText("Session: 1 of "
 						+ spinner_nsother.getText());
-
 				text_subnameOther.setEnabled(false);
 				spinner_nsother.setEnabled(false);
 				enter_other1.setEnabled(false);

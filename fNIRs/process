@@ -34,50 +34,26 @@
 	<parameter key="17" value="18.true.real.attribute"/>
 	<parameter key="18" value="19.true.real.attribute"/>
 	<parameter key="19" value="20.true.real.attribute"/>
-	<parameter key="20" value="21.true.real.attribute"/>
-	<parameter key="21" value="22.true.real.attribute"/>
-	<parameter key="22" value="23.true.real.attribute"/>
-	<parameter key="23" value="24.true.real.attribute"/>
-	<parameter key="24" value="25.true.real.attribute"/>
-	<parameter key="25" value="26.true.real.attribute"/>
-	<parameter key="26" value="27.true.real.attribute"/>
-	<parameter key="27" value="28.true.real.attribute"/>
-	<parameter key="28" value="29.true.real.attribute"/>
-	<parameter key="29" value="30.true.real.attribute"/>
-	<parameter key="30" value="31.true.real.attribute"/>
-	<parameter key="31" value="32.true.real.attribute"/>
-	<parameter key="32" value="33.true.real.attribute"/>
-	<parameter key="33" value="34.true.real.attribute"/>
-	<parameter key="34" value="35.true.real.attribute"/>
-	<parameter key="35" value="36.true.real.attribute"/>
-	<parameter key="36" value="37.true.real.attribute"/>
-	<parameter key="37" value="38.true.real.attribute"/>
-	<parameter key="38" value="39.true.real.attribute"/>
-	<parameter key="39" value="40.true.real.attribute"/>
-	<parameter key="40" value="41.true.real.attribute"/>
-	<parameter key="41" value="42.true.real.attribute"/>
-	<parameter key="42" value="43.true.real.attribute"/>
-	<parameter key="43" value="44.true.real.attribute"/>
-	<parameter key="44" value="45.true.real.attribute"/>
-	<parameter key="45" value="46.true.real.attribute"/>
-	<parameter key="46" value="47.true.real.attribute"/>
-	<parameter key="47" value="48.true.real.attribute"/>
-	<parameter key="48" value="label.true.polynominal.label"/>
+	<parameter key="20" value="label.true.polynominal.label"/>
 	</list>
       </operator>
-      <operator activated="true" class="neural_net" compatibility="5.3.013" expanded="true" height="76" name="Neural Net (2)" width="90" x="112" y="210">
-        <list key="hidden_layers"/>
+      <operator activated="true" class="set_role" compatibility="5.3.013" expanded="true" height="76" name="Set Role" width="90" x="179" y="30">
+        <parameter key="attribute_name" value="label"/>
+        <parameter key="target_role" value="label"/>
+        <list key="set_additional_roles"/>
       </operator>
-      <operator activated="true" class="apply_model" compatibility="5.3.013" expanded="true" height="76" name="Apply Model (2)" width="90" x="380" y="165">
+      <operator activated="true" class="k_nn" compatibility="5.3.013" expanded="true" height="76" name="k-NN" width="90" x="313" y="30"/>
+      <operator activated="true" class="apply_model" compatibility="5.3.013" expanded="true" height="76" name="Apply Model" width="90" x="447" y="30">
         <list key="application_parameters"/>
       </operator>
-      <operator activated="true" class="write_excel" compatibility="5.3.013" expanded="true" height="76" name="Write Excel" width="90" x="514" y="165">
-        <parameter key="excel_file" value="C:\Users\jssmith\Desktop\output.xls"/>
+      <operator activated="true" class="write_excel" compatibility="5.3.013" expanded="true" height="76" name="Write Excel" width="90" x="581" y="30">
+        <parameter key="excel_file" value="C:\Users\jssmith\Desktop\OUTPUT.xls"/>
       </operator>
-      <connect from_op="Read Excel" from_port="output" to_op="Neural Net (2)" to_port="training set"/>
-      <connect from_op="Neural Net (2)" from_port="model" to_op="Apply Model (2)" to_port="model"/>
-      <connect from_op="Neural Net (2)" from_port="exampleSet" to_op="Apply Model (2)" to_port="unlabelled data"/>
-      <connect from_op="Apply Model (2)" from_port="labelled data" to_op="Write Excel" to_port="input"/>
+      <connect from_op="Read Excel" from_port="output" to_op="Set Role" to_port="example set input"/>
+      <connect from_op="Set Role" from_port="example set output" to_op="k-NN" to_port="training set"/>
+      <connect from_op="k-NN" from_port="model" to_op="Apply Model" to_port="model"/>
+      <connect from_op="k-NN" from_port="exampleSet" to_op="Apply Model" to_port="unlabelled data"/>
+      <connect from_op="Apply Model" from_port="labelled data" to_op="Write Excel" to_port="input"/>
       <connect from_op="Write Excel" from_port="through" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
       <portSpacing port="sink_result 1" spacing="0"/>
