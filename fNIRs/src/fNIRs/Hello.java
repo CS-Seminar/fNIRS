@@ -186,7 +186,7 @@ public class Hello {
 				| SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.CENTER);
 		list.setForeground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
 		list.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
-		list.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.NORMAL));
+		list.setFont(SWTResourceManager.getFont("Segoe UI", 12, SWT.BOLD | SWT.ITALIC));
 		list.setBounds(10, 38, 226, 392);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		list.setLayoutData(data);
