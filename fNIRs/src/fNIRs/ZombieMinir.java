@@ -29,7 +29,7 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
 
-public class Hello {
+public class ZombieMinir {
 	protected Shell shlFnirsDataProcessing;
 	private static ArrayList<Integer> indexList;
 	private static Workspace workspace;
@@ -77,14 +77,14 @@ public class Hello {
 	 */
 	public static void main(String[] args) {
 		try {
-			JSplash splash = new JSplash(Hello.class.getClassLoader()
+			JSplash splash = new JSplash(ZombieMinir.class.getClassLoader()
 					.getResource("splash.png"), true, true, false, "", null,
 					Color.GREEN, Color.BLACK);
 			splash.setForeground(Color.GREEN);
 			splash.setProgress(0, "Animating zombies...");
 			splash.splashOn();
 			Thread.sleep(200);
-			Hello window = new Hello();
+			ZombieMinir window = new ZombieMinir();
 			splash.setProgress(8, "Fetching brains...");
 			Thread.sleep(200);
 			indexList = new ArrayList<Integer>();
@@ -166,7 +166,7 @@ public class Hello {
 		shlFnirsDataProcessing.setFont(SWTResourceManager.getFont("Segoe UI",
 				12, SWT.NORMAL));
 		shlFnirsDataProcessing.setImage(SWTResourceManager.getImage(
-				Hello.class, "/fNIRs/logo.png"));
+				ZombieMinir.class, "/fNIRs/logo.png"));
 		shlFnirsDataProcessing.setBackground(SWTResourceManager
 				.getColor(SWT.COLOR_BLACK));
 		shlFnirsDataProcessing.setSize(1000, 568);
@@ -368,7 +368,7 @@ public class Hello {
 					return;
 				}
 
-				JSplash splash = new JSplash(Hello.class.getClassLoader()
+				JSplash splash = new JSplash(ZombieMinir.class.getClassLoader()
 						.getResource("splash.png"), true, true, false, "",
 						null, Color.BLACK, Color.BLACK);
 				splash.setAlwaysOnTop(true);
@@ -930,7 +930,7 @@ public class Hello {
 					return;
 				}
 
-				JSplash splash = new JSplash(Hello.class.getClassLoader()
+				JSplash splash = new JSplash(ZombieMinir.class.getClassLoader()
 						.getResource("splash.png"), true, true, false, "",
 						null, Color.BLACK, Color.BLACK);
 				splash.setAlwaysOnTop(true);
@@ -1340,7 +1340,7 @@ public class Hello {
 				}
 
 				// prog bar begin here
-				JSplash splash = new JSplash(Hello.class.getClassLoader()
+				JSplash splash = new JSplash(ZombieMinir.class.getClassLoader()
 						.getResource("splash.png"), true, true, false, "",
 						null, Color.BLACK, Color.BLACK);
 				splash.setAlwaysOnTop(true);
@@ -1818,7 +1818,7 @@ public class Hello {
 				int numPlaces = Integer.parseInt(numPlacesStr);
 
 				// initialize progress bar:
-				JSplash splash = new JSplash(Hello.class.getClassLoader()
+				JSplash splash = new JSplash(ZombieMinir.class.getClassLoader()
 						.getResource("splash.png"), true, true, false, "",
 						null, Color.BLACK, Color.BLACK);
 				splash.setAlwaysOnTop(true);
@@ -2351,7 +2351,7 @@ public class Hello {
 					return;
 				}
 
-				JSplash splash = new JSplash(Hello.class.getClassLoader()
+				JSplash splash = new JSplash(ZombieMinir.class.getClassLoader()
 						.getResource("splash.png"), true, true, false, "",
 						null, Color.BLACK, Color.BLACK);
 				splash.setAlwaysOnTop(true);
