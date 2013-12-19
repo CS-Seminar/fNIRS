@@ -45,12 +45,20 @@ public class Workspace {
 		makeDir(dmining);
 		makeDir(templates);
 		
+		
+		try {
+			System.out.println(new java.io.File( "." ).getCanonicalPath());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		// if not already there, add the default process template
-		for (String filename : new File("src\\fNIRs\\templates").list()) {
+		for (String filename : new File(".\\templates").list()) {
 			File pTemp = new File(templates.getAbsolutePath()+"\\"+filename);
 			if (!pTemp.exists()) {
 				try {
-					Files.copy(new File("src\\fNIRs\\templates\\"+filename).toPath().toAbsolutePath(),pTemp.toPath().toAbsolutePath());
+					Files.copy(new File(".\\templates\\"+filename).toPath().toAbsolutePath(),pTemp.toPath().toAbsolutePath());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
